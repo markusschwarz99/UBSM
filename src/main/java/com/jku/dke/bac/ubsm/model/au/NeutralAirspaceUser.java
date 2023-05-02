@@ -1,38 +1,22 @@
 package com.jku.dke.bac.ubsm.model.au;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jku.dke.bac.ubsm.model.flightlist.Flight;
 import com.jku.dke.bac.ubsm.model.flightlist.Slot;
-import jakarta.persistence.Entity;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 
-@Entity
-@Component
 public class NeutralAirspaceUser extends AirspaceUser {
-    public NeutralAirspaceUser(String s) {
-        super(s);
-    }
 
-    public NeutralAirspaceUser(String s, double d) {
-        super(s, d);
-    }
+    //@JsonProperty("type")
+    //private final String airspaceUserType = "Neutral";
 
-
-    public NeutralAirspaceUser() {
-
-    }
 
     @Override
     public String toString() {
         return super.toString() + " - Neutral";
-    }
-
-    @Override
-    public AirspaceUserType getType() {
-        return AirspaceUserType.NEUTRAL;
     }
 
     @Override
@@ -49,8 +33,7 @@ public class NeutralAirspaceUser extends AirspaceUser {
         int slotIndex = 0;
 
         while (slotIndex < possibleSlots.size() && bestPossibleSlot == null) {
-            if (possibleSlots.get(slotIndex).getDepartureTime().isAfter(flight.getInitialTime())
-                    && possibleSlots.get(slotIndex).getDepartureTime().isBefore(flight.getScheduledTime())) {
+            if (possibleSlots.get(slotIndex).getDepartureTime().isAfter(flight.getInitialTime()) && possibleSlots.get(slotIndex).getDepartureTime().isBefore(flight.getScheduledTime())) {
                 bestPossibleSlot = possibleSlots.get(slotIndex);
             }
             slotIndex++;

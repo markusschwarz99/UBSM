@@ -1,34 +1,24 @@
 package com.jku.dke.bac.ubsm.model.au;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.jku.dke.bac.ubsm.model.flightlist.Flight;
 import com.jku.dke.bac.ubsm.model.flightlist.Slot;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 
 import java.util.List;
 import java.util.Map;
 
-@Entity
+@JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = NeutralAirspaceUser.class, name = "neutral"),
+        @JsonSubTypes.Type(value = AggressiveAirspaceUser.class, name = "aggressive"),
+        @JsonSubTypes.Type(value = PassiveAirspaceUser.class, name = "passive")
+})
 public abstract class AirspaceUser {
-    @Id
-    @Column(name = "name", nullable = false)
     private String name;
-
-    @Column(name = "credits", nullable = false)
     private double credits;
-
-    public AirspaceUser() {
-    }
-
-    public AirspaceUser(String name) {
-        this.name = name;
-    }
-
-    public AirspaceUser(String name, double credits) {
-        this.name = name;
-        this.credits = credits;
-    }
 
     public String getName() {
         return name;
@@ -47,6 +37,21 @@ public abstract class AirspaceUser {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AirspaceUser that = (AirspaceUser) o;
+
+        return getName().equals(that.getName());
+    }
+
+    //@Override
+    //public int hashCode() {
+    //    return getName().hashCode();
+    //}
+
+    @Override
     public String toString() {
         return "AU: " + this.name + " | " + this.credits + " DC";
     }
@@ -55,7 +60,6 @@ public abstract class AirspaceUser {
         this.credits += d;
     }
 
-    public abstract AirspaceUserType getType();
 
     public abstract Map<Slot, Double> generateWeightMap(Flight flight);
 

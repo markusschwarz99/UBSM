@@ -34,41 +34,41 @@ public class FlightListController {
     @Autowired
     private AirspaceUserController airspaceUserController;
 
-    @PostMapping("/newFlightList")
-    public ResponseEntity<Map<Slot, Flight>> newFlightList(@RequestParam("flightDistribution") List<Integer> flightDistribution) {
-        if (flightDistribution.size() != airspaceUserController.getAirspaceUsers().size())
-            return ResponseEntity.badRequest().build();
-
-        Map<Slot, Flight> slotAllocationMap = new HashMap<>();
-        List<AirspaceUser> aus = airspaceUserController.getAirspaceUsers();
-        List<LocalTime> initialLocalTimeList = Util.getRandomTimes(flightDistribution.stream().mapToInt(Integer::intValue).sum(), startTimeInSeconds, endTimeInSeconds, initialTimeMean, initialTimeStd);
-        AtomicInteger flightDistributionIndex = new AtomicInteger();
-        AtomicInteger initialLocalTimeListIndex = new AtomicInteger();
-        aus.forEach(airspaceUser -> {
-            for (int i = 0; i < flightDistribution.get(flightDistributionIndex.get()); i++) {
-                Flight flight = new Flight(airspaceUser, initialLocalTimeList.get(initialLocalTimeListIndex.getAndIncrement()));
-                LocalTime scheduledTime = Util.getRandomTime(
-                        flight.getInitialTime().toSecondOfDay(),
-                        flight.getInitialTime().toSecondOfDay() + maxTimeAfterInitialTime,
-                        (flight.getInitialTime().toSecondOfDay() + maxTimeAfterInitialTime + flight.getInitialTime().toSecondOfDay()) / 2,
-                        stdScheduledTime);
-                flight.setScheduledTime(scheduledTime);
-                Slot slot = new Slot(scheduledTime);
-                slotAllocationMap.put(slot, flight);
-            }
-            flightDistributionIndex.getAndIncrement();
-        });
-
-        Map<Slot, Flight> sortedSlotAllocationMap = slotAllocationMap.entrySet().stream()
-                .sorted(Comparator.comparingInt(e -> e.getKey().getDepartureTime().toSecondOfDay()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (slot, flight) -> slot, LinkedHashMap::new));
-
-        List<Slot> possibleSlots = sortedSlotAllocationMap.keySet().stream().toList();
-
-        sortedSlotAllocationMap.forEach((key, value) -> {
-            value.getAirspaceUser().generateFlightAttributes(value, possibleSlots);
-        });
-
-        return ResponseEntity.ok(sortedSlotAllocationMap);
-    }
+    //@PostMapping("/newFlightList")
+    //public ResponseEntity<Map<Slot, Flight>> newFlightList(@RequestParam("flightDistribution") List<Integer> flightDistribution) {
+    //    if (flightDistribution.size() != airspaceUserController.getAirspaceUsers().size())
+    //        return ResponseEntity.badRequest().build();
+//
+    //    Map<Slot, Flight> slotAllocationMap = new HashMap<>();
+    //    List<AirspaceUser> aus = airspaceUserController.getAirspaceUsers();
+    //    List<LocalTime> initialLocalTimeList = Util.getRandomTimes(flightDistribution.stream().mapToInt(Integer::intValue).sum(), startTimeInSeconds, endTimeInSeconds, initialTimeMean, initialTimeStd);
+    //    AtomicInteger flightDistributionIndex = new AtomicInteger();
+    //    AtomicInteger initialLocalTimeListIndex = new AtomicInteger();
+    //    aus.forEach(airspaceUser -> {
+    //        for (int i = 0; i < flightDistribution.get(flightDistributionIndex.get()); i++) {
+    //            Flight flight = new Flight(airspaceUser, initialLocalTimeList.get(initialLocalTimeListIndex.getAndIncrement()));
+    //            LocalTime scheduledTime = Util.getRandomTime(
+    //                    flight.getInitialTime().toSecondOfDay(),
+    //                    flight.getInitialTime().toSecondOfDay() + maxTimeAfterInitialTime,
+    //                    (flight.getInitialTime().toSecondOfDay() + maxTimeAfterInitialTime + flight.getInitialTime().toSecondOfDay()) / 2,
+    //                    stdScheduledTime);
+    //            flight.setScheduledTime(scheduledTime);
+    //            Slot slot = new Slot(scheduledTime);
+    //            slotAllocationMap.put(slot, flight);
+    //        }
+    //        flightDistributionIndex.getAndIncrement();
+    //    });
+//
+    //    Map<Slot, Flight> sortedSlotAllocationMap = slotAllocationMap.entrySet().stream()
+    //            .sorted(Comparator.comparingInt(e -> e.getKey().getDepartureTime().toSecondOfDay()))
+    //            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (slot, flight) -> slot, LinkedHashMap::new));
+//
+    //    List<Slot> possibleSlots = sortedSlotAllocationMap.keySet().stream().toList();
+//
+    //    sortedSlotAllocationMap.forEach((key, value) -> {
+    //        value.getAirspaceUser().generateFlightAttributes(value, possibleSlots);
+    //    });
+//
+    //    return ResponseEntity.ok(sortedSlotAllocationMap);
+    //}
 }

@@ -1,86 +1,98 @@
 package com.jku.dke.bac.ubsm.controller;
 
-import com.jku.dke.bac.ubsm.factory.AirspaceUserFactory;
 import com.jku.dke.bac.ubsm.model.au.AirspaceUser;
-import com.jku.dke.bac.ubsm.model.au.AirspaceUserType;
-import com.jku.dke.bac.ubsm.repos.AirspaceUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import com.jku.dke.bac.ubsm.service.AirspaceUserService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
 
 @RestController
 public class AirspaceUserController {
-    @Value("${initialCredits}")
-    private double initialCredits;
-    private AirspaceUserRepository repository;
+    private final AirspaceUserService airspaceUserService;
 
-    @Autowired
-    private AirspaceUserFactory airspaceUserFactory;
-
-    public AirspaceUserController(final AirspaceUserRepository repository) {
-        this.repository = repository;
+    public AirspaceUserController(AirspaceUserService airspaceUserService) {
+        this.airspaceUserService = airspaceUserService;
     }
 
-    @GetMapping("/airspaceUsers")
-    public List<AirspaceUser> getAirspaceUsers() {
-        return repository.findAll();
+    @ApiOperation(value = "Get all AirspaceUser", response = AirspaceUser[].class, produces = "application/json")
+    @GetMapping(path = "/airspaceUsers", produces = "application/json")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK")})
+    public ResponseEntity<AirspaceUser[]> getAirspaceUsers() {
+        AirspaceUser[] airspaceUsers = airspaceUserService.getAirspaceUsers();
+        return new ResponseEntity<>(airspaceUsers, HttpStatus.OK);
     }
 
-    @PostMapping("/newNeutralAirspaceUser")
-    public ResponseEntity<AirspaceUser> newNeutralAirspaceUser(String name) {
-        if (name.isBlank()) return ResponseEntity.badRequest().build();
-        if (repository.findById(name).isPresent()) return new ResponseEntity<>(HttpStatus.CONFLICT);
-        AirspaceUser airspaceUser = airspaceUserFactory.generate(AirspaceUserType.NEUTRAL);
-        airspaceUser.setName(name);
-        airspaceUser.setCredits(initialCredits);
-        repository.save(airspaceUser);
-        return ResponseEntity.ok(airspaceUser);
+    @ApiOperation(value = "Create new AirspaceUsers", response = AirspaceUser[].class, produces = "application/json", consumes = "application/json")
+    @PostMapping(path = "/airspaceUsers", produces = "application/json", consumes = "application/json")
+    @ApiResponses(value = {@ApiResponse(code = 201, message = "Created"), @ApiResponse(code = 400, message = "Bad Request")})
+    public ResponseEntity<AirspaceUser[]> newAirspaceUsers(@RequestBody AirspaceUser[] airspaceUsers) {
+        ResponseEntity<AirspaceUser[]> response;
+        try {
+            AirspaceUser[] aus = airspaceUserService.createNewAirspaceUsers(airspaceUsers);
+            response = new ResponseEntity<>(aus, HttpStatus.OK);
+        } catch (Exception e) {
+            response = new ResponseEntity<>(airspaceUsers, HttpStatus.BAD_REQUEST);
+        }
+        return response;
     }
 
-    @PostMapping("/newPassiveAirspaceUser")
-    public ResponseEntity<AirspaceUser> newPassiveAirspaceUser(String name) {
-        if (name.isBlank()) return ResponseEntity.badRequest().build();
-        if (repository.findById(name).isPresent()) return new ResponseEntity<>(HttpStatus.CONFLICT);
-        AirspaceUser airspaceUser = airspaceUserFactory.generate(AirspaceUserType.PASSIVE);
-        airspaceUser.setName(name);
-        airspaceUser.setCredits(initialCredits);
-        repository.save(airspaceUser);
-        return ResponseEntity.ok(airspaceUser);
+    @ApiOperation(value = "Create new AirspaceUser", response = AirspaceUser.class, produces = "application/json", consumes = "application/json")
+    @PostMapping(path = "/airspaceUsers", produces = "application/json", consumes = "application/json")
+    @ApiResponses(value = {@ApiResponse(code = 201, message = "Created"), @ApiResponse(code = 400, message = "Bad Request")})
+    public ResponseEntity<AirspaceUser> newAirspaceUsers(@RequestBody AirspaceUser airspaceUser) {
+        ResponseEntity<AirspaceUser> response;
+        try {
+            AirspaceUser au = airspaceUserService.createNewAirspaceUser(airspaceUser);
+            response = new ResponseEntity<>(au, HttpStatus.OK);
+        } catch (Exception e) {
+            response = new ResponseEntity<>(airspaceUser, HttpStatus.BAD_REQUEST);
+        }
+        return response;
     }
 
-    @PostMapping("/newAggressiveAirspaceUser")
-    public ResponseEntity<AirspaceUser> newAggressiveAirspaceUser(String name) {
-        if (name.isBlank()) return ResponseEntity.badRequest().build();
-        if (repository.findById(name).isPresent()) return new ResponseEntity<>(HttpStatus.CONFLICT);
-        AirspaceUser airspaceUser = airspaceUserFactory.generate(AirspaceUserType.AGGRESSIVE);
-        airspaceUser.setName(name);
-        airspaceUser.setCredits(initialCredits);
-        repository.save(airspaceUser);
-        return ResponseEntity.ok(airspaceUser);
+    @ApiOperation(value = "add(+) or removes(-) credits from an AirspaceUser", response = AirspaceUser.class, produces = "application/json", consumes = "application/json")
+    @PutMapping(path = "/airspaceUsers",produces = "application/json", consumes = "application/json")
+    @ApiResponses(value = {@ApiResponse(code = 201, message = "Created"), @ApiResponse(code = 400, message = "Bad Request")})
+    public ResponseEntity<AirspaceUser> updateCredits(@RequestBody Map<String, Double> nameCreditMap){
+        return null;
     }
 
-    @PutMapping("/addCredits")
-    public ResponseEntity<AirspaceUser> addCredits(String name, double credits) {
-        if (name.isBlank()) return ResponseEntity.badRequest().build();
-        if (repository.findById(name).isEmpty()) return ResponseEntity.badRequest().build();
-        if (repository.findById(name).get().getCredits() < credits) return ResponseEntity.badRequest().build();
-        AirspaceUser airspaceUser = repository.findById(name).get();
-        airspaceUser.updateCredits(credits);
-        repository.save(airspaceUser);
-        return ResponseEntity.ok().build();
+    //@PutMapping("/addCredits")
+    //public ResponseEntity<AirspaceUser> addCredits(String name, double credits) {
+    //    if (name.isBlank()) return ResponseEntity.badRequest().build();
+    //    if (repository.findById(name).isEmpty()) return ResponseEntity.badRequest().build();
+    //    if (repository.findById(name).get().getCredits() < credits) return ResponseEntity.badRequest().build();
+    //    AirspaceUser airspaceUser = repository.findById(name).get();
+    //    airspaceUser.updateCredits(credits);
+    //    repository.save(airspaceUser);
+    //    return ResponseEntity.ok().build();
+    //}
+
+    @ApiOperation(value = "Delete AirspaceUser")
+    @DeleteMapping(path = "airspaceUsers/{name}")
+    @ApiResponses(value = {@ApiResponse(code = 201, message = "Created"), @ApiResponse(code = 400, message = "Bad Request")})
+    public ResponseEntity<Void> deleteAirspaceUser(@PathVariable @ApiParam(value = "the AirspaceUser's' name") String name) {
+        ResponseEntity<Void> response;
+        try {
+            if (airspaceUserService.deleteAirspaceUser(name)) response = new ResponseEntity<>(HttpStatus.OK);
+            else response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return response;
     }
 
-    @DeleteMapping("/deleteAirspaceUser")
-    public ResponseEntity<Object> deleteAirspaceUser(String name) {
-        if (name.isBlank()) return ResponseEntity.badRequest().build();
-        if (repository.findById(name).isEmpty()) return ResponseEntity.badRequest().build();
-        repository.delete(repository.findById(name).get());
-        return ResponseEntity.ok().build();
+    @ApiOperation(value = "Delete all AirspaceUsers")
+    @DeleteMapping(path = "airspaceUsers")
+    @ApiResponses(value = {@ApiResponse(code = 201, message = "Created"), @ApiResponse(code = 400, message = "Bad Request")})
+    public ResponseEntity<Void> deleteAirspaceUser() {
+        airspaceUserService.deleteAllAirspaceUser();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
 }

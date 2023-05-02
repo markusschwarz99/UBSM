@@ -1,5 +1,4 @@
-package com.jku.dke.bac.ubsm.factory;
-
+package com.jku.dke.bac.ubsm.model.factory;
 
 import com.jku.dke.bac.ubsm.model.au.AggressiveAirspaceUser;
 import com.jku.dke.bac.ubsm.model.au.AirspaceUser;
