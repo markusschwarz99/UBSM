@@ -1,74 +1,78 @@
 package com.jku.dke.bac.ubsm.controller;
 
-import com.jku.dke.bac.ubsm.Util;
-import com.jku.dke.bac.ubsm.model.au.AirspaceUser;
 import com.jku.dke.bac.ubsm.model.flightlist.Flight;
 import com.jku.dke.bac.ubsm.model.flightlist.Slot;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import com.jku.dke.bac.ubsm.service.FlightListService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalTime;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class FlightListController {
-    @Value("${startTimeInSeconds}")
-    private int startTimeInSeconds;
-    @Value("${endTimeInSeconds}")
-    private int endTimeInSeconds;
-    @Value("${initialTimeMean}")
-    private int initialTimeMean;
-    @Value("${initialTimeStd}")
-    private int initialTimeStd;
-    @Value("${maxTimeAfterInitialTime}")
-    private int maxTimeAfterInitialTime;
-    @Value("${stdScheduledTime}")
-    private int stdScheduledTime;
 
-    @Autowired
-    private AirspaceUserController airspaceUserController;
+    private final FlightListService flightListService;
 
-    //@PostMapping("/newFlightList")
-    //public ResponseEntity<Map<Slot, Flight>> newFlightList(@RequestParam("flightDistribution") List<Integer> flightDistribution) {
-    //    if (flightDistribution.size() != airspaceUserController.getAirspaceUsers().size())
-    //        return ResponseEntity.badRequest().build();
-//
-    //    Map<Slot, Flight> slotAllocationMap = new HashMap<>();
-    //    List<AirspaceUser> aus = airspaceUserController.getAirspaceUsers();
-    //    List<LocalTime> initialLocalTimeList = Util.getRandomTimes(flightDistribution.stream().mapToInt(Integer::intValue).sum(), startTimeInSeconds, endTimeInSeconds, initialTimeMean, initialTimeStd);
-    //    AtomicInteger flightDistributionIndex = new AtomicInteger();
-    //    AtomicInteger initialLocalTimeListIndex = new AtomicInteger();
-    //    aus.forEach(airspaceUser -> {
-    //        for (int i = 0; i < flightDistribution.get(flightDistributionIndex.get()); i++) {
-    //            Flight flight = new Flight(airspaceUser, initialLocalTimeList.get(initialLocalTimeListIndex.getAndIncrement()));
-    //            LocalTime scheduledTime = Util.getRandomTime(
-    //                    flight.getInitialTime().toSecondOfDay(),
-    //                    flight.getInitialTime().toSecondOfDay() + maxTimeAfterInitialTime,
-    //                    (flight.getInitialTime().toSecondOfDay() + maxTimeAfterInitialTime + flight.getInitialTime().toSecondOfDay()) / 2,
-    //                    stdScheduledTime);
-    //            flight.setScheduledTime(scheduledTime);
-    //            Slot slot = new Slot(scheduledTime);
-    //            slotAllocationMap.put(slot, flight);
-    //        }
-    //        flightDistributionIndex.getAndIncrement();
-    //    });
-//
-    //    Map<Slot, Flight> sortedSlotAllocationMap = slotAllocationMap.entrySet().stream()
-    //            .sorted(Comparator.comparingInt(e -> e.getKey().getDepartureTime().toSecondOfDay()))
-    //            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (slot, flight) -> slot, LinkedHashMap::new));
-//
-    //    List<Slot> possibleSlots = sortedSlotAllocationMap.keySet().stream().toList();
-//
-    //    sortedSlotAllocationMap.forEach((key, value) -> {
-    //        value.getAirspaceUser().generateFlightAttributes(value, possibleSlots);
-    //    });
-//
-    //    return ResponseEntity.ok(sortedSlotAllocationMap);
-    //}
+    public FlightListController(final FlightListService flightListService) {
+        this.flightListService = flightListService;
+    }
+
+    @ApiOperation(value = "Get all FlightLists", response = List.class, produces = "application/json")
+    @GetMapping(path = {"/flightLists/{index}", "/flightLists"}, produces = "application/json")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad Request")})
+    public ResponseEntity<List<Map<Slot, Flight>>> getAirspaceUsers(@PathVariable(required = false) Integer index) {
+        ResponseEntity<List<Map<Slot, Flight>>> response;
+        List<Map<Slot, Flight>> flightLists;
+        if (index != null) {
+            try {
+                flightLists = flightListService.getFlightListByIndex(index);
+                response = new ResponseEntity<>(flightLists, HttpStatus.OK);
+            } catch (Exception e) {
+                response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            flightLists = flightListService.getFlightLists();
+            response = new ResponseEntity<>(flightLists, HttpStatus.OK);
+        }
+        return response;
+    }
+
+    @ApiOperation(value = "Create a new FlightList", response = Map.class, produces = "application/json", consumes = "application/json")
+    @PostMapping(path = "/flightLists", produces = "application/json", consumes = "application/json")
+    @ApiResponses(value = {@ApiResponse(code = 201, message = "Created"), @ApiResponse(code = 400, message = "Bad Request")})
+    public ResponseEntity<Map<Slot, Flight>> newFlightList(@RequestBody Map<String, Integer> flightDistribution) {
+        ResponseEntity<Map<Slot, Flight>> response;
+        try {
+            Map<Slot, Flight> flightList = flightListService.generateFlightList(flightDistribution);
+            response = new ResponseEntity<>(flightList, HttpStatus.OK);
+        } catch (Exception e) {
+            response = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return response;
+    }
+
+    @ApiOperation(value = "Delete AirspaceUser")
+    @DeleteMapping(path = {"/flightLists", "/flightLists/{index}"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Ok"), @ApiResponse(code = 400, message = "Bad Request")})
+    public ResponseEntity<Void> deleteFlightList(@PathVariable(required = false) Integer index) {
+        ResponseEntity<Void> response;
+        if (index != null) {
+            try {
+                flightListService.deleteFlightListByIndex(index);
+                response = new ResponseEntity<>(HttpStatus.OK);
+            } catch (Exception e) {
+                response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            flightListService.deleteAllFlightLists();
+            response = new ResponseEntity<>(HttpStatus.OK);
+        }
+        return response;
+    }
+
 }

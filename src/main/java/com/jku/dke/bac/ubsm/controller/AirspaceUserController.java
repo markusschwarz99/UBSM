@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 @RestController
 public class AirspaceUserController {
     private final AirspaceUserService airspaceUserService;
@@ -42,41 +40,9 @@ public class AirspaceUserController {
         return response;
     }
 
-    @ApiOperation(value = "Create new AirspaceUser", response = AirspaceUser.class, produces = "application/json", consumes = "application/json")
-    @PostMapping(path = "/airspaceUsers", produces = "application/json", consumes = "application/json")
-    @ApiResponses(value = {@ApiResponse(code = 201, message = "Created"), @ApiResponse(code = 400, message = "Bad Request")})
-    public ResponseEntity<AirspaceUser> newAirspaceUsers(@RequestBody AirspaceUser airspaceUser) {
-        ResponseEntity<AirspaceUser> response;
-        try {
-            AirspaceUser au = airspaceUserService.createNewAirspaceUser(airspaceUser);
-            response = new ResponseEntity<>(au, HttpStatus.OK);
-        } catch (Exception e) {
-            response = new ResponseEntity<>(airspaceUser, HttpStatus.BAD_REQUEST);
-        }
-        return response;
-    }
-
-    @ApiOperation(value = "add(+) or removes(-) credits from an AirspaceUser", response = AirspaceUser.class, produces = "application/json", consumes = "application/json")
-    @PutMapping(path = "/airspaceUsers",produces = "application/json", consumes = "application/json")
-    @ApiResponses(value = {@ApiResponse(code = 201, message = "Created"), @ApiResponse(code = 400, message = "Bad Request")})
-    public ResponseEntity<AirspaceUser> updateCredits(@RequestBody Map<String, Double> nameCreditMap){
-        return null;
-    }
-
-    //@PutMapping("/addCredits")
-    //public ResponseEntity<AirspaceUser> addCredits(String name, double credits) {
-    //    if (name.isBlank()) return ResponseEntity.badRequest().build();
-    //    if (repository.findById(name).isEmpty()) return ResponseEntity.badRequest().build();
-    //    if (repository.findById(name).get().getCredits() < credits) return ResponseEntity.badRequest().build();
-    //    AirspaceUser airspaceUser = repository.findById(name).get();
-    //    airspaceUser.updateCredits(credits);
-    //    repository.save(airspaceUser);
-    //    return ResponseEntity.ok().build();
-    //}
-
     @ApiOperation(value = "Delete AirspaceUser")
     @DeleteMapping(path = "airspaceUsers/{name}")
-    @ApiResponses(value = {@ApiResponse(code = 201, message = "Created"), @ApiResponse(code = 400, message = "Bad Request")})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Ok"), @ApiResponse(code = 400, message = "Bad Request")})
     public ResponseEntity<Void> deleteAirspaceUser(@PathVariable @ApiParam(value = "the AirspaceUser's' name") String name) {
         ResponseEntity<Void> response;
         try {
@@ -90,7 +56,7 @@ public class AirspaceUserController {
 
     @ApiOperation(value = "Delete all AirspaceUsers")
     @DeleteMapping(path = "airspaceUsers")
-    @ApiResponses(value = {@ApiResponse(code = 201, message = "Created"), @ApiResponse(code = 400, message = "Bad Request")})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Ok"), @ApiResponse(code = 400, message = "Bad Request")})
     public ResponseEntity<Void> deleteAirspaceUser() {
         airspaceUserService.deleteAllAirspaceUser();
         return new ResponseEntity<>(HttpStatus.OK);

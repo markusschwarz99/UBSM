@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AirspaceUserService {
@@ -19,12 +20,12 @@ public class AirspaceUserService {
         return this.airspaceUsers.toArray(new AirspaceUser[0]);
     }
 
-    public AirspaceUser createNewAirspaceUser(AirspaceUser airspaceUser){
-        this.airspaceUsers.add(airspaceUser);
-        return airspaceUser;
-    }
+    public AirspaceUser[] createNewAirspaceUsers(AirspaceUser[] airspaceUsers) throws IllegalArgumentException {
+        Arrays.stream(airspaceUsers).forEach(airspaceUser -> this.airspaceUsers.forEach(airspaceUser1 -> {
+            if (airspaceUser1.equals(airspaceUser))
+                throw new IllegalArgumentException("The AirspaceUser with the name " + airspaceUser.getName() + "already exists");
+        }));
 
-    public AirspaceUser[] createNewAirspaceUsers(AirspaceUser[] airspaceUsers) {
         this.airspaceUsers.addAll(Arrays.stream(airspaceUsers).toList());
         return airspaceUsers;
     }
@@ -33,8 +34,11 @@ public class AirspaceUserService {
         return this.airspaceUsers.removeIf(airspaceUser -> airspaceUser.getName().equals(name));
     }
 
-    public void deleteAllAirspaceUser(){
+    public void deleteAllAirspaceUser() {
         this.airspaceUsers = new ArrayList<>();
     }
 
+    protected List<String> getAirspaceUserNames() {
+        return this.airspaceUsers.stream().map(AirspaceUser::getName).collect(Collectors.toList());
+    }
 }

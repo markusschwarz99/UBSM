@@ -1,0 +1,26 @@
+POST http://localhost:8080/airspaceUsers
+Content-Type: application/json
+
+< ./input/au1.json
+
+###
+
+GET http://localhost:8080/airspaceUsers
+Accept: application/json
+
+>> ./output/get1.json
+###
+
+POST http://localhost:8080/flightLists
+Content-Type: application/json
+
+< ./input/flightDistribution1.json
+>> ./output/getFlightList.json
+
+###
+
+GET http://localhost:8080/flightLists/0
+Content-Type: application/json
+
+< ./input/flightDistribution1.json
+>> ./output/getFlightList.json

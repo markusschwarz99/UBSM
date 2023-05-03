@@ -1,8 +1,5 @@
 package com.jku.dke.bac.ubsm;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class Util {
@@ -19,27 +16,5 @@ public class Util {
         double biasFactor = Math.exp(bias);
         double retval = mid + (range * (biasFactor / (biasFactor + Math.exp(-unitGaussian / skew)) - 0.5));
         return (int) retval;
-    }
-
-
-    public static List<LocalTime> getRandomTimes(int n, int startTimeInSeconds, int maxTimeInSeconds, int mean, int std) {
-        List<LocalTime> lt = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            Random r = new Random();
-            int k = (int) Math.max(startTimeInSeconds, Math.min(maxTimeInSeconds, (int) mean + r.nextGaussian() * std));
-            k = k - (k % 60);
-            LocalTime ltt = LocalTime.ofSecondOfDay(k);
-            if (!lt.contains(ltt)) {
-                lt.add(LocalTime.ofSecondOfDay(k));
-            } else i--;
-        }
-        return lt;
-    }
-
-    public static LocalTime getRandomTime(int startTimeInSeconds, int maxTimeInSeconds, int mean, int std) {
-        Random r = new Random();
-        int k = (int) Math.max(startTimeInSeconds, Math.min(maxTimeInSeconds, (int) mean + r.nextGaussian() * std));
-        k = k - (k % 60);
-        return LocalTime.ofSecondOfDay(k);
     }
 }
