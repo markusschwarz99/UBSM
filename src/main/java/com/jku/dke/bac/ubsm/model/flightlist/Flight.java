@@ -13,6 +13,7 @@ public class Flight {
     private LocalTime notBefore;
     private LocalTime notAfter;
     private int priority;
+    private FlightType flightType;
 
     public Flight(AirspaceUser airspaceUser, LocalTime initialTime) {
         this.airspaceUser = airspaceUser;
@@ -75,6 +76,14 @@ public class Flight {
         this.initialTime = initialTime;
     }
 
+    public FlightType getFlightType() {
+        return flightType;
+    }
+
+    public void setFlightType(FlightType flightType) {
+        this.flightType = flightType;
+    }
+
     @Override
     public String toString() {
         return "Flight{" +
@@ -85,6 +94,7 @@ public class Flight {
                 ", notBefore=" + notBefore +
                 ", notAfter=" + notAfter +
                 ", priority=" + priority +
+                ", flightType=" + flightType +
                 '}';
     }
 }

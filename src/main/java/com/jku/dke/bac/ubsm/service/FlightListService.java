@@ -84,6 +84,7 @@ public class FlightListService {
     }
 
     public Map<Slot, Flight> generateFlightList(Map<String, Integer> flightDistribution) throws IllegalArgumentException {
+        System.out.println(flightDistribution);
         List<AirspaceUser> actualAirspaceUsers = Arrays.stream(airspaceUserService.getAirspaceUsers()).toList();
 
         if (flightDistribution.keySet().stream().toList().stream().anyMatch(name -> actualAirspaceUsers.stream().noneMatch(user -> user.getName().equals(name))))
@@ -125,8 +126,7 @@ public class FlightListService {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (slot, flight) -> slot, LinkedHashMap::new));
 
         List<Slot> possibleSlots = sortedSlotAllocationMap.keySet().stream().toList();
-
-        sortedSlotAllocationMap.forEach((key, value) -> value.getAirspaceUser().generateFlightAttributes(value, possibleSlots));
+        sortedSlotAllocationMap.forEach((key, flight) -> flight.getAirspaceUser().generateFlightAttributes(flight, possibleSlots));
 
         this.flightLists.add(sortedSlotAllocationMap);
         return sortedSlotAllocationMap;

@@ -3,13 +3,15 @@ package com.jku.dke.bac.ubsm.model.au;
 
 import com.jku.dke.bac.ubsm.model.flightlist.Flight;
 import com.jku.dke.bac.ubsm.model.flightlist.Slot;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
+@Component
 public class AggressiveAirspaceUser extends AirspaceUser {
-    //@JsonProperty("type")
-    //private final String airspaceUserType = "Aggressive";
+
+    private final Random random = new Random();
 
     @Override
     public String toString() {
@@ -22,8 +24,4 @@ public class AggressiveAirspaceUser extends AirspaceUser {
         return null;
     }
 
-    @Override
-    public void generateFlightAttributes(Flight flight, List<Slot> possibleSlots) {
-
-    }
 }

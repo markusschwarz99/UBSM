@@ -10,9 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
+
 @RestController
 public class AirspaceUserController {
     private final AirspaceUserService airspaceUserService;
+    private Random random;
 
     public AirspaceUserController(AirspaceUserService airspaceUserService) {
         this.airspaceUserService = airspaceUserService;

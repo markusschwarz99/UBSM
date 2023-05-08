@@ -2,16 +2,28 @@
   {
     "name": "A1",
     "credits": 1000,
-    "type": "aggressive"
+    "type": "aggressive",
+    "priorityDistribution": [
+      25,
+      50
+    ]
   },
   {
     "name": "P1",
     "credits": 1000,
-    "type": "passive"
+    "type": "passive",
+    "priorityDistribution": [
+      50,
+      75
+    ]
   },
   {
     "name": "N1",
     "credits": 1000,
-    "type": "neutral"
+    "type": "neutral",
+    "priorityDistribution": [
+      25,
+      75
+    ]
   }
 ]
