@@ -10,13 +10,14 @@ import com.jku.dke.bac.ubsm.model.flightlist.Slot;
 
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "type")
-@JsonSubTypes({@JsonSubTypes.Type(value = NeutralAirspaceUser.class, name = "neutral"), @JsonSubTypes.Type(value = AggressiveAirspaceUser.class, name = "aggressive"), @JsonSubTypes.Type(value = PassiveAirspaceUser.class, name = "passive")})
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = NeutralAirspaceUser.class, name = "neutral"),
+        @JsonSubTypes.Type(value = AggressiveAirspaceUser.class, name = "aggressive"),
+        @JsonSubTypes.Type(value = PassiveAirspaceUser.class, name = "passive")})
 public abstract class AirspaceUser {
     private final Random random = new Random();
     private String name;
@@ -72,15 +73,12 @@ public abstract class AirspaceUser {
         this.credits += d;
     }
 
-
-    public abstract Map<Slot, Double> generateWeightMap(Flight flight);
+    public abstract void generateWeightMap(Flight flight, List<Slot> possibleSlots);
 
     public void generateFlightAttributes(Flight flight, List<Slot> possibleSlots) {
         flight.setFlightType(generateFlightType(flight.getAirspaceUser().getPriorityDistribution()));
-        LocalTime[] localTimes = getTimes(flight, possibleSlots);
-        flight.setNotBefore(localTimes[0]);
-        flight.setWishedTime(localTimes[1]);
-        flight.setNotAfter(localTimes[2]);
+        generateTimes(flight, possibleSlots);
+        generateWeightMap(flight, possibleSlots);
     }
 
     public FlightType generateFlightType(int[] priorityDistribution) {
@@ -96,48 +94,46 @@ public abstract class AirspaceUser {
         return flightType;
     }
 
-    protected LocalTime[] getTimes(Flight flight, List<Slot> possibleSlots) {
-        LocalTime[] localTimes = new LocalTime[3];
+    protected abstract void generateTimes(Flight flight, List<Slot> possibleSlots);
 
-        if (flight.getFlightType() == FlightType.PRIORITY) {
-            localTimes[0] = flight.getInitialTime();
-            Slot bestPossibleSlot = null;
-            int slotIndex = 0;
+    protected void generatePriorityTimes(Flight flight, List<Slot> possibleSlots, int minutesToAdd) {
+        flight.setNotBefore(flight.getInitialTime());
+        Slot bestPossibleSlot = null;
+        int slotIndex = 0;
 
-            while (slotIndex < possibleSlots.size() && bestPossibleSlot == null) {
-                if (possibleSlots.get(slotIndex).getDepartureTime().isAfter(flight.getInitialTime()) && possibleSlots.get(slotIndex).getDepartureTime().isBefore(flight.getScheduledTime())) {
-                    bestPossibleSlot = possibleSlots.get(slotIndex);
-                }
-                slotIndex++;
+        while (slotIndex < possibleSlots.size() && bestPossibleSlot == null) {
+            if (possibleSlots.get(slotIndex).getDepartureTime().isAfter(flight.getInitialTime()) && possibleSlots.get(slotIndex).getDepartureTime().isBefore(flight.getScheduledTime())) {
+                bestPossibleSlot = possibleSlots.get(slotIndex);
             }
-
-            if (bestPossibleSlot != null) {
-                localTimes[1] = bestPossibleSlot.getDepartureTime();
-            } else {
-                localTimes[1] = flight.getScheduledTime();
-            }
-
-            localTimes[2] = localTimes[1].plusMinutes(30);
-
-        } else if (flight.getFlightType() == FlightType.FLEXIBLE) {
-            localTimes[0] = flight.getScheduledTime();
-            Slot lastSlot = possibleSlots.get(possibleSlots.size() - 1);
-            Duration duration = Duration.between(flight.getScheduledTime(), lastSlot.getDepartureTime());
-            long seconds = (long) ((duration.toSeconds() * 0.75) + flight.getScheduledTime().toSecondOfDay());
-            localTimes[2] = LocalTime.ofSecondOfDay(seconds - (seconds % 60));
-            duration = Duration.between(localTimes[0], localTimes[2]);
-            seconds = (long) ((duration.toSeconds() * 0.75) + localTimes[0].toSecondOfDay());
-            localTimes[1] = LocalTime.ofSecondOfDay(seconds - (seconds % 60));
-        } else if (flight.getFlightType() == FlightType.FLEXIBLEWITHPRIORITY) {
-            localTimes[0] = flight.getInitialTime();
-            Slot lastSlot = possibleSlots.get(possibleSlots.size() - 1);
-            Duration duration = Duration.between(flight.getScheduledTime(), lastSlot.getDepartureTime());
-            long seconds = (long) ((duration.toSeconds() * 0.50) + flight.getScheduledTime().toSecondOfDay());
-            localTimes[2] = LocalTime.ofSecondOfDay(seconds - (seconds % 60));
-            duration = Duration.between(localTimes[0], localTimes[2]);
-            seconds = (long) ((duration.toSeconds() * 0.50) + localTimes[0].toSecondOfDay());
-            localTimes[1] = LocalTime.ofSecondOfDay(seconds - (seconds % 60));
+            slotIndex++;
         }
-        return localTimes;
+
+        if (bestPossibleSlot != null) {
+            flight.setWishedTime(bestPossibleSlot.getDepartureTime());
+        } else {
+            flight.setWishedTime(flight.getScheduledTime());
+        }
+        flight.setNotAfter(flight.getWishedTime().plusMinutes(minutesToAdd));
+    }
+
+    protected void generateFlexibleTimes(Flight flight, List<Slot> possibleSlots, double notBeforePercent, double wishedPercent, double notAfterPercent) {
+        long durationInSeconds;
+        Duration duration = Duration.between(flight.getScheduledTime(), possibleSlots.get(possibleSlots.size() - 1).getDepartureTime());
+        durationInSeconds = (long) ((duration.toSeconds() * notBeforePercent) + flight.getScheduledTime().toSecondOfDay());
+        flight.setNotBefore(LocalTime.ofSecondOfDay(durationInSeconds - (durationInSeconds % 60)));
+        durationInSeconds = (long) ((duration.toSeconds() * wishedPercent) + flight.getNotBefore().toSecondOfDay());
+        flight.setWishedTime(LocalTime.ofSecondOfDay(durationInSeconds - (durationInSeconds % 60)));
+        durationInSeconds = (long) ((duration.toSeconds() * notAfterPercent) + flight.getNotBefore().toSecondOfDay());
+        flight.setNotAfter(LocalTime.ofSecondOfDay(durationInSeconds - (durationInSeconds % 60)));
+    }
+
+    protected void generateFlexibleWithPriorityTimes(Flight flight, List<Slot> possibleSlots, double wishedPercent, double notAfterPercent) {
+        long durationInSeconds;
+        Duration duration = Duration.between(flight.getScheduledTime(), possibleSlots.get(possibleSlots.size() - 1).getDepartureTime());
+        flight.setNotBefore(flight.getScheduledTime());
+        durationInSeconds = (long) ((duration.toSeconds() * wishedPercent) + flight.getNotBefore().toSecondOfDay());
+        flight.setWishedTime(LocalTime.ofSecondOfDay(durationInSeconds - (durationInSeconds % 60)));
+        durationInSeconds = (long) ((duration.toSeconds() * notAfterPercent) + flight.getNotBefore().toSecondOfDay());
+        flight.setNotAfter(LocalTime.ofSecondOfDay(durationInSeconds - (durationInSeconds % 60)));
     }
 }

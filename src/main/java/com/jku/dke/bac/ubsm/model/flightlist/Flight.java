@@ -4,6 +4,7 @@ package com.jku.dke.bac.ubsm.model.flightlist;
 import com.jku.dke.bac.ubsm.model.au.AirspaceUser;
 
 import java.time.LocalTime;
+import java.util.Map;
 
 public class Flight {
     private AirspaceUser airspaceUser;
@@ -14,6 +15,7 @@ public class Flight {
     private LocalTime notAfter;
     private int priority;
     private FlightType flightType;
+    private Map<Slot, Double> weightMap;
 
     public Flight(AirspaceUser airspaceUser, LocalTime initialTime) {
         this.airspaceUser = airspaceUser;
@@ -84,6 +86,14 @@ public class Flight {
         this.flightType = flightType;
     }
 
+    public Map<Slot, Double> getWeightMap() {
+        return weightMap;
+    }
+
+    public void setWeightMap(Map<Slot, Double> weightMap) {
+        this.weightMap = weightMap;
+    }
+
     @Override
     public String toString() {
         return "Flight{" +
@@ -95,6 +105,7 @@ public class Flight {
                 ", notAfter=" + notAfter +
                 ", priority=" + priority +
                 ", flightType=" + flightType +
+                ", weightMap=" + weightMap +
                 '}';
     }
 }

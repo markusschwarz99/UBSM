@@ -12,7 +12,7 @@ import java.util.Map;
 public class OptimizerController {
 
     @PostMapping("/optimize")
-    public ResponseEntity<Map<Slot, Flight>> optimize(){
+    public ResponseEntity<Map<Slot, Flight>> optimize() {
 
         return null;
     }
