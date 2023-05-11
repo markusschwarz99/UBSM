@@ -43,27 +43,29 @@ public class NeutralAirspaceUser extends AirspaceUser {
         double x2Pos = flight.getWishedTime().toSecondOfDay();
         double y2Pos = 1;
         double aPos = (y2Pos - y1Pos) / (x2Pos - x1Pos);
-        double bPos = y2Pos / (flight.getWishedTime().toSecondOfDay() * aPos);
+        double bPos = y2Pos - (x2Pos * aPos);
         System.out.println("x1Pos:" + x1Pos);
         System.out.println("y1Pos:" + y1Pos);
         System.out.println("x2Pos:" + x2Pos);
         System.out.println("y2Pos:" + y2Pos);
         System.out.println("aPos:" + aPos);
         System.out.println("bPos:" + bPos);
+        System.out.println("test::" + (flight.getWishedTime().toSecondOfDay() * aPos + bPos));
 
-        double x1Neg = flight.getNotAfter().toSecondOfDay() - flight.getWishedTime().toSecondOfDay();
-        // double x1Neg = flight.getWishedTime().toSecondOfDay();
-        double y1Neg = 0;
-        double x2Neg = flight.getWishedTime().toSecondOfDay();
-        double y2Neg = 1;
+        double x1Neg = flight.getWishedTime().toSecondOfDay();
+        double y1Neg = 1;
+        double x2Neg = flight.getNotAfter().toSecondOfDay();
+        double y2Neg = 0;
         double aNeg = (y2Neg - y1Neg) / (x2Neg - x1Neg);
-        double bNeg = y1Neg / (flight.getNotAfter().toSecondOfDay() * aNeg);
+        double bNeg = y2Neg - (x2Neg * aNeg);
         System.out.println("x1Neg:" + x1Neg);
         System.out.println("y1Neg:" + y1Neg);
         System.out.println("x2Neg:" + x2Neg);
         System.out.println("y2Neg:" + y2Neg);
         System.out.println("aNeg:" + aNeg);
         System.out.println("bNeg:" + bNeg);
+        System.out.println("test:" + (flight.getWishedTime().toSecondOfDay() * aNeg + bNeg));
+
 
         Map<Slot, Double> weightMap = new LinkedHashMap<>();
         System.out.println("---- New Flight ----");
@@ -80,7 +82,7 @@ public class NeutralAirspaceUser extends AirspaceUser {
                     System.out.println("neg");
                 }
             }
-            weightMap.put(slot, weight);
+            weightMap.put(slot, weight * 1000);
         });
         flight.setWeightMap(weightMap);
     }
