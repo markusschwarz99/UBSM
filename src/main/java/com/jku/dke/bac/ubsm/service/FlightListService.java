@@ -1,8 +1,10 @@
 package com.jku.dke.bac.ubsm.service;
 
 import com.jku.dke.bac.ubsm.model.au.AirspaceUser;
+import com.jku.dke.bac.ubsm.model.dto.FlightListDTO;
 import com.jku.dke.bac.ubsm.model.flightlist.Flight;
 import com.jku.dke.bac.ubsm.model.flightlist.Slot;
+import com.jku.dke.bac.ubsm.model.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -63,14 +65,22 @@ public class FlightListService {
         return false;
     }
 
-    public List<Map<Slot, Flight>> getFlightLists() {
-        return flightLists;
+    public List<FlightListDTO> getFlightLists() {
+        List<FlightListDTO> flightListDTOS = new ArrayList<>();
+        AtomicInteger idx = new AtomicInteger();
+        this.flightLists.forEach(slotFlightMap -> {
+            flightListDTOS.add(Mapper.mapFlightListToFlightListDTO(idx.get(), slotFlightMap));
+            idx.getAndIncrement();
+        });
+        return flightListDTOS;
     }
 
-    public List<Map<Slot, Flight>> getFlightListByIndex(int index) throws IllegalArgumentException {
+    public List<FlightListDTO> getFlightListByIndex(int index) throws IllegalArgumentException {
         if (index < 0 || index >= this.flightLists.size())
             throw new IllegalArgumentException("List index does not exist.");
-        return new ArrayList<>(Collections.singletonList(flightLists.get(index)));
+        FlightListDTO flightListDTO = Mapper.mapFlightListToFlightListDTO(index, this.flightLists.get(index));
+
+        return new ArrayList<>(Collections.singletonList(flightListDTO));
     }
 
     public void deleteAllFlightLists() {
@@ -84,14 +94,13 @@ public class FlightListService {
     }
 
     public Map<Slot, Flight> generateFlightList(Map<String, Integer> flightDistribution) throws IllegalArgumentException {
-        System.out.println(flightDistribution);
         List<AirspaceUser> actualAirspaceUsers = Arrays.stream(airspaceUserService.getAirspaceUsers()).toList();
 
         if (flightDistribution.keySet().stream().toList().stream().anyMatch(name -> actualAirspaceUsers.stream().noneMatch(user -> user.getName().equals(name))))
             throw new IllegalArgumentException("There is at least one name in flightDistribution where no AirspaceUser exists.");
 
-        if (flightDistribution.values().stream().anyMatch(value -> value < 0))
-            throw new IllegalArgumentException("There is at least one value < 0 in flightDistribution.");
+        if (flightDistribution.values().stream().anyMatch(value -> value == null || value < 0))
+            throw new IllegalArgumentException("There is at least one value null or < 0 in flightDistribution.");
 
 
         Map<Slot, Flight> flightList = new HashMap<>();
@@ -112,7 +121,6 @@ public class FlightListService {
                                 flight.getInitialTime().toSecondOfDay() + maxTimeAfterInitialTime,
                                 (flight.getInitialTime().toSecondOfDay() + maxTimeAfterInitialTime + flight.getInitialTime().toSecondOfDay()) / 2,
                                 stdScheduledTime);
-
                     }
                     flight.setScheduledTime(scheduledTime);
                     Slot slot = new Slot(scheduledTime);

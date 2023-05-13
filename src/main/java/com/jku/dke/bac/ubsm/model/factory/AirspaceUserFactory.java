@@ -5,5 +5,5 @@ import com.jku.dke.bac.ubsm.model.au.AirspaceUser;
 
 
 public interface AirspaceUserFactory {
-    AirspaceUser generate(String name, double credits);
+    AirspaceUser generate();
 }

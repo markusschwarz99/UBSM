@@ -1,5 +1,6 @@
 package com.jku.dke.bac.ubsm.controller;
 
+import com.jku.dke.bac.ubsm.model.dto.FlightListDTO;
 import com.jku.dke.bac.ubsm.model.flightlist.Flight;
 import com.jku.dke.bac.ubsm.model.flightlist.Slot;
 import com.jku.dke.bac.ubsm.service.FlightListService;
@@ -25,9 +26,9 @@ public class FlightListController {
     @ApiOperation(value = "Get all FlightLists", response = List.class, produces = "application/json")
     @GetMapping(path = {"/flightLists/{index}", "/flightLists"}, produces = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad Request")})
-    public ResponseEntity<List<Map<Slot, Flight>>> getAirspaceUsers(@PathVariable(required = false) Integer index) {
-        ResponseEntity<List<Map<Slot, Flight>>> response;
-        List<Map<Slot, Flight>> flightLists;
+    public ResponseEntity<List<FlightListDTO>> getAirspaceUsers(@PathVariable(required = false) Integer index) {
+        ResponseEntity<List<FlightListDTO>> response;
+        List<FlightListDTO> flightLists;
         if (index != null) {
             try {
                 flightLists = flightListService.getFlightListByIndex(index);

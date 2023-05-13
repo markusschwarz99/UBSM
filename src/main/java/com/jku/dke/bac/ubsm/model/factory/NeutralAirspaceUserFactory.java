@@ -5,10 +5,7 @@ import com.jku.dke.bac.ubsm.model.au.NeutralAirspaceUser;
 
 public class NeutralAirspaceUserFactory implements AirspaceUserFactory {
     @Override
-    public AirspaceUser generate(String name, double credits) {
-        AirspaceUser airspaceUser = new NeutralAirspaceUser();
-        airspaceUser.setName(name);
-        airspaceUser.setCredits(credits);
-        return airspaceUser;
+    public AirspaceUser generate() {
+        return new NeutralAirspaceUser();
     }
 }
