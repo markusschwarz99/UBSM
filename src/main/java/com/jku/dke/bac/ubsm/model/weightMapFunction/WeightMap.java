@@ -9,11 +9,12 @@ public abstract class WeightMap {
     private double threshold;
     private double lowerMargin;
     private double upperMargin;
+    private int priority;
 
     public WeightMap() {
     }
 
-    public WeightMap(double maxWeight, double x1Pos, double y1Pos, double x2Pos, double y2Pos, double x1Neg, double y1Neg, double x2Neg, double y2Neg, double threshold) {
+    public WeightMap(double maxWeight, double x1Pos, double y1Pos, double x2Pos, double y2Pos, double x1Neg, double y1Neg, double x2Neg, double y2Neg, double threshold, int priority) {
         this.maxWeight = maxWeight;
         this.aPos = (y2Pos - y1Pos) / (x2Pos - x1Pos);
         this.bPos = (y2Pos - y1Pos) / (x2Pos - x1Pos);
@@ -22,6 +23,7 @@ public abstract class WeightMap {
         this.threshold = threshold;
         this.lowerMargin = x1Pos;
         this.upperMargin = x2Neg;
+        this.priority = priority;
     }
 
     public double getMaxWeight() {
@@ -88,9 +90,16 @@ public abstract class WeightMap {
         this.upperMargin = upperMargin;
     }
 
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
     @Override
-    public String
-    toString() {
+    public String toString() {
         return "WeightMap{" +
                 "maxWeight=" + maxWeight +
                 ", aPos=" + aPos +
@@ -100,6 +109,7 @@ public abstract class WeightMap {
                 ", threshold=" + threshold +
                 ", lowerMargin=" + lowerMargin +
                 ", upperMargin=" + upperMargin +
+                ", priority=" + priority +
                 '}';
     }
 }

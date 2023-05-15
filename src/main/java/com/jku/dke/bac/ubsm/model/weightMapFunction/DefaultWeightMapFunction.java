@@ -7,8 +7,8 @@ public class DefaultWeightMapFunction extends WeightMap implements Function<Doub
         super();
     }
 
-    public DefaultWeightMapFunction(double maxWeight, double x1Pos, double y1Pos, double x2Pos, double y2Pos, double x1Neg, double y1Neg, double x2Neg, double y2Neg, double threshold) {
-        super(maxWeight, x1Pos, y1Pos, x2Pos, y2Pos, x1Neg, y1Neg, x2Neg, y2Neg, threshold);
+    public DefaultWeightMapFunction(double maxWeight, double x1Pos, double y1Pos, double x2Pos, double y2Pos, double x1Neg, double y1Neg, double x2Neg, double y2Neg, double threshold, int priority) {
+        super(maxWeight, x1Pos, y1Pos, x2Pos, y2Pos, x1Neg, y1Neg, x2Neg, y2Neg, threshold, priority);
     }
 
     @Override
@@ -17,8 +17,8 @@ public class DefaultWeightMapFunction extends WeightMap implements Function<Doub
             return Double.MIN_VALUE;
         } else {
             if (slotDepartureTimeInSeconds < this.getThreshold())
-                return this.getMaxWeight() * (slotDepartureTimeInSeconds * this.getaPos() + this.getbPos());
-            else return this.getMaxWeight() * (slotDepartureTimeInSeconds * this.getaNeg() + this.getbNeg());
+                return this.getPriority() * this.getMaxWeight() * (slotDepartureTimeInSeconds * this.getaPos() + this.getbPos());
+            else return this.getPriority() * this.getMaxWeight() * (slotDepartureTimeInSeconds * this.getaNeg() + this.getbNeg());
         }
     }
 

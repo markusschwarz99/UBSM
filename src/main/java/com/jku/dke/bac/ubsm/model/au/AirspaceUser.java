@@ -8,7 +8,6 @@ import com.jku.dke.bac.ubsm.model.flightlist.Flight;
 import com.jku.dke.bac.ubsm.model.flightlist.FlightType;
 import com.jku.dke.bac.ubsm.model.flightlist.Slot;
 import com.jku.dke.bac.ubsm.model.weightMapFunction.DefaultWeightMapFunction;
-import com.jku.dke.bac.ubsm.model.weightMapFunction.WeightMap;
 
 import java.time.Duration;
 import java.time.LocalTime;
@@ -131,7 +130,8 @@ public abstract class AirspaceUser {
                     1,
                     flight.getNotAfter().toSecondOfDay(),
                     0,
-                    flight.getWishedTime().toSecondOfDay());
+                    flight.getWishedTime().toSecondOfDay(),
+                    flight.getPriority());
         }
 
         System.out.println(weightMapFunction);
@@ -141,12 +141,17 @@ public abstract class AirspaceUser {
     }
 
     public void generateFlightAttributes(Flight flight, List<Slot> possibleSlots) {
+        flight.setPriority(generatePriority());
         flight.setFlightType(generateFlightType());
         generateTimes(flight, possibleSlots);
         generateWeightMap(flight, possibleSlots);
     }
 
-    public FlightType generateFlightType() {
+    private int generatePriority() {
+        return random.nextInt(10) + 1;
+    }
+
+    private FlightType generateFlightType() {
         FlightType flightType;
         int r = random.nextInt(100);
         if (r < this.priorityDistribution[0]) {
