@@ -50,7 +50,7 @@ public class Mapper {
 
     public static FlightListDTO mapFlightListToFlightListDTO(int idx, Map<Slot, Flight> flightList) {
         FlightListDTO flightListDTO = new FlightListDTO(idx);
-        Map<Slot, FlightDTO> fl = new HashMap<>();
+        Map<Slot, FlightDTO> fl = new LinkedHashMap<>();
         flightList.forEach((slot, flight) -> {
             FlightDTO flightDTO = new FlightDTO(flight.getAirspaceUser().getName(), flight.getInitialTime(), flight.getScheduledTime(), flight.getWishedTime(), flight.getNotBefore(), flight.getNotAfter(), flight.getPriority(), flight.getFlightType(), flight.getAirspaceUser().getWeightMapFunction(), flight.getWeightMap());
             fl.put(slot, flightDTO);

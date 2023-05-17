@@ -17,7 +17,7 @@ public abstract class WeightMap {
     public WeightMap(double maxWeight, double x1Pos, double y1Pos, double x2Pos, double y2Pos, double x1Neg, double y1Neg, double x2Neg, double y2Neg, double threshold, int priority) {
         this.maxWeight = maxWeight;
         this.aPos = (y2Pos - y1Pos) / (x2Pos - x1Pos);
-        this.bPos = (y2Pos - y1Pos) / (x2Pos - x1Pos);
+        this.bPos = y2Pos - (x2Pos * aPos);
         this.aNeg = (y2Neg - y1Neg) / (x2Neg - x1Neg);
         this.bNeg = y2Neg - (x2Neg * aNeg);
         this.threshold = threshold;

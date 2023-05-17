@@ -5,14 +5,14 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8080/airspaceUsers
-Accept: application/json
+#GET http://localhost:8080/airspaceUsers
+#Accept: application/json
 
->> ./output/getAirspaceUser.json
+#>> ./output/getAirspaceUser.json
 
 ###
 
-DELETE http://localhost:8080/airspaceUsers
+#DELETE http://localhost:8080/airspaceUsers
 
 ###
 
@@ -23,13 +23,18 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8080/flightLists/0
+GET http://localhost:8080/flightLists
 Content-Type: application/json
 
 >> ./output/getFlightList.json
 
 ###
 
-DELETE http://localhost:8080/flightLists
+#DELETE http://localhost:8080/flightLists
 
 ###
+
+POST http://localhost:8080/optimize
+
+###
+

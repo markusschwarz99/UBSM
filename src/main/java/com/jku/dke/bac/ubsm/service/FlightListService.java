@@ -65,7 +65,7 @@ public class FlightListService {
         return false;
     }
 
-    public List<FlightListDTO> getFlightLists() {
+    public List<FlightListDTO> getFlightListsDTO() {
         List<FlightListDTO> flightListDTOS = new ArrayList<>();
         AtomicInteger idx = new AtomicInteger();
         this.flightLists.forEach(slotFlightMap -> {
@@ -73,6 +73,10 @@ public class FlightListService {
             idx.getAndIncrement();
         });
         return flightListDTOS;
+    }
+
+    public List<Map<Slot, Flight>> getFlightLists() {
+        return this.flightLists;
     }
 
     public List<FlightListDTO> getFlightListByIndex(int index) throws IllegalArgumentException {

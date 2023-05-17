@@ -134,7 +134,6 @@ public abstract class AirspaceUser {
                     flight.getPriority());
         }
 
-        System.out.println(weightMapFunction);
         Map<Slot, Double> weightMap = new LinkedHashMap<>();
         possibleSlots.forEach(slot -> weightMap.put(slot, this.weightMapFunction.apply((double) slot.getDepartureTime().toSecondOfDay())));
         flight.setWeightMap(weightMap);

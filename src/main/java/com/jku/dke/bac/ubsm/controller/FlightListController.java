@@ -37,7 +37,7 @@ public class FlightListController {
                 response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
         } else {
-            flightLists = flightListService.getFlightLists();
+            flightLists = flightListService.getFlightListsDTO();
             response = new ResponseEntity<>(flightLists, HttpStatus.OK);
         }
         return response;

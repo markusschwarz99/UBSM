@@ -2,7 +2,6 @@ package com.jku.dke.bac.ubsm.model.dto;
 
 import com.jku.dke.bac.ubsm.model.flightlist.FlightType;
 import com.jku.dke.bac.ubsm.model.flightlist.Slot;
-import com.jku.dke.bac.ubsm.model.weightMapFunction.WeightMap;
 
 import java.time.LocalTime;
 import java.util.Map;
@@ -17,7 +16,7 @@ public class FlightDTO {
     private LocalTime notAfter;
     private int priority;
     private FlightType flightType;
-    private Function<Double, Double> weightMapFunction;
+    private String weightMapFunction;
     private Map<Slot, Double> weightMap;
 
     public FlightDTO() {
@@ -32,7 +31,7 @@ public class FlightDTO {
         this.notAfter = notAfter;
         this.priority = priority;
         this.flightType = flightType;
-        this.weightMapFunction = weightMapFunction;
+        this.weightMapFunction = weightMapFunction.getClass().getSimpleName();
         this.weightMap = weightMap;
     }
 
@@ -100,11 +99,11 @@ public class FlightDTO {
         this.flightType = flightType;
     }
 
-    public Function<Double, Double> getWeightMapFunction() {
+    public String getWeightMapFunction() {
         return weightMapFunction;
     }
 
-    public void setWeightMapFunction(Function<Double, Double> weightMapFunction) {
+    public void setWeightMapFunction(String weightMapFunction) {
         this.weightMapFunction = weightMapFunction;
     }
 
