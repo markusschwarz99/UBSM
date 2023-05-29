@@ -117,7 +117,7 @@ public class FlightListService {
                     LocalTime scheduledTime = getRandomTime(
                             flight.getInitialTime().toSecondOfDay(),
                             flight.getInitialTime().toSecondOfDay() + maxTimeAfterInitialTime,
-                            (flight.getInitialTime().toSecondOfDay() + maxTimeAfterInitialTime + flight.getInitialTime().toSecondOfDay()) / 2,
+                            (2 * flight.getInitialTime().toSecondOfDay() + maxTimeAfterInitialTime) / 2,
                             stdScheduledTime);
                     while (checkIfLocalTimeExists(scheduledTime, flightList)) {
                         scheduledTime = getRandomTime(
