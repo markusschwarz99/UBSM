@@ -16,6 +16,8 @@ public class Flight {
     private int priority;
     private FlightType flightType;
     private Map<Slot, Double> weightMap;
+    private double initialUtility;
+    private Double optimizedUtility;
 
     public Flight(AirspaceUser airspaceUser, LocalTime initialTime) {
         this.airspaceUser = airspaceUser;
@@ -94,6 +96,22 @@ public class Flight {
         this.weightMap = weightMap;
     }
 
+    public double getInitialUtility() {
+        return initialUtility;
+    }
+
+    public void setInitialUtility(double initialUtility) {
+        this.initialUtility = initialUtility;
+    }
+
+    public Double getOptimizedUtility() {
+        return optimizedUtility;
+    }
+
+    public void setOptimizedUtility(Double optimizedUtility) {
+        this.optimizedUtility = optimizedUtility;
+    }
+
     @Override
     public String toString() {
         return "Flight{" +
@@ -106,6 +124,8 @@ public class Flight {
                 ", priority=" + priority +
                 ", flightType=" + flightType +
                 ", weightMap=" + weightMap +
+                ", initialUtility=" + initialUtility +
+                ", optimizedUtility=" + optimizedUtility +
                 '}';
     }
 }

@@ -1,6 +1,7 @@
 package com.jku.dke.bac.ubsm.optimizer;
 
 
+import com.jku.dke.bac.ubsm.Logger;
 import com.jku.dke.bac.ubsm.model.flightlist.Flight;
 import com.jku.dke.bac.ubsm.model.flightlist.Slot;
 import org.springframework.stereotype.Service;
@@ -10,14 +11,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
 public class HungarianOptimizer extends Optimizer {
     @Override
     public Map<Slot, Flight> optimize(Map<Slot, Flight> initialFlightList) {
+        Logger.log("HungarianOptimizer - start optimization ...");
         List<Map<Slot, Flight>> feasibleFlightLists = getFeasibleFlightList(initialFlightList, new LinkedHashMap<>());
+
+        Logger.log("HungarianOptimizer - feasibleFlights: " + feasibleFlightLists.get(0).size() + " ...");
+        Logger.log("HungarianOptimizer - not feasibleFlights: " + feasibleFlightLists.get(1).size() + " ...");
 
         int length = feasibleFlightLists.get(0).size();
         double[][] input = new double[length][length];
@@ -32,43 +36,15 @@ public class HungarianOptimizer extends Optimizer {
 
         Map<Slot, Flight> optimizedFlightList = new LinkedHashMap<>(feasibleFlightLists.get(1));
         AtomicInteger j = new AtomicInteger();
-        AtomicReference<Double> initialUtility = new AtomicReference<>((double) 0);
-        AtomicReference<Double> optimalUtility = new AtomicReference<>((double) 0);
         feasibleFlightLists.get(0).forEach((initialSlot, flight) -> {
             Slot[] slots = flight.getWeightMap().keySet().toArray(new Slot[0]);
             Slot grantedSlot = slots[result[j.getAndIncrement()]];
-
-            double valueToAdd;
-            if (flight.getWeightMap().get(initialSlot) == -Double.MAX_VALUE) {
-                valueToAdd = -100 * flight.getPriority();
-            } else {
-                valueToAdd = flight.getWeightMap().get(initialSlot);
-            }
-
-            double finalValueToAdd = valueToAdd;
-            initialUtility.updateAndGet(currValue -> currValue + finalValueToAdd);
-            System.out.println("initialutility = " + initialUtility.get() + " + " + valueToAdd);
-
-            if (flight.getWeightMap().get(grantedSlot) == -Double.MAX_VALUE) {
-                valueToAdd = -100 * flight.getPriority();
-            } else {
-                valueToAdd = flight.getWeightMap().get(grantedSlot);
-            }
-            double finalValueToAdd1 = valueToAdd;
-            optimalUtility.getAndUpdate(currValue -> currValue + finalValueToAdd1);
-            System.out.println("optimalUtility = " + optimalUtility.get() + " + " + valueToAdd);
-
-            System.out.println("initialUtility: " + initialUtility.get());
-            System.out.println("optimalUtility: " + optimalUtility.get());
+            flight.setInitialUtility(flight.getWeightMap().get(initialSlot));
+            flight.setOptimizedUtility(flight.getWeightMap().get(grantedSlot));
             optimizedFlightList.put(grantedSlot, flight);
         });
-        System.out.println("---------------------------");
-        System.out.println("initialUtility: " + initialUtility.get());
-        System.out.println("optimalUtility: " + optimalUtility.get());
 
-        double utilityIncrease = (optimalUtility.get() - initialUtility.get()) / initialUtility.get();
-        System.out.println("utilityIncrease" + utilityIncrease);
-
+        Logger.log("HungarianOptimizer - optimization finished ...");
         return optimizedFlightList.entrySet().stream()
                 .sorted(Comparator.comparingInt(e -> e.getKey().getDepartureTime().toSecondOfDay()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (slot, flight) -> slot, LinkedHashMap::new));
