@@ -40,7 +40,7 @@ public class HungarianOptimizer extends Optimizer {
 
             double valueToAdd;
             if (flight.getWeightMap().get(initialSlot) == -Double.MAX_VALUE) {
-                valueToAdd = -1000 * flight.getPriority();
+                valueToAdd = -100 * flight.getPriority();
             } else {
                 valueToAdd = flight.getWeightMap().get(initialSlot);
             }
@@ -50,7 +50,7 @@ public class HungarianOptimizer extends Optimizer {
             System.out.println("initialutility = " + initialUtility.get() + " + " + valueToAdd);
 
             if (flight.getWeightMap().get(grantedSlot) == -Double.MAX_VALUE) {
-                valueToAdd = -1000 * flight.getPriority();
+                valueToAdd = -100 * flight.getPriority();
             } else {
                 valueToAdd = flight.getWeightMap().get(grantedSlot);
             }
@@ -65,6 +65,9 @@ public class HungarianOptimizer extends Optimizer {
         System.out.println("---------------------------");
         System.out.println("initialUtility: " + initialUtility.get());
         System.out.println("optimalUtility: " + optimalUtility.get());
+
+        double utilityIncrease = (optimalUtility.get() - initialUtility.get()) / initialUtility.get();
+        System.out.println("utilityIncrease" + utilityIncrease);
 
         return optimizedFlightList.entrySet().stream()
                 .sorted(Comparator.comparingInt(e -> e.getKey().getDepartureTime().toSecondOfDay()))
