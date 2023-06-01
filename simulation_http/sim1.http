@@ -5,10 +5,10 @@ Content-Type: application/json
 
 ###
 
-#GET http://localhost:8080/airspaceUsers
-#Accept: application/json
+GET http://localhost:8080/airspaceUsers
+Accept: application/json
 
-#>> ./output/getAirspaceUser.json
+>> ./output/getAirspaceUser.json
 
 ###
 
@@ -16,28 +16,20 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/flightLists
+POST http://localhost:8080/start/HungarianOptimizer
+
+###
+
+POST http://localhost:8080/run
 Content-Type: application/json
 
 < ./input/flightDistribution1.json
 
 ###
 
-GET http://localhost:8080/flightLists
+GET http://localhost:8080/statistic/0
 Content-Type: application/json
 
->> ./output/getFlightList.json
+>> ./output/statistic.json
 
 ###
-
-#DELETE http://localhost:8080/flightLists
-
-###
-
-POST http://localhost:8080/optimize
-Content-Type: application/json
-
->> ./output\getOptimzedFL.json
-
-###
-

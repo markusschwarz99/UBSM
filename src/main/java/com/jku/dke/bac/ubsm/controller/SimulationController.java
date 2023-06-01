@@ -9,10 +9,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -25,16 +22,16 @@ public class SimulationController {
         this.simulationService = simulationService;
     }
 
-    @ApiOperation(value = "Start a simulation", response = String.class, produces = "application/json")
-    @PostMapping(path = "start/{optimizer}", produces = "application/json")
+    @ApiOperation(value = "Start a simulation")
+    @PostMapping(path = "start/{optimizer}")
     @ApiResponses({@ApiResponse(code = 200, message = "Ok"), @ApiResponse(code = 400, message = "Bad Request")})
-    public ResponseEntity<String> start(@PathVariable String optimizer) {
+    public ResponseEntity<Void> start(@PathVariable String optimizer) {
         Logger.log("SimulationController - REST: start simulation ...");
-        ResponseEntity<String> response;
+        ResponseEntity<Void> response;
         try {
             simulationService.startSimulation(optimizer);
             Logger.log("SimulationController - Simulation started with " + optimizer + " ...");
-            response = new ResponseEntity<>(optimizer, HttpStatus.OK);
+            response = new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             Logger.log("SimulationController - Unable to start simulation with " + optimizer + " ...");
             response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -45,7 +42,7 @@ public class SimulationController {
     @ApiOperation(value = "Start a iteration", response = Map.class, produces = "application/json", consumes = "application/json")
     @PostMapping(path = "/run", produces = "application/json", consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Ok"), @ApiResponse(code = 400, message = "Bad Request")})
-    public ResponseEntity<Void> run(Map<String, Integer> flightDistribution) {
+    public ResponseEntity<Void> run(@RequestBody Map<String, Integer> flightDistribution) {
         Logger.log("SimulationController - REST: start iteration ...");
         ResponseEntity<Void> response;
         try {
@@ -60,7 +57,7 @@ public class SimulationController {
     }
 
     @ApiOperation(value = "Get all FlightLists", response = StatisticDTO.class, produces = "application/json")
-    @GetMapping(path = "/flightLists/{runId}", produces = "application/json")
+    @GetMapping(path = "/statistic/{runId}", produces = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad Request")})
     public ResponseEntity<StatisticDTO> getRunStatistic(@PathVariable int runId) {
         Logger.log("SimulationController - REST: start getting statistic for run " + runId + " ...");
@@ -77,7 +74,7 @@ public class SimulationController {
     }
 
     @ApiOperation(value = "End simulation", response = OverviewDTO.class, produces = "application/json")
-    @GetMapping(path = "/end", produces = "application/json")
+    @PostMapping(path = "/end", produces = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad Request")})
     public ResponseEntity<OverviewDTO> end() {
         Logger.log("SimulationController - REST: ending the simulation ...");

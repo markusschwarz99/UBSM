@@ -9,6 +9,9 @@ import java.util.Map;
 
 @Service
 public class HeuristicOptimizer extends Optimizer{
+    public HeuristicOptimizer() {
+        super();
+    }
 
     @Override
     public Map<Slot, Flight> optimize(Map<Slot, Flight> flightList) {

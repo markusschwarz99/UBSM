@@ -15,6 +15,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class HungarianOptimizer extends Optimizer {
+    public HungarianOptimizer() {
+        super();
+    }
+
     @Override
     public Map<Slot, Flight> optimize(Map<Slot, Flight> initialFlightList) {
         Logger.log("HungarianOptimizer - start optimization ...");

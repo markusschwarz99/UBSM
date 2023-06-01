@@ -35,11 +35,14 @@ public class SimulationService {
     private Optimizer optimizer;
     private List<Map<Slot, Flight>> initialFlightLists;
     private List<Map<Slot, Flight>> optimizedFlightLists;
+    private List<StatisticDTO> statistics;
+    private OverviewDTO overviewDTO;
 
     public SimulationService(final AirspaceUserService airspaceUserService) {
         this.airspaceUserService = airspaceUserService;
         this.initialFlightLists = new ArrayList<>();
         this.optimizedFlightLists = new ArrayList<>();
+        this.statistics = new ArrayList<>();
     }
 
     private static List<LocalTime> getRandomTimes(int n, int startTimeInSeconds, int maxTimeInSeconds, int mean, int std) {
@@ -86,39 +89,66 @@ public class SimulationService {
     }
 
     public void runIteration(Map<String, Integer> flightDistribution) {
-        Logger.log("SimulationService - starting iteration ...");
+        Logger.log("SimulationService - starting run ...");
         createInitialFlightList(flightDistribution);
         this.optimizedFlightLists.add(optimizer.optimize(this.initialFlightLists.get(this.initialFlightLists.size() - 1)));
-        clearing();
-        Logger.log("SimulationService - iteration done ...");
+        this.statistics.add(new StatisticDTO(this.initialFlightLists.size() - 1));
+        clearing(this.initialFlightLists.size() - 1);
+        Logger.log("SimulationService - run done ...");
     }
 
     public StatisticDTO getStatistic(int runId) {
-        return null;
+        Logger.log("SimulationService - starting creating statistics ...");
+        if (runId < 0 || runId >= this.statistics.size()) {
+            Logger.log("SimulationService - Error: This runId: " + runId + " does not exist");
+            throw new IllegalArgumentException("The runId: " + runId + " does not exist.");
+        }
+
+        StatisticDTO statisticDTO = this.statistics.get(runId);
+        statisticDTO.setInitialFlightList(this.initialFlightLists.get(runId));
+        statisticDTO.setOptimizedFlightList(this.optimizedFlightLists.get(runId));
+
+        Logger.log("SimulationService - statistics created ...");
+
+        return statisticDTO;
     }
 
     public OverviewDTO endSimulation() {
-        return null;
+        this.optimizer = null;
+        this.initialFlightLists = new ArrayList<>();
+        this.optimizedFlightLists = new ArrayList<>();
+        this.statistics = new ArrayList<>();
+        return this.overviewDTO;
     }
 
-    private void clearing() {
+    private void clearing(int runId) {
         Logger.log("SimulationService - starting clearing ...");
-        Map<Slot, Flight> optimizedFlightList = this.optimizedFlightLists.get(this.initialFlightLists.size() - 1);
+        Map<Slot, Flight> optimizedFlightList = this.optimizedFlightLists.get(runId);
         final double totalInitialUtility = optimizedFlightList.values().stream()
                 .filter(flight -> flight.getOptimizedUtility() == null)
                 .mapToDouble(Flight::getInitialUtility).sum();
-
         final double totalOptimizedUtility = optimizedFlightList.values().stream()
-                .filter(flight -> flight.getOptimizedUtility() == null)
+                .filter(flight -> flight.getOptimizedUtility() != null)
                 .mapToDouble(Flight::getOptimizedUtility).sum();
-
         double utilityIncrease = (totalOptimizedUtility - totalInitialUtility) / totalInitialUtility;
 
-        optimizedFlightList.values()
-                .forEach(flight -> {
-                    AirspaceUser airspaceUser = flight.getAirspaceUser();
-                    airspaceUser.updateCredits(flight.getOptimizedUtility() - flight.getInitialUtility() * (1 + utilityIncrease));
-                });
+        this.statistics.get(runId).setInitialUtility(totalInitialUtility);
+        this.statistics.get(runId).setOptimizedUtility(totalOptimizedUtility);
+        this.statistics.get(runId).setUtilityIncrease(utilityIncrease);
+
+        Map<String, Double> airspaceUserBalance = new HashMap<>();
+        Arrays.stream(this.airspaceUserService.getAirspaceUsers()).forEach(airspaceUser -> airspaceUserBalance.put("balanceBefore" + airspaceUser.getName(), airspaceUser.getCredits()));
+
+        optimizedFlightList.values().forEach(flight -> {
+            if (flight.getOptimizedUtility()!= null) {
+                Logger.log(Double.toString(flight.getOptimizedUtility() - flight.getInitialUtility() * (1 + utilityIncrease)));
+                flight.getAirspaceUser().updateCredits(flight.getOptimizedUtility() - flight.getInitialUtility() * (1 + utilityIncrease));
+            }
+        });
+
+        Arrays.stream(this.airspaceUserService.getAirspaceUsers()).forEach(airspaceUser -> airspaceUserBalance.put("balanceAfter" + airspaceUser.getName(), airspaceUser.getCredits()));
+
+        this.statistics.get(runId).setAirspaceUserBalance(airspaceUserBalance);
 
         Logger.log("SimulationService - clearing done ...");
     }
@@ -136,7 +166,6 @@ public class SimulationService {
             Logger.log("SimulationService - Error: There is at least one value null or < 0 in flightDistribution");
             throw new IllegalArgumentException("There is at least one value null or < 0 in flightDistribution.");
         }
-
 
         Map<Slot, Flight> flightList = new HashMap<>();
         List<LocalTime> initialLocalTimeList = getRandomTimes(flightDistribution.values().stream().mapToInt(Integer::intValue).sum(), startTimeInSeconds, endTimeInSeconds, initialTimeMean, initialTimeStd);
