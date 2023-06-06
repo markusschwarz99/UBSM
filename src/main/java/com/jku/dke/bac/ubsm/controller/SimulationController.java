@@ -23,13 +23,13 @@ public class SimulationController {
     }
 
     @ApiOperation(value = "Start a simulation")
-    @PostMapping(path = "start/{optimizer}")
+    @PostMapping(path = "start/{optimizer}/{simulator}")
     @ApiResponses({@ApiResponse(code = 200, message = "Ok"), @ApiResponse(code = 400, message = "Bad Request")})
-    public ResponseEntity<Void> start(@PathVariable String optimizer) {
+    public ResponseEntity<Void> start(@PathVariable String optimizer, @PathVariable String simulator) {
         Logger.log("SimulationController - REST: start simulation ...");
         ResponseEntity<Void> response;
         try {
-            simulationService.startSimulation(optimizer);
+            simulationService.startSimulation(optimizer, simulator);
             Logger.log("SimulationController - Simulation started with " + optimizer + " ...");
             response = new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
@@ -74,7 +74,7 @@ public class SimulationController {
     }
 
     @ApiOperation(value = "End simulation", response = OverviewDTO.class, produces = "application/json")
-    @PostMapping(path = "/end", produces = "application/json")
+    @DeleteMapping(path = "/end", produces = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad Request")})
     public ResponseEntity<OverviewDTO> end() {
         Logger.log("SimulationController - REST: ending the simulation ...");

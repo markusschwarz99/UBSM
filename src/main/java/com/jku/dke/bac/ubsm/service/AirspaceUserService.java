@@ -171,7 +171,7 @@ public class AirspaceUserService {
 
             // weightMap function
             if (airspaceUserDTO.getWeightMapFunction() == null) {
-                airspaceUserDTO.setWeightMapFunction("default");
+                airspaceUserDTO.setWeightMapFunction(weightMapFunction);
             }
 
             switch (airspaceUserDTO.getWeightMapFunction()) {

@@ -119,7 +119,7 @@ public abstract class AirspaceUser {
         this.credits += d;
     }
 
-    public void generateWeightMap(Flight flight, List<Slot> possibleSlots) {
+    private void generateWeightMap(Flight flight, List<Slot> possibleSlots) {
         switch (this.weightMapFunction.getClass().getSimpleName()) {
             case "DefaultWeightMapFunction" -> this.weightMapFunction = new DefaultWeightMapFunction(1000,
                     flight.getNotBefore().toSecondOfDay(),

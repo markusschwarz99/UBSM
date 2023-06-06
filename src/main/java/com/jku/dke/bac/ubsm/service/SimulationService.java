@@ -9,6 +9,10 @@ import com.jku.dke.bac.ubsm.model.flightlist.Slot;
 import com.jku.dke.bac.ubsm.optimizer.HeuristicOptimizer;
 import com.jku.dke.bac.ubsm.optimizer.HungarianOptimizer;
 import com.jku.dke.bac.ubsm.optimizer.Optimizer;
+import com.jku.dke.bac.ubsm.simulator.InflationSimulator;
+import com.jku.dke.bac.ubsm.simulator.OnlyOfferSimulator;
+import com.jku.dke.bac.ubsm.simulator.Simulator;
+import com.jku.dke.bac.ubsm.simulator.ZeroAndOutSimulator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +37,7 @@ public class SimulationService {
     @Value("${stdScheduledTime}")
     private int stdScheduledTime;
     private Optimizer optimizer;
+    private Simulator simulator;
     private List<Map<Slot, Flight>> initialFlightLists;
     private List<Map<Slot, Flight>> optimizedFlightLists;
     private List<StatisticDTO> statistics;
@@ -49,7 +54,7 @@ public class SimulationService {
         List<LocalTime> lt = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             Random r = new Random();
-            int k = (int) Math.max(startTimeInSeconds, Math.min(maxTimeInSeconds, (int) mean + r.nextGaussian() * std));
+            int k = (int) Math.max(startTimeInSeconds, Math.min(maxTimeInSeconds, mean + r.nextGaussian() * std));
             k = k - (k % 60);
             LocalTime ltt = LocalTime.ofSecondOfDay(k);
             if (!lt.contains(ltt)) {
@@ -61,7 +66,7 @@ public class SimulationService {
 
     private static LocalTime getRandomTime(int startTimeInSeconds, int maxTimeInSeconds, int mean, int std) {
         Random r = new Random();
-        int k = (int) Math.max(startTimeInSeconds, Math.min(maxTimeInSeconds, (int) mean + r.nextGaussian() * std));
+        int k = (int) Math.max(startTimeInSeconds, Math.min(maxTimeInSeconds, mean + r.nextGaussian() * std));
         k = k - (k % 60);
         return LocalTime.ofSecondOfDay(k);
     }
@@ -75,17 +80,27 @@ public class SimulationService {
         return false;
     }
 
-    public void startSimulation(String opt) throws IllegalArgumentException {
+    public void startSimulation(String opt, String sim) throws IllegalArgumentException {
         if (opt.equals(HungarianOptimizer.class.getSimpleName())) {
             optimizer = new HungarianOptimizer();
-            Logger.log("SimulationService - start simulation with " + optimizer.getClass().getSimpleName() + " ...");
         } else if (opt.equals(HeuristicOptimizer.class.getSimpleName())) {
             optimizer = new HeuristicOptimizer();
-            Logger.log("SimulationService - start simulation with " + optimizer.getClass().getSimpleName() + " ...");
         } else {
             Logger.log("SimulationService - invalid optimizer (" + opt + ") ...");
             throw new IllegalArgumentException("Optimizer " + opt + "not recognised");
         }
+        Logger.log("SimulationService - start simulation with " + optimizer.getClass().getSimpleName() + " ...");
+
+        if (sim.equals(ZeroAndOutSimulator.class.getSimpleName())) {
+            this.simulator = new ZeroAndOutSimulator();
+        } else if (sim.equals(OnlyOfferSimulator.class.getSimpleName())) {
+            this.simulator = new OnlyOfferSimulator();
+        } else if (sim.equals(InflationSimulator.class.getSimpleName())) {
+            this.simulator = new InflationSimulator();
+        } else {
+            throw new IllegalArgumentException("Simulation " + sim + "not recognised");
+        }
+        Logger.log("SimulationService - start simulation with " + simulator.getClass().getSimpleName() + " ...");
     }
 
     public void runIteration(Map<String, Integer> flightDistribution) {
@@ -115,6 +130,7 @@ public class SimulationService {
 
     public OverviewDTO endSimulation() {
         this.optimizer = null;
+        this.simulator = null;
         this.initialFlightLists = new ArrayList<>();
         this.optimizedFlightLists = new ArrayList<>();
         this.statistics = new ArrayList<>();
@@ -140,7 +156,7 @@ public class SimulationService {
         Arrays.stream(this.airspaceUserService.getAirspaceUsers()).forEach(airspaceUser -> airspaceUserBalance.put("balanceBefore" + airspaceUser.getName(), airspaceUser.getCredits()));
 
         optimizedFlightList.values().forEach(flight -> {
-            if (flight.getOptimizedUtility()!= null) {
+            if (flight.getOptimizedUtility() != null) {
                 Logger.log(Double.toString(flight.getOptimizedUtility() - flight.getInitialUtility() * (1 + utilityIncrease)));
                 flight.getAirspaceUser().updateCredits(flight.getOptimizedUtility() - flight.getInitialUtility() * (1 + utilityIncrease));
             }
