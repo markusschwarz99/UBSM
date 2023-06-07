@@ -13,8 +13,11 @@ public class DefaultWeightMapFunction extends WeightMap implements Function<Doub
 
     @Override
     public Double apply(Double slotDepartureTimeInSeconds) {
-        if (slotDepartureTimeInSeconds < this.getLowerMargin() || slotDepartureTimeInSeconds > this.getUpperMargin()) {
-            return -Double.MAX_VALUE;
+        if (slotDepartureTimeInSeconds < this.getLowerMargin()) {
+            //return -Double.MAX_VALUE;
+            return this.getPriority() * (this.getMaxWeight() * (slotDepartureTimeInSeconds * this.getaPos() + this.getbPos())) - 100000;
+        } else if (slotDepartureTimeInSeconds > this.getUpperMargin()) {
+            return this.getPriority() * (this.getMaxWeight() * (slotDepartureTimeInSeconds * this.getaNeg() + this.getbNeg())) - 100000;
         } else {
             if (slotDepartureTimeInSeconds < this.getThreshold()) {
                 return this.getPriority() * (this.getMaxWeight() * (slotDepartureTimeInSeconds * this.getaPos() + this.getbPos()));

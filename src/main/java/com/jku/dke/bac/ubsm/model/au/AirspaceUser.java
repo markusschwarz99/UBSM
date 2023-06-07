@@ -172,6 +172,12 @@ public abstract class AirspaceUser {
         } else if (flight.getFlightType() == FlightType.PRIORITY) {
             localTimes = generatePriorityTimes(flight, possibleSlots);
         }
+        if (localTimes[0].equals(localTimes[1])) {
+            localTimes[1] = localTimes[1].plusMinutes(1);
+        }
+        if (localTimes[2].equals(localTimes[1])) {
+            localTimes[2] = localTimes[2].plusMinutes(1);
+        }
         flight.setNotBefore(localTimes[0]);
         flight.setWishedTime(localTimes[1]);
         flight.setNotAfter(localTimes[2]);
@@ -196,6 +202,7 @@ public abstract class AirspaceUser {
             localTimes[1] = flight.getScheduledTime();
         }
         localTimes[2] = localTimes[1].plusMinutes(random.nextInt(priorityFlightMinutesToAdd[1] - priorityFlightMinutesToAdd[0]) + priorityFlightMinutesToAdd[0]);
+
         return localTimes;
     }
 
@@ -203,12 +210,16 @@ public abstract class AirspaceUser {
         LocalTime[] localTimes = new LocalTime[3];
         long generatedTimeInSeconds;
         long durationInSeconds = Duration.between(flight.getScheduledTime(), possibleSlots.get(possibleSlots.size() - 1).getDepartureTime()).toSeconds();
-        generatedTimeInSeconds = (long) ((durationInSeconds * random.nextDouble(margins[0].getUpperBound() - margins[0].getLowerBound()) + margins[0].getLowerBound()) + flight.getScheduledTime().toSecondOfDay());
+        generatedTimeInSeconds = (long) ((durationInSeconds *
+                random.nextDouble(margins[0].getUpperBound() - margins[0].getLowerBound()) + margins[0].getLowerBound()) + flight.getScheduledTime().toSecondOfDay());
         localTimes[0] = LocalTime.ofSecondOfDay(generatedTimeInSeconds - (generatedTimeInSeconds % 60));
-        generatedTimeInSeconds = (long) ((durationInSeconds * random.nextDouble(margins[1].getUpperBound() - margins[1].getLowerBound()) + margins[1].getLowerBound()) + localTimes[0].toSecondOfDay());
+        generatedTimeInSeconds = (long) ((durationInSeconds *
+                random.nextDouble(margins[1].getUpperBound() - margins[1].getLowerBound()) + margins[1].getLowerBound()) + localTimes[0].toSecondOfDay());
         localTimes[1] = LocalTime.ofSecondOfDay(generatedTimeInSeconds - (generatedTimeInSeconds % 60));
-        generatedTimeInSeconds = (long) ((durationInSeconds * random.nextDouble(margins[2].getUpperBound() - margins[2].getLowerBound()) + margins[2].getLowerBound()) + localTimes[0].toSecondOfDay());
+        generatedTimeInSeconds = (long) ((durationInSeconds *
+                random.nextDouble(margins[2].getUpperBound() - margins[2].getLowerBound()) + margins[2].getLowerBound()) + localTimes[1].toSecondOfDay());
         localTimes[2] = LocalTime.ofSecondOfDay(generatedTimeInSeconds - (generatedTimeInSeconds % 60));
+
         return localTimes;
     }
 }

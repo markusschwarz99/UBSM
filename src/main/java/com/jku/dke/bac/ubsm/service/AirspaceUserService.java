@@ -144,11 +144,7 @@ public class AirspaceUserService {
                             au.setFlexibleFlightPercentages(new Margin[]{new Margin(flexibleNotBeforePassive[0], flexibleNotBeforePassive[1]), new Margin(flexibleWishedTimePassive[0], flexibleWishedTimePassive[1]), new Margin(flexibleNotAfterPassive[0], flexibleNotAfterPassive[1])});
                 }
             } else {
-                MarginDTO[] marginDTOS = airspaceUserDTO.getFlexibleFlightPercentages();
-                Margin[] margins = new Margin[]{
-                        Mapper.mapMarginDTOToMargin(marginDTOS[0]), Mapper.mapMarginDTOToMargin(marginDTOS[1]), Mapper.mapMarginDTOToMargin(marginDTOS[2])
-                };
-                au.setFlexibleFlightPercentages(margins);
+                au.setFlexibleFlightPercentages(airspaceUserDTO.getFlexibleFlightPercentages());
             }
 
             // flexible with priority
@@ -162,11 +158,7 @@ public class AirspaceUserService {
                             au.setFlexibleFlightWithPriorityPercentages(new Margin[]{new Margin(flexibleWithPriorityNotBeforePassive[0], flexibleWithPriorityNotBeforePassive[1]), new Margin(flexibleWithPriorityWishedTimePassive[0], flexibleWithPriorityWishedTimePassive[1]), new Margin(flexibleWithPriorityNotAfterPassive[0], flexibleWithPriorityNotAfterPassive[1])});
                 }
             } else {
-                MarginDTO[] marginDTOS = airspaceUserDTO.getFlexibleFlightPercentages();
-                Margin[] margins = new Margin[]{
-                        Mapper.mapMarginDTOToMargin(marginDTOS[0]), Mapper.mapMarginDTOToMargin(marginDTOS[1]), Mapper.mapMarginDTOToMargin(marginDTOS[2])
-                };
-                au.setFlexibleFlightWithPriorityPercentages(margins);
+                au.setFlexibleFlightWithPriorityPercentages(airspaceUserDTO.getFlexibleFlightPercentages());
             }
 
             // weightMap function

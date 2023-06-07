@@ -18,6 +18,7 @@ public class Flight {
     private Map<Slot, Double> weightMap;
     private double initialUtility;
     private Double optimizedUtility;
+    private boolean isInOptimizationRun;
 
     public Flight(AirspaceUser airspaceUser, LocalTime initialTime) {
         this.airspaceUser = airspaceUser;
@@ -110,6 +111,14 @@ public class Flight {
 
     public void setOptimizedUtility(Double optimizedUtility) {
         this.optimizedUtility = optimizedUtility;
+    }
+
+    public boolean isInOptimizationRun() {
+        return isInOptimizationRun;
+    }
+
+    public void setInOptimizationRun(boolean inOptimizationRun) {
+        isInOptimizationRun = inOptimizationRun;
     }
 
     @Override

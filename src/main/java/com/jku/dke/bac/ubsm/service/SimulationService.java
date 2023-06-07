@@ -108,7 +108,7 @@ public class SimulationService {
         createInitialFlightList(flightDistribution);
         this.optimizedFlightLists.add(optimizer.optimize(this.initialFlightLists.get(this.initialFlightLists.size() - 1)));
         this.statistics.add(new StatisticDTO(this.initialFlightLists.size() - 1));
-        clearing(this.initialFlightLists.size() - 1);
+        initiateClearing(this.initialFlightLists.size() - 1);
         Logger.log("SimulationService - run done ...");
     }
 
@@ -119,13 +119,12 @@ public class SimulationService {
             throw new IllegalArgumentException("The runId: " + runId + " does not exist.");
         }
 
-        StatisticDTO statisticDTO = this.statistics.get(runId);
-        statisticDTO.setInitialFlightList(this.initialFlightLists.get(runId));
-        statisticDTO.setOptimizedFlightList(this.optimizedFlightLists.get(runId));
+        this.statistics.get(runId).setInitialFlightList(this.initialFlightLists.get(runId));
+        this.statistics.get(runId).setOptimizedFlightList(this.optimizedFlightLists.get(runId));
 
         Logger.log("SimulationService - statistics created ...");
 
-        return statisticDTO;
+        return this.statistics.get(runId);
     }
 
     public OverviewDTO endSimulation() {
@@ -137,7 +136,7 @@ public class SimulationService {
         return this.overviewDTO;
     }
 
-    private void clearing(int runId) {
+    private void initiateClearing(int runId) {
         Logger.log("SimulationService - starting clearing ...");
         Map<Slot, Flight> optimizedFlightList = this.optimizedFlightLists.get(runId);
         final double totalInitialUtility = optimizedFlightList.values().stream()
@@ -154,16 +153,8 @@ public class SimulationService {
 
         Map<String, Double> airspaceUserBalance = new HashMap<>();
         Arrays.stream(this.airspaceUserService.getAirspaceUsers()).forEach(airspaceUser -> airspaceUserBalance.put("balanceBefore" + airspaceUser.getName(), airspaceUser.getCredits()));
-
-        optimizedFlightList.values().forEach(flight -> {
-            if (flight.getOptimizedUtility() != null) {
-                Logger.log(Double.toString(flight.getOptimizedUtility() - flight.getInitialUtility() * (1 + utilityIncrease)));
-                flight.getAirspaceUser().updateCredits(flight.getOptimizedUtility() - flight.getInitialUtility() * (1 + utilityIncrease));
-            }
-        });
-
+        this.simulator.clearing(optimizedFlightList, utilityIncrease);
         Arrays.stream(this.airspaceUserService.getAirspaceUsers()).forEach(airspaceUser -> airspaceUserBalance.put("balanceAfter" + airspaceUser.getName(), airspaceUser.getCredits()));
-
         this.statistics.get(runId).setAirspaceUserBalance(airspaceUserBalance);
 
         Logger.log("SimulationService - clearing done ...");

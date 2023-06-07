@@ -7,12 +7,10 @@ import java.util.Map;
 
 public class StatisticDTO {
     private int runId;
-    Map<String, Double> airspaceUserBalance; // auName, balanceBefore, balanceAfter
+    Map<String, Double> airspaceUserBalance;
     private double initialUtility;
     private double optimizedUtility;
     private double utilityIncrease;
-    private Map<Slot, Flight> simpleInitialFlightList;
-    private Map<Slot, Flight> simpleOptimizedFlightList;
     private Map<Slot, Flight> initialFlightList;
     private Map<Slot, Flight> optimizedFlightList;
 
@@ -58,22 +56,6 @@ public class StatisticDTO {
 
     public void setUtilityIncrease(double utilityIncrease) {
         this.utilityIncrease = utilityIncrease;
-    }
-
-    public Map<Slot, Flight> getSimpleInitialFlightList() {
-        return simpleInitialFlightList;
-    }
-
-    public void setSimpleInitialFlightList(Map<Slot, Flight> simpleInitialFlightList) {
-        this.simpleInitialFlightList = simpleInitialFlightList;
-    }
-
-    public Map<Slot, Flight> getSimpleOptimizedFlightList() {
-        return simpleOptimizedFlightList;
-    }
-
-    public void setSimpleOptimizedFlightList(Map<Slot, Flight> simpleOptimizedFlightList) {
-        this.simpleOptimizedFlightList = simpleOptimizedFlightList;
     }
 
     public Map<Slot, Flight> getInitialFlightList() {
