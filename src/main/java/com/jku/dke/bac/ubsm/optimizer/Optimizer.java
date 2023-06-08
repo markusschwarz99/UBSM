@@ -49,6 +49,6 @@ public abstract class Optimizer {
     }
 
     protected boolean isInvalidWeightMap(Map<Slot, Double> weightMap) {
-        return weightMap.values().stream().filter(value -> value >= 0).count() <= 1;
+        return weightMap.values().stream().filter(value -> value > 1).count() <= 1;
     }
 }

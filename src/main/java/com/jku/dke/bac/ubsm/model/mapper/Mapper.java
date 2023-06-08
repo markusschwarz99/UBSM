@@ -1,10 +1,10 @@
 package com.jku.dke.bac.ubsm.model.mapper;
 
 import com.jku.dke.bac.ubsm.model.au.AirspaceUser;
-import com.jku.dke.bac.ubsm.model.dto.AggressiveAirspaceUserDTO;
-import com.jku.dke.bac.ubsm.model.dto.AirspaceUserDTO;
-import com.jku.dke.bac.ubsm.model.dto.NeutralAirspaceUserDTO;
-import com.jku.dke.bac.ubsm.model.dto.PassiveAirspaceUserDTO;
+import com.jku.dke.bac.ubsm.model.dto.auDTO.AggressiveAirspaceUserDTO;
+import com.jku.dke.bac.ubsm.model.dto.auDTO.AirspaceUserDTO;
+import com.jku.dke.bac.ubsm.model.dto.auDTO.NeutralAirspaceUserDTO;
+import com.jku.dke.bac.ubsm.model.dto.auDTO.PassiveAirspaceUserDTO;
 
 import java.util.ArrayList;
 import java.util.Arrays;

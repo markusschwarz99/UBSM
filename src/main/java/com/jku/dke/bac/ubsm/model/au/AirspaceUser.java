@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+import com.jku.dke.bac.ubsm.model.au.weightMapFunction.DefaultWeightMapFunction;
 import com.jku.dke.bac.ubsm.model.flightlist.Flight;
 import com.jku.dke.bac.ubsm.model.flightlist.FlightType;
 import com.jku.dke.bac.ubsm.model.flightlist.Slot;
-import com.jku.dke.bac.ubsm.model.weightMapFunction.DefaultWeightMapFunction;
 
 import java.time.Duration;
 import java.time.LocalTime;
@@ -116,7 +116,7 @@ public abstract class AirspaceUser {
     }
 
     public void updateCredits(double d) {
-        this.credits += d;
+        this.credits -= d;
     }
 
     private void generateWeightMap(Flight flight, List<Slot> possibleSlots) {
@@ -126,12 +126,10 @@ public abstract class AirspaceUser {
                     0,
                     flight.getWishedTime().toSecondOfDay(),
                     1,
-                    flight.getWishedTime().toSecondOfDay(),
-                    1,
                     flight.getNotAfter().toSecondOfDay(),
                     0,
-                    flight.getWishedTime().toSecondOfDay(),
-                    flight.getPriority());
+                    flight.getPriority(),
+                    flight.getInitialTime().toSecondOfDay());
         }
 
         Map<Slot, Double> weightMap = new LinkedHashMap<>();

@@ -2,12 +2,15 @@ package com.jku.dke.bac.ubsm.service;
 
 import com.jku.dke.bac.ubsm.model.au.AirspaceUser;
 import com.jku.dke.bac.ubsm.model.au.Margin;
-import com.jku.dke.bac.ubsm.model.dto.*;
+import com.jku.dke.bac.ubsm.model.dto.auDTO.AggressiveAirspaceUserDTO;
+import com.jku.dke.bac.ubsm.model.dto.auDTO.AirspaceUserDTO;
+import com.jku.dke.bac.ubsm.model.dto.auDTO.NeutralAirspaceUserDTO;
+import com.jku.dke.bac.ubsm.model.dto.auDTO.PassiveAirspaceUserDTO;
 import com.jku.dke.bac.ubsm.model.factory.AggressiveAirspaceUserFactory;
 import com.jku.dke.bac.ubsm.model.factory.NeutralAirspaceUserFactory;
 import com.jku.dke.bac.ubsm.model.factory.PassiveAirspaceUserFactory;
 import com.jku.dke.bac.ubsm.model.mapper.Mapper;
-import com.jku.dke.bac.ubsm.model.weightMapFunction.DefaultWeightMapFunction;
+import com.jku.dke.bac.ubsm.model.au.weightMapFunction.DefaultWeightMapFunction;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.jku.dke.bac.ubsm.model.dto;
+package com.jku.dke.bac.ubsm.model.dto.auDTO;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

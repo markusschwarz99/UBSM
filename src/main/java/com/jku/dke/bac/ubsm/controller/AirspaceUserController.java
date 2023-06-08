@@ -1,6 +1,6 @@
 package com.jku.dke.bac.ubsm.controller;
 
-import com.jku.dke.bac.ubsm.model.dto.AirspaceUserDTO;
+import com.jku.dke.bac.ubsm.model.dto.auDTO.AirspaceUserDTO;
 import com.jku.dke.bac.ubsm.service.AirspaceUserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
