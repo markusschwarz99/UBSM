@@ -12,6 +12,8 @@ public class RunStatisticDTO {
     private double totalInitialUtility;
     private double totalOptimizedUtility;
     private double utilityIncrease;
+    private double participationInPercent;
+    private AuBalanceDTO auBalances;
     private List<InitialFlightDTO> initialFlightList;
     private List<OptimizedFlightDTO> optimizedFlightList;
 
@@ -69,5 +71,21 @@ public class RunStatisticDTO {
 
     public void setUtilityIncrease(double utilityIncrease) {
         this.utilityIncrease = utilityIncrease;
+    }
+
+    public AuBalanceDTO getAuBalances() {
+        return auBalances;
+    }
+
+    public void setAuBalances(AuBalanceDTO auBalances) {
+        this.auBalances = auBalances;
+    }
+
+    public double getParticipationInPercent() {
+        return participationInPercent;
+    }
+
+    public void setParticipationInPercent(double participationInPercent) {
+        this.participationInPercent = participationInPercent;
     }
 }

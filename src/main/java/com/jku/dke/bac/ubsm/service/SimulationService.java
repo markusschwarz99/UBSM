@@ -2,6 +2,7 @@ package com.jku.dke.bac.ubsm.service;
 
 import com.jku.dke.bac.ubsm.Logger;
 import com.jku.dke.bac.ubsm.model.au.AirspaceUser;
+import com.jku.dke.bac.ubsm.model.dto.statisticsDTO.AuBalanceDTO;
 import com.jku.dke.bac.ubsm.model.dto.statisticsDTO.OverviewDTO;
 import com.jku.dke.bac.ubsm.model.dto.statisticsDTO.RunStatisticDTO;
 import com.jku.dke.bac.ubsm.model.flightlist.Flight;
@@ -37,16 +38,14 @@ public class SimulationService {
     private List<Map<Slot, Flight>> initialFlightLists;
     private List<Map<Slot, Flight>> optimizedFlightLists;
     private List<RunStatisticDTO> statistics;
-    private Map<Slot, Flight> currInitialFlightList;
-    private Map<Slot, Flight> currOptimizedFlightList;
-    private RunStatisticDTO currStatistic;
-    private OverviewDTO overviewDTO;
+    private int currRun;
 
     public SimulationService(final AirspaceUserService airspaceUserService) {
         this.airspaceUserService = airspaceUserService;
         this.initialFlightLists = new ArrayList<>();
         this.optimizedFlightLists = new ArrayList<>();
         this.statistics = new ArrayList<>();
+        this.currRun = 0;
     }
 
     private static List<LocalTime> getRandomTimes(int n, int startTimeInSeconds, int maxTimeInSeconds, int mean, int std) {
@@ -84,29 +83,50 @@ public class SimulationService {
             throw new IllegalArgumentException("Simulation " + sim + "not recognised");
         }
         Logger.log("SimulationService - start simulation with " + simulator.getClass().getSimpleName() + " ...");
-
     }
 
     public RunStatisticDTO runIteration(Map<String, Integer> flightDistribution, Integer delayInMinutes) {
         Logger.log("SimulationService - starting run ...");
-        currStatistic = new RunStatisticDTO(this.initialFlightLists.size());
+        this.statistics.add(new RunStatisticDTO(this.currRun));
         this.initialFlightLists.add(createInitialFlightList(flightDistribution, delayInMinutes));
-        currStatistic.setInitialFlightList(this.initialFlightLists.get(this.initialFlightLists.size() - 1));
-        this.optimizedFlightLists.add(optimizer.optimize(this.initialFlightLists.get(this.initialFlightLists.size() - 1)));
-        initiateClearing(this.optimizedFlightLists.get(this.optimizedFlightLists.size() - 1));
-        currStatistic.setOptimizedFlightList(this.optimizedFlightLists.get(this.optimizedFlightLists.size() - 1));
-        this.statistics.add(currStatistic);
+        this.statistics.get(this.currRun).setInitialFlightList(this.initialFlightLists.get(this.currRun));
+        Map<String, Double> balanceBefore = Arrays.stream(this.airspaceUserService.getAirspaceUsers())
+                .collect(Collectors.toMap(
+                        AirspaceUser::getName,
+                        AirspaceUser::getCredits
+                ));
+        this.optimizedFlightLists.add(optimizer.optimize(this.initialFlightLists.get(this.currRun)));
+        initiateClearing(this.optimizedFlightLists.get(this.currRun));
+        this.statistics.get(this.currRun).setOptimizedFlightList(this.optimizedFlightLists.get(this.currRun));
+        Map<String, Double> balanceAfter = Arrays.stream(this.airspaceUserService.getAirspaceUsers())
+                .collect(Collectors.toMap(
+                        AirspaceUser::getName,
+                        AirspaceUser::getCredits
+                ));
+        this.statistics.get(this.currRun).setParticipationInPercent((double) this.optimizedFlightLists.get(this.currRun).values().stream().filter(Flight::isInOptimizationRun).count() / this.optimizedFlightLists.get(this.currRun).size());
+        this.statistics.get(this.currRun).setAuBalances(new AuBalanceDTO(balanceBefore, balanceAfter));
         Logger.log("SimulationService - run done ...");
-        return currStatistic;
+        return this.statistics.get(this.currRun++);
     }
 
     public OverviewDTO endSimulation() {
+        OverviewDTO overviewDTO = new OverviewDTO();
+        overviewDTO.setTotalRuns(this.currRun);
+        overviewDTO.setSimulator(this.simulator.getClass().getSimpleName());
+        overviewDTO.setOptimizer(this.optimizer.getClass().getSimpleName());
+        Map<Integer, AuBalanceDTO> balances = new HashMap<>();
+        AtomicInteger i = new AtomicInteger();
+        this.statistics.forEach(runStatisticDTO -> {
+            balances.put(i.getAndIncrement(), runStatisticDTO.getAuBalances());
+        });
+        overviewDTO.setBalances(balances);
         this.optimizer = null;
         this.simulator = null;
         this.initialFlightLists = new ArrayList<>();
         this.optimizedFlightLists = new ArrayList<>();
         this.statistics = new ArrayList<>();
-        return this.overviewDTO;
+        this.currRun = 0;
+        return overviewDTO;
     }
 
     private void initiateClearing(Map<Slot, Flight> optimizedFlightList) {
@@ -118,9 +138,9 @@ public class SimulationService {
                 .filter(flight -> flight.getOptimizedUtility() != null)
                 .mapToDouble(Flight::getOptimizedUtility).sum();
         double utilityIncrease = (totalOptimizedUtility - totalInitialUtility) / totalInitialUtility;
-        this.currStatistic.setTotalInitialUtility(totalInitialUtility);
-        this.currStatistic.setTotalOptimizedUtility(totalOptimizedUtility);
-        this.currStatistic.setUtilityIncrease(utilityIncrease);
+        this.statistics.get(this.currRun).setTotalInitialUtility(totalInitialUtility);
+        this.statistics.get(this.currRun).setTotalOptimizedUtility(totalOptimizedUtility);
+        this.statistics.get(this.currRun).setUtilityIncrease(utilityIncrease);
         this.simulator.clearing(optimizedFlightList, utilityIncrease);
         Logger.log("SimulationService - clearing done ...");
     }
