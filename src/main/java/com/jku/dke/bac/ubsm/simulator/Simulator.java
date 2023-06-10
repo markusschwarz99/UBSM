@@ -1,5 +1,10 @@
 package com.jku.dke.bac.ubsm.simulator;
 
+import com.jku.dke.bac.ubsm.model.flightlist.Flight;
+import com.jku.dke.bac.ubsm.model.flightlist.Slot;
+
+import java.util.Map;
+
 public abstract class Simulator {
-    abstract void simulate();
+    public abstract void clearing(Map<Slot, Flight> optimizedFlightList, double utilityIncrease);
 }

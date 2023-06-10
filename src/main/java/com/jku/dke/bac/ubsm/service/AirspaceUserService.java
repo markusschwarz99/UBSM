@@ -2,12 +2,15 @@ package com.jku.dke.bac.ubsm.service;
 
 import com.jku.dke.bac.ubsm.model.au.AirspaceUser;
 import com.jku.dke.bac.ubsm.model.au.Margin;
-import com.jku.dke.bac.ubsm.model.dto.*;
+import com.jku.dke.bac.ubsm.model.au.weightMapFunction.DefaultWeightMapFunction;
+import com.jku.dke.bac.ubsm.model.dto.auDTO.AggressiveAirspaceUserDTO;
+import com.jku.dke.bac.ubsm.model.dto.auDTO.AirspaceUserDTO;
+import com.jku.dke.bac.ubsm.model.dto.auDTO.NeutralAirspaceUserDTO;
+import com.jku.dke.bac.ubsm.model.dto.auDTO.PassiveAirspaceUserDTO;
 import com.jku.dke.bac.ubsm.model.factory.AggressiveAirspaceUserFactory;
 import com.jku.dke.bac.ubsm.model.factory.NeutralAirspaceUserFactory;
 import com.jku.dke.bac.ubsm.model.factory.PassiveAirspaceUserFactory;
 import com.jku.dke.bac.ubsm.model.mapper.Mapper;
-import com.jku.dke.bac.ubsm.model.weightMapFunction.DefaultWeightMapFunction;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,8 @@ public class AirspaceUserService {
     private final AggressiveAirspaceUserFactory aggressiveAirspaceUserFactory = new AggressiveAirspaceUserFactory();
     private final NeutralAirspaceUserFactory neutralAirspaceUserFactory = new NeutralAirspaceUserFactory();
     private final PassiveAirspaceUserFactory passiveAirspaceUserFactory = new PassiveAirspaceUserFactory();
+    @Value("${initialCredits}")
+    private double initialCredits;
     @Value("${aggressive.priorityDistribution}")
     private int[] standardPriorityDistributionAggressive;
     @Value("${aggressive.priority.timeToAdd}")
@@ -108,7 +113,12 @@ public class AirspaceUserService {
             if (au == null) throw new IllegalArgumentException("AirspaceUser is null");
 
             au.setName(airspaceUserDTO.getName());
-            au.setCredits(airspaceUserDTO.getCredits());
+
+            if (airspaceUserDTO.getCredits() == 0.0) {
+                au.setCredits(initialCredits);
+            } else {
+                au.setCredits(airspaceUserDTO.getCredits());
+            }
 
             // priority Distribution
             if (isValidPriorityDistribution(airspaceUserDTO)) {
@@ -144,11 +154,7 @@ public class AirspaceUserService {
                             au.setFlexibleFlightPercentages(new Margin[]{new Margin(flexibleNotBeforePassive[0], flexibleNotBeforePassive[1]), new Margin(flexibleWishedTimePassive[0], flexibleWishedTimePassive[1]), new Margin(flexibleNotAfterPassive[0], flexibleNotAfterPassive[1])});
                 }
             } else {
-                MarginDTO[] marginDTOS = airspaceUserDTO.getFlexibleFlightPercentages();
-                Margin[] margins = new Margin[]{
-                        Mapper.mapMarginDTOToMargin(marginDTOS[0]), Mapper.mapMarginDTOToMargin(marginDTOS[1]), Mapper.mapMarginDTOToMargin(marginDTOS[2])
-                };
-                au.setFlexibleFlightPercentages(margins);
+                au.setFlexibleFlightPercentages(airspaceUserDTO.getFlexibleFlightPercentages());
             }
 
             // flexible with priority
@@ -162,20 +168,16 @@ public class AirspaceUserService {
                             au.setFlexibleFlightWithPriorityPercentages(new Margin[]{new Margin(flexibleWithPriorityNotBeforePassive[0], flexibleWithPriorityNotBeforePassive[1]), new Margin(flexibleWithPriorityWishedTimePassive[0], flexibleWithPriorityWishedTimePassive[1]), new Margin(flexibleWithPriorityNotAfterPassive[0], flexibleWithPriorityNotAfterPassive[1])});
                 }
             } else {
-                MarginDTO[] marginDTOS = airspaceUserDTO.getFlexibleFlightPercentages();
-                Margin[] margins = new Margin[]{
-                        Mapper.mapMarginDTOToMargin(marginDTOS[0]), Mapper.mapMarginDTOToMargin(marginDTOS[1]), Mapper.mapMarginDTOToMargin(marginDTOS[2])
-                };
-                au.setFlexibleFlightWithPriorityPercentages(margins);
+                au.setFlexibleFlightWithPriorityPercentages(airspaceUserDTO.getFlexibleFlightPercentages());
             }
 
             // weightMap function
             if (airspaceUserDTO.getWeightMapFunction() == null) {
-                airspaceUserDTO.setWeightMapFunction("default");
+                airspaceUserDTO.setWeightMapFunction(weightMapFunction);
             }
 
             switch (airspaceUserDTO.getWeightMapFunction()) {
-                case ("default"):
+                case ("DefaultWeightMapFunction"):
                     au.setWeightMapFunction(new DefaultWeightMapFunction());
                 default:
                     au.setWeightMapFunction(new DefaultWeightMapFunction());

@@ -1,4 +1,4 @@
-package com.jku.dke.bac.ubsm.model.dto;
+package com.jku.dke.bac.ubsm.model.dto.auDTO;
 
 public class NeutralAirspaceUserDTO extends AirspaceUserDTO{
     @Override

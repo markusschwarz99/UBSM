@@ -2,10 +2,10 @@
   {
     "type": "aggressive",
     "name": "A1",
-    "credits": 1000.0,
-    "probabilityFlexibleFlight": 25,
-    "probabilityPriorityFlight": 50,
-    "probabilityFlexibleWithPriorityFlight": 25,
+    "credits": 10000.0,
+    "probabilityFlexibleFlight": 5,
+    "probabilityPriorityFlight": 75,
+    "probabilityFlexibleWithPriorityFlight": 20,
     "priorityFlightMinutesToAdd": [
       15,
       45
@@ -38,12 +38,12 @@
         "upperBound": 0.4
       }
     ],
-    "weightMapFunction": "default"
+    "weightMapFunction": "DefaultWeightMapFunction"
   },
   {
     "type": "passive",
     "name": "P1",
-    "credits": 1000.0,
+    "credits": 10000.0,
     "probabilityFlexibleFlight": 50,
     "probabilityPriorityFlight": 25,
     "probabilityFlexibleWithPriorityFlight": 25,
@@ -79,12 +79,12 @@
         "upperBound": 0.8
       }
     ],
-    "weightMapFunction": "default"
+    "weightMapFunction": "DefaultWeightMapFunction"
   },
   {
     "type": "neutral",
     "name": "N1",
-    "credits": 1000.0,
+    "credits": 10000.0,
     "probabilityFlexibleFlight": 25,
     "probabilityPriorityFlight": 25,
     "probabilityFlexibleWithPriorityFlight": 50,
@@ -120,6 +120,6 @@
         "upperBound": 0.6
       }
     ],
-    "weightMapFunction": "default"
+    "weightMapFunction": "DefaultWeightMapFunction"
   }
 ]
