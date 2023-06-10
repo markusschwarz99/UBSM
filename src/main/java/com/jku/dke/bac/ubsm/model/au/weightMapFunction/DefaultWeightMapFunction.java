@@ -1,6 +1,7 @@
 package com.jku.dke.bac.ubsm.model.au.weightMapFunction;
 
 public class DefaultWeightMapFunction extends WeightMap {
+    private double initialCredits;
     private double maxWeight;
     private double aPos;
     private double bPos;
@@ -11,13 +12,14 @@ public class DefaultWeightMapFunction extends WeightMap {
     private double upperMargin;
     private double lowerLimit;
     private int priority;
+    private double balance;
 
     public DefaultWeightMapFunction() {
         super();
     }
 
     // x1 = notBefore, y1 = 0 | x2 = wishedTime, y2 = 1 | x3 = notAfter, y3 = 0
-    public DefaultWeightMapFunction(double maxWeight, double x1, double y1, double x2, double y2, double x3, double y3, int priority, double lowerLimit) {
+    public DefaultWeightMapFunction(double maxWeight, double x1, double y1, double x2, double y2, double x3, double y3, int priority, double lowerLimit, double balance, double initialCredits) {
         super();
         this.maxWeight = maxWeight;
         this.aPos = (y2 - y1) / (x2 - x1);
@@ -29,20 +31,23 @@ public class DefaultWeightMapFunction extends WeightMap {
         this.upperMargin = x3;
         this.priority = priority;
         this.lowerLimit = lowerLimit;
+        this.balance = balance;
+        this.initialCredits = initialCredits;
     }
 
     @Override
     public Double apply(Double slotDepartureTimeInSeconds) {
-        if (slotDepartureTimeInSeconds < this.getLowerLimit()) {
+        if (slotDepartureTimeInSeconds < lowerLimit) {
             return -Double.MAX_VALUE;
-        } else if (slotDepartureTimeInSeconds < this.getLowerMargin() || slotDepartureTimeInSeconds > this.getUpperMargin()) {
+        } else if (slotDepartureTimeInSeconds < lowerMargin || slotDepartureTimeInSeconds > upperMargin) {
             return 1.0;
         } else {
-            double priorityImpact = this.getPriority() / 10.0;
-            if (slotDepartureTimeInSeconds < this.getThreshold()) {
-                return priorityImpact * (this.getMaxWeight() * (slotDepartureTimeInSeconds * this.getaPos() + this.getbPos()));
+            double priorityImpact = priority / 10.0;
+            double balanceImpact = balance / initialCredits;
+            if (slotDepartureTimeInSeconds < threshold) {
+                return balanceImpact * priorityImpact * (maxWeight * (slotDepartureTimeInSeconds * aPos + bPos));
             } else {
-                return priorityImpact * (this.getMaxWeight() * (slotDepartureTimeInSeconds * this.getaNeg() + this.getbNeg()));
+                return balanceImpact * priorityImpact * (maxWeight * (slotDepartureTimeInSeconds * aNeg + bNeg));
             }
         }
     }
@@ -125,6 +130,22 @@ public class DefaultWeightMapFunction extends WeightMap {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public double getInitialCredits() {
+        return initialCredits;
+    }
+
+    public void setInitialCredits(double initialCredits) {
+        this.initialCredits = initialCredits;
     }
 
     @Override

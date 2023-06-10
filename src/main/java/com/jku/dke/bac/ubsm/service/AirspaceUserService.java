@@ -2,6 +2,7 @@ package com.jku.dke.bac.ubsm.service;
 
 import com.jku.dke.bac.ubsm.model.au.AirspaceUser;
 import com.jku.dke.bac.ubsm.model.au.Margin;
+import com.jku.dke.bac.ubsm.model.au.weightMapFunction.DefaultWeightMapFunction;
 import com.jku.dke.bac.ubsm.model.dto.auDTO.AggressiveAirspaceUserDTO;
 import com.jku.dke.bac.ubsm.model.dto.auDTO.AirspaceUserDTO;
 import com.jku.dke.bac.ubsm.model.dto.auDTO.NeutralAirspaceUserDTO;
@@ -10,7 +11,6 @@ import com.jku.dke.bac.ubsm.model.factory.AggressiveAirspaceUserFactory;
 import com.jku.dke.bac.ubsm.model.factory.NeutralAirspaceUserFactory;
 import com.jku.dke.bac.ubsm.model.factory.PassiveAirspaceUserFactory;
 import com.jku.dke.bac.ubsm.model.mapper.Mapper;
-import com.jku.dke.bac.ubsm.model.au.weightMapFunction.DefaultWeightMapFunction;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +23,8 @@ public class AirspaceUserService {
     private final AggressiveAirspaceUserFactory aggressiveAirspaceUserFactory = new AggressiveAirspaceUserFactory();
     private final NeutralAirspaceUserFactory neutralAirspaceUserFactory = new NeutralAirspaceUserFactory();
     private final PassiveAirspaceUserFactory passiveAirspaceUserFactory = new PassiveAirspaceUserFactory();
+    @Value("${initialCredits}")
+    private double initialCredits;
     @Value("${aggressive.priorityDistribution}")
     private int[] standardPriorityDistributionAggressive;
     @Value("${aggressive.priority.timeToAdd}")
@@ -111,7 +113,12 @@ public class AirspaceUserService {
             if (au == null) throw new IllegalArgumentException("AirspaceUser is null");
 
             au.setName(airspaceUserDTO.getName());
-            au.setCredits(airspaceUserDTO.getCredits());
+
+            if (airspaceUserDTO.getCredits() == 0.0) {
+                au.setCredits(initialCredits);
+            } else {
+                au.setCredits(airspaceUserDTO.getCredits());
+            }
 
             // priority Distribution
             if (isValidPriorityDistribution(airspaceUserDTO)) {
@@ -170,7 +177,7 @@ public class AirspaceUserService {
             }
 
             switch (airspaceUserDTO.getWeightMapFunction()) {
-                case ("default"):
+                case ("DefaultWeightMapFunction"):
                     au.setWeightMapFunction(new DefaultWeightMapFunction());
                 default:
                     au.setWeightMapFunction(new DefaultWeightMapFunction());

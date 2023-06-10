@@ -15,6 +15,7 @@ import java.util.Arrays;
 public abstract class AirspaceUserDTO {
     private String name;
 
+    @Nullable
     private double credits;
 
     @Nullable

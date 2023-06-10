@@ -11,7 +11,10 @@ import com.jku.dke.bac.ubsm.model.flightlist.Slot;
 
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.function.Function;
 
 @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "type")
@@ -23,6 +26,7 @@ public abstract class AirspaceUser {
     private final Random random = new Random();
     private String name;
     private double credits;
+    private double initialCredits;
     private int[] priorityDistribution;
     private int[] priorityFlightMinutesToAdd;
     private Margin[] flexibleFlightPercentages;
@@ -44,6 +48,7 @@ public abstract class AirspaceUser {
 
     public void setCredits(double credits) {
         this.credits = credits;
+        this.initialCredits = credits;
     }
 
     public int[] getPriorityDistribution() {
@@ -86,6 +91,14 @@ public abstract class AirspaceUser {
         this.weightMapFunction = weightMapFunction;
     }
 
+    public double getInitialCredits() {
+        return initialCredits;
+    }
+
+    public void setInitialCredits(double initialCredits) {
+        this.initialCredits = initialCredits;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -99,20 +112,6 @@ public abstract class AirspaceUser {
     @Override
     public int hashCode() {
         return getName().hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return "AirspaceUser{" +
-                "random=" + random +
-                ", name='" + name + '\'' +
-                ", credits=" + credits +
-                ", priorityDistribution=" + Arrays.toString(priorityDistribution) +
-                ", priorityFlightMinutesToAdd=" + Arrays.toString(priorityFlightMinutesToAdd) +
-                ", flexibleFlightPercentages=" + Arrays.toString(flexibleFlightPercentages) +
-                ", flexibleFlightWithPriorityPercentages=" + Arrays.toString(flexibleFlightWithPriorityPercentages) +
-                ", weightMapFunction=" + weightMapFunction +
-                '}';
     }
 
     public void updateCredits(double d) {
@@ -129,7 +128,9 @@ public abstract class AirspaceUser {
                     flight.getNotAfter().toSecondOfDay(),
                     0,
                     flight.getPriority(),
-                    flight.getInitialTime().toSecondOfDay());
+                    flight.getInitialTime().toSecondOfDay(),
+                    flight.getAirspaceUser().getCredits(),
+                    this.initialCredits);
         }
 
         Map<Slot, Double> weightMap = new LinkedHashMap<>();
