@@ -30,18 +30,10 @@ public class Mapper {
             airspaceUserDTO.setPriorityFlightMinutesToAdd(airspaceUser.getPriorityFlightMinutesToAdd());
             airspaceUserDTO.setFlexibleFlightPercentages(airspaceUser.getFlexibleFlightPercentages());
             airspaceUserDTO.setFlexibleFlightWithPriorityPercentages(airspaceUser.getFlexibleFlightWithPriorityPercentages());
-            airspaceUserDTO.setWeightMapFunction(getWeightMap(airspaceUser));
+            airspaceUserDTO.setWeightMapFunction(airspaceUser.getWeightMapFunction().getClass().getSimpleName());
             airspaceUserDTOs.add(airspaceUserDTO);
         });
 
         return airspaceUserDTOs.toArray(airspaceUserDTOs.toArray(new AirspaceUserDTO[0]));
-    }
-
-    private static String getWeightMap(AirspaceUser airspaceUser) {
-        switch (airspaceUser.getWeightMapFunction().getClass().getSimpleName()) {
-            case ("DefaultWeightMapFunction"):
-                return "DefaultWeightMapFunction";
-        }
-        return "unknown";
     }
 }

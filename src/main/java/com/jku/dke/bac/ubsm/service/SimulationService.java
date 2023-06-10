@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -33,6 +34,8 @@ public class SimulationService {
     private int initialTimeMean;
     @Value("${initialTimeStd}")
     private int initialTimeStd;
+    @Value("${inflation}")
+    private double inflation;
     private Optimizer optimizer;
     private Simulator simulator;
     private List<Map<Slot, Flight>> initialFlightLists;
@@ -42,10 +45,10 @@ public class SimulationService {
 
     public SimulationService(final AirspaceUserService airspaceUserService) {
         this.airspaceUserService = airspaceUserService;
-        this.initialFlightLists = new ArrayList<>();
-        this.optimizedFlightLists = new ArrayList<>();
-        this.statistics = new ArrayList<>();
-        this.currRun = 0;
+        initialFlightLists = new ArrayList<>();
+        optimizedFlightLists = new ArrayList<>();
+        statistics = new ArrayList<>();
+        currRun = 0;
     }
 
     private static List<LocalTime> getRandomTimes(int n, int startTimeInSeconds, int maxTimeInSeconds, int mean, int std) {
@@ -71,14 +74,14 @@ public class SimulationService {
             Logger.log("SimulationService - invalid optimizer (" + opt + ") ...");
             throw new IllegalArgumentException("Optimizer " + opt + "not recognised");
         }
-        Logger.log("SimulationService - start simulation with " + optimizer.getClass().getSimpleName() + " ...");
+        Logger.log("SimulationService - start simulation with optimizer " + optimizer.getClass().getSimpleName() + " ...");
 
         if (sim.equals(ZeroAndOutSimulator.class.getSimpleName())) {
-            this.simulator = new ZeroAndOutSimulator();
+            simulator = new ZeroAndOutSimulator();
         } else if (sim.equals(OnlyOfferSimulator.class.getSimpleName())) {
-            this.simulator = new OnlyOfferSimulator();
+            simulator = new OnlyOfferSimulator();
         } else if (sim.equals(InflationSimulator.class.getSimpleName())) {
-            this.simulator = new InflationSimulator();
+            simulator = new InflationSimulator(inflation, airspaceUserService.getInitialCredits());
         } else {
             throw new IllegalArgumentException("Simulation " + sim + "not recognised");
         }
@@ -87,78 +90,122 @@ public class SimulationService {
 
     public RunStatisticDTO runIteration(Map<String, Integer> flightDistribution, Integer delayInMinutes) {
         Logger.log("SimulationService - starting run ...");
-        this.statistics.add(new RunStatisticDTO(this.currRun));
-        this.initialFlightLists.add(createInitialFlightList(flightDistribution, delayInMinutes));
-        this.statistics.get(this.currRun).setInitialFlightList(this.initialFlightLists.get(this.currRun));
-        Map<String, Double> balanceBefore = Arrays.stream(this.airspaceUserService.getAirspaceUsers())
+
+        if (flightDistribution.keySet().stream()
+                .anyMatch(name -> Arrays.stream(airspaceUserService.getAirspaceUsers())
+                        .noneMatch(user -> user.getName().equals(name)))) {
+            Logger.log("SimulationService - Error: There is at least one name in flightDistribution where no AirspaceUser exists");
+            throw new IllegalArgumentException("There is at least one name in flightDistribution where no AirspaceUser exists.");
+        }
+        if (flightDistribution.values().stream().anyMatch(value -> value == null || value < 0)) {
+            Logger.log("SimulationService - Error: There is at least one value null or < 0 in flightDistribution");
+            throw new IllegalArgumentException("There is at least one value null or < 0 in flightDistribution.");
+        }
+        if (delayInMinutes <= 0){
+            Logger.log("SimulationService - Error: delayInMinutes has to be greater than 0");
+            throw new IllegalArgumentException("delayInMinutes has to be greater than 0");
+        }
+
+        Logger.log("SimulationService - Params are correct ...");
+
+        statistics.add(new RunStatisticDTO(currRun));
+        initialFlightLists.add(createInitialFlightList(flightDistribution, delayInMinutes));
+        statistics.get(currRun).setInitialFlightList(initialFlightLists.get(currRun));
+        Map<String, Double> balanceBefore = Arrays.stream(airspaceUserService.getAirspaceUsers())
                 .collect(Collectors.toMap(
                         AirspaceUser::getName,
                         AirspaceUser::getCredits
                 ));
-        this.optimizedFlightLists.add(optimizer.optimize(this.initialFlightLists.get(this.currRun)));
-        initiateClearing(this.optimizedFlightLists.get(this.currRun));
-        this.statistics.get(this.currRun).setOptimizedFlightList(this.optimizedFlightLists.get(this.currRun));
-        Map<String, Double> balanceAfter = Arrays.stream(this.airspaceUserService.getAirspaceUsers())
+        optimizedFlightLists.add(optimizer.optimize(initialFlightLists.get(currRun)));
+        initiateClearing(optimizedFlightLists.get(currRun));
+
+        Map<String, Double> balanceAfter = Arrays.stream(airspaceUserService.getAirspaceUsers())
                 .collect(Collectors.toMap(
                         AirspaceUser::getName,
                         AirspaceUser::getCredits
                 ));
-        this.statistics.get(this.currRun).setParticipationInPercent((double) this.optimizedFlightLists.get(this.currRun).values().stream().filter(Flight::isInOptimizationRun).count() / this.optimizedFlightLists.get(this.currRun).size());
-        this.statistics.get(this.currRun).setAuBalances(new AuBalanceDTO(balanceBefore, balanceAfter));
+
+        while (isInvalidClearing(balanceAfter)) {
+            Logger.log("SimulationService - clearing is invalid, at least one AU has negative credits ...");
+            rollbackBalances(balanceBefore);
+            optimizedFlightLists.remove(currRun);
+            optimizedFlightLists.add(optimizer.optimize(initialFlightLists.get(currRun)));
+            initiateClearing(optimizedFlightLists.get(currRun));
+            balanceAfter = Arrays.stream(airspaceUserService.getAirspaceUsers())
+                    .collect(Collectors.toMap(
+                            AirspaceUser::getName,
+                            AirspaceUser::getCredits
+                    ));
+        }
+
+        statistics.get(currRun).setOptimizedFlightList(optimizedFlightLists.get(currRun));
+        statistics.get(currRun).setParticipationInPercent((double) optimizedFlightLists.get(currRun).values().stream().filter(Flight::isInOptimizationRun).count() / optimizedFlightLists.get(currRun).size());
+        statistics.get(currRun).setAuBalances(new AuBalanceDTO(balanceBefore, balanceAfter));
         Logger.log("SimulationService - run done ...");
-        return this.statistics.get(this.currRun++);
+        return statistics.get(currRun++);
     }
 
     public OverviewDTO endSimulation() {
         OverviewDTO overviewDTO = new OverviewDTO();
-        overviewDTO.setTotalRuns(this.currRun);
-        overviewDTO.setSimulator(this.simulator.getClass().getSimpleName());
-        overviewDTO.setOptimizer(this.optimizer.getClass().getSimpleName());
+        overviewDTO.setTotalRuns(currRun);
+        overviewDTO.setSimulator(simulator.getClass().getSimpleName());
+        overviewDTO.setOptimizer(optimizer.getClass().getSimpleName());
         Map<Integer, AuBalanceDTO> balances = new HashMap<>();
         AtomicInteger i = new AtomicInteger();
-        this.statistics.forEach(runStatisticDTO -> {
-            balances.put(i.getAndIncrement(), runStatisticDTO.getAuBalances());
-        });
+        statistics.forEach(runStatisticDTO -> balances.put(i.getAndIncrement(), runStatisticDTO.getAuBalances()));
         overviewDTO.setBalances(balances);
-        this.optimizer = null;
-        this.simulator = null;
-        this.initialFlightLists = new ArrayList<>();
-        this.optimizedFlightLists = new ArrayList<>();
-        this.statistics = new ArrayList<>();
-        this.currRun = 0;
+        optimizer = null;
+        simulator = null;
+        initialFlightLists = new ArrayList<>();
+        optimizedFlightLists = new ArrayList<>();
+        statistics = new ArrayList<>();
+        currRun = 0;
         return overviewDTO;
     }
 
     private void initiateClearing(Map<Slot, Flight> optimizedFlightList) {
         Logger.log("SimulationService - starting clearing ...");
         final double totalInitialUtility = optimizedFlightList.values().stream()
-                .filter(flight -> flight.getOptimizedUtility() != null)
+                .filter(Flight::isInOptimizationRun)
                 .mapToDouble(Flight::getInitialUtility).sum();
         final double totalOptimizedUtility = optimizedFlightList.values().stream()
-                .filter(flight -> flight.getOptimizedUtility() != null)
+                .filter(Flight::isInOptimizationRun)
                 .mapToDouble(Flight::getOptimizedUtility).sum();
         double utilityIncrease = (totalOptimizedUtility - totalInitialUtility) / totalInitialUtility;
-        this.statistics.get(this.currRun).setTotalInitialUtility(totalInitialUtility);
-        this.statistics.get(this.currRun).setTotalOptimizedUtility(totalOptimizedUtility);
-        this.statistics.get(this.currRun).setUtilityIncrease(utilityIncrease);
-        this.simulator.clearing(optimizedFlightList, utilityIncrease);
+        statistics.get(currRun).setTotalInitialUtility(totalInitialUtility);
+        statistics.get(currRun).setTotalOptimizedUtility(totalOptimizedUtility);
+        statistics.get(currRun).setUtilityIncrease(utilityIncrease);
+        simulator.clearing(optimizedFlightList, utilityIncrease);
         Logger.log("SimulationService - clearing done ...");
+    }
+
+    private boolean isInvalidClearing(Map<String, Double> balanceAfter) {
+        Logger.log("SimulationService - checking clearing ...");
+        AtomicBoolean returner = new AtomicBoolean(false);
+        balanceAfter.forEach((auName, credits) -> {
+            if (credits < 0) {
+                returner.set(true);
+                initialFlightLists.get(currRun).values().forEach(flight -> {
+                    if (flight.getAirspaceUser().getName().equals(auName)) {
+                        flight.setInOptimizationRun(false);
+                    }
+                });
+            }
+        });
+        return returner.get();
+    }
+
+    private void rollbackBalances(Map<String, Double> balanceBefore) {
+        Logger.log("SimulationService - starting rollback ...");
+        Arrays.stream(airspaceUserService.getAirspaceUsers()).forEach(airspaceUser -> {
+            airspaceUser.setCredits(balanceBefore.get(airspaceUser.getName()));
+        });
+        Logger.log("SimulationService - rollback done ...");
     }
 
     private Map<Slot, Flight> createInitialFlightList(Map<String, Integer> flightDistribution, Integer delayInMinutes) {
         Logger.log("SimulationService - start generating initial flightList ...");
         List<AirspaceUser> actualAirspaceUsers = Arrays.stream(airspaceUserService.getAirspaceUsers()).toList();
-
-        if (flightDistribution.keySet().stream().toList().stream().anyMatch(name -> actualAirspaceUsers.stream().noneMatch(user -> user.getName().equals(name)))) {
-            Logger.log("SimulationService - Error: There is at least one name in flightDistribution where no AirspaceUser exists");
-            throw new IllegalArgumentException("There is at least one name in flightDistribution where no AirspaceUser exists.");
-        }
-
-        if (flightDistribution.values().stream().anyMatch(value -> value == null || value < 0)) {
-            Logger.log("SimulationService - Error: There is at least one value null or < 0 in flightDistribution");
-            throw new IllegalArgumentException("There is at least one value null or < 0 in flightDistribution.");
-        }
-
         Map<Slot, Flight> flightList = new HashMap<>();
         List<LocalTime> initialLocalTimeList = getRandomTimes(flightDistribution.values().stream().mapToInt(Integer::intValue).sum(), startTimeInSeconds, endTimeInSeconds, initialTimeMean, initialTimeStd);
         AtomicInteger initialLocalTimeListIndex = new AtomicInteger();
@@ -168,6 +215,7 @@ public class SimulationService {
                 for (int i = 0; i < flightDistribution.get(airspaceUser.getName()); i++) {
                     Flight flight = new Flight(flightIndex.getAndIncrement(), airspaceUser, initialLocalTimeList.get(initialLocalTimeListIndex.getAndIncrement()));
                     flight.setScheduledTime(flight.getInitialTime().plusMinutes(delayInMinutes));
+                    flight.setInOptimizationRun(true);
                     Slot slot = new Slot(flight.getScheduledTime());
                     flightList.put(slot, flight);
                 }

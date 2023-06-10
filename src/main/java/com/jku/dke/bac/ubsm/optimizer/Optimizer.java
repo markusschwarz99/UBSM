@@ -27,10 +27,9 @@ public abstract class Optimizer {
         Logger.log("Optimizer - flightList is not fully improved, starting a new iteration ...");
 
         List<Slot> slotsToRemove = toCheck.entrySet().stream()
-                .filter(entry -> isInvalidWeightMap(entry.getValue().getWeightMap()))
+                .filter(entry -> isInvalidWeightMap(entry.getValue().getWeightMap()) || !entry.getValue().isInOptimizationRun())
                 .map(Map.Entry::getKey)
                 .toList();
-
         slotsToRemove.forEach(slot -> notFeasibleFlights.put(slot, toCheck.remove(slot)));
 
         toCheck.values().forEach(flight -> {
@@ -43,7 +42,7 @@ public abstract class Optimizer {
 
     protected boolean isFullyImproved(Map<Slot, Flight> slotFlightMap) {
         for (Flight flight : slotFlightMap.values()) {
-            if (isInvalidWeightMap(flight.getWeightMap())) return false;
+            if (isInvalidWeightMap(flight.getWeightMap()) || !flight.isInOptimizationRun()) return false;
         }
         return true;
     }

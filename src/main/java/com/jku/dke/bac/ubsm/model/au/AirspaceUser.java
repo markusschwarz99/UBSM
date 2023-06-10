@@ -115,7 +115,7 @@ public abstract class AirspaceUser {
     }
 
     public void updateCredits(double d) {
-        this.credits -= d;
+        this.credits += d;
     }
 
     private void generateWeightMap(Flight flight, List<Slot> possibleSlots) {

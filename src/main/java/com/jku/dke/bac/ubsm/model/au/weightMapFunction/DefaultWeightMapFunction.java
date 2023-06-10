@@ -43,7 +43,7 @@ public class DefaultWeightMapFunction extends WeightMap {
             return 1.0;
         } else {
             double priorityImpact = priority / 10.0;
-            double balanceImpact = balance / initialCredits;
+            double balanceImpact = balance / initialCredits + 0.5;
             if (slotDepartureTimeInSeconds < threshold) {
                 return balanceImpact * priorityImpact * (maxWeight * (slotDepartureTimeInSeconds * aPos + bPos));
             } else {

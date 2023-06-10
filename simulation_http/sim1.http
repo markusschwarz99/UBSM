@@ -12,7 +12,7 @@ Accept: application/json
 
 ###
 
-POST http://localhost:8080/start/HungarianOptimizer/ZeroAndOutSimulator
+POST http://localhost:8080/start/HungarianOptimizer/InflationSimulator
 
 ###
 
@@ -40,8 +40,114 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:8080/end
 
->> ./output/overview.json
+POST http://localhost:8080/run/30
+Content-Type: application/json
+
+< ./input/flightDistribution1.json
+>> ./output/statistic.json
 
 ###
+
+
+POST http://localhost:8080/run/30
+Content-Type: application/json
+
+< ./input/flightDistribution1.json
+>> ./output/statistic.json
+
+###
+
+POST http://localhost:8080/run/30
+Content-Type: application/json
+
+< ./input/flightDistribution1.json
+>> ./output/statistic.json
+
+###
+
+POST http://localhost:8080/run/30
+Content-Type: application/json
+
+< ./input/flightDistribution1.json
+>> ./output/statistic.json
+
+###
+
+POST http://localhost:8080/run/30
+Content-Type: application/json
+
+< ./input/flightDistribution1.json
+>> ./output/statistic.json
+
+###
+
+POST http://localhost:8080/run/30
+Content-Type: application/json
+
+< ./input/flightDistribution1.json
+>> ./output/statistic.json
+
+###
+
+POST http://localhost:8080/run/30
+Content-Type: application/json
+
+< ./input/flightDistribution1.json
+>> ./output/statistic.json
+
+###
+
+POST http://localhost:8080/run/30
+Content-Type: application/json
+
+< ./input/flightDistribution1.json
+>> ./output/statistic.json
+
+###
+
+POST http://localhost:8080/run/30
+Content-Type: application/json
+
+< ./input/flightDistribution1.json
+>> ./output/statistic.json
+
+###
+
+POST http://localhost:8080/run/30
+Content-Type: application/json
+
+< ./input/flightDistribution1.json
+>> ./output/statistic.json
+
+###
+
+POST http://localhost:8080/run/30
+Content-Type: application/json
+
+< ./input/flightDistribution1.json
+>> ./output/statistic.json
+
+###
+
+POST http://localhost:8080/run/30
+Content-Type: application/json
+
+< ./input/flightDistribution1.json
+>> ./output/statistic.json
+
+###
+
+POST http://localhost:8080/run/30
+Content-Type: application/json
+
+< ./input/flightDistribution1.json
+>> ./output/statistic.json
+
+####
+#
+#DELETE http://localhost:8080/end
+#
+#>> ./output/overview.json
+#
+####

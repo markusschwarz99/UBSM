@@ -30,10 +30,10 @@ public class SimulationController {
         ResponseEntity<Void> response;
         try {
             simulationService.startSimulation(optimizer, simulator);
-            Logger.log("SimulationController - Simulation started with " + optimizer + " ...");
+            Logger.log("SimulationController - Simulation started with " + optimizer + " and/or " + simulator + " ...");
             response = new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            Logger.log("SimulationController - Unable to start simulation with " + optimizer + " ...");
+            Logger.log("SimulationController - Unable to start simulation with " + optimizer + " and/or " + simulator + " ...");
             response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return response;
@@ -50,7 +50,7 @@ public class SimulationController {
             Logger.log("SimulationController - Iteration done ...");
             response = new ResponseEntity<>(runStatisticDTO, HttpStatus.OK);
         } catch (Exception e) {
-            Logger.log("SimulationController - Iteration Error with flightDistribution " + flightDistribution.toString() + " ...");
+            Logger.log("SimulationController - Iteration Error with flightDistribution " + flightDistribution.toString() + " or with the delayInMinutes " + delayInMinutes + " ...");
             response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return response;
