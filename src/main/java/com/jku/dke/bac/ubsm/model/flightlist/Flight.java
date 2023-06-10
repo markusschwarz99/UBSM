@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.util.Map;
 
 public class Flight {
+    private int id;
     private AirspaceUser airspaceUser;
     private LocalTime initialTime;
     private LocalTime scheduledTime;
@@ -18,8 +19,11 @@ public class Flight {
     private Map<Slot, Double> weightMap;
     private double initialUtility;
     private Double optimizedUtility;
+    private boolean isInOptimizationRun;
+    private double cost;
 
-    public Flight(AirspaceUser airspaceUser, LocalTime initialTime) {
+    public Flight(int id, AirspaceUser airspaceUser, LocalTime initialTime) {
+        this.id = id;
         this.airspaceUser = airspaceUser;
         this.initialTime = initialTime;
     }
@@ -112,10 +116,35 @@ public class Flight {
         this.optimizedUtility = optimizedUtility;
     }
 
+    public boolean isInOptimizationRun() {
+        return isInOptimizationRun;
+    }
+
+    public void setInOptimizationRun(boolean inOptimizationRun) {
+        isInOptimizationRun = inOptimizationRun;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
     @Override
     public String toString() {
         return "Flight{" +
-                "airspaceUser=" + airspaceUser +
+                "id=" + id +
+                ", airspaceUser=" + airspaceUser +
                 ", initialTime=" + initialTime +
                 ", scheduledTime=" + scheduledTime +
                 ", wishedTime=" + wishedTime +
@@ -126,6 +155,8 @@ public class Flight {
                 ", weightMap=" + weightMap +
                 ", initialUtility=" + initialUtility +
                 ", optimizedUtility=" + optimizedUtility +
+                ", isInOptimizationRun=" + isInOptimizationRun +
+                ", cost=" + cost +
                 '}';
     }
 }

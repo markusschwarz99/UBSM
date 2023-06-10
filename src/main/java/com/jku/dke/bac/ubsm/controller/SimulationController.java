@@ -1,8 +1,8 @@
 package com.jku.dke.bac.ubsm.controller;
 
 import com.jku.dke.bac.ubsm.Logger;
-import com.jku.dke.bac.ubsm.model.dto.OverviewDTO;
-import com.jku.dke.bac.ubsm.model.dto.StatisticDTO;
+import com.jku.dke.bac.ubsm.model.dto.statisticsDTO.OverviewDTO;
+import com.jku.dke.bac.ubsm.model.dto.statisticsDTO.RunStatisticDTO;
 import com.jku.dke.bac.ubsm.service.SimulationService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -39,35 +39,18 @@ public class SimulationController {
         return response;
     }
 
-    @ApiOperation(value = "Start a iteration", response = Map.class, produces = "application/json", consumes = "application/json")
-    @PostMapping(path = "/run", produces = "application/json", consumes = "application/json")
+    @ApiOperation(value = "Start a iteration", response = RunStatisticDTO.class, produces = "application/json", consumes = "application/json")
+    @PostMapping(path = "/run/{delayInMinutes}", produces = "application/json", consumes = "application/json")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Ok"), @ApiResponse(code = 400, message = "Bad Request")})
-    public ResponseEntity<Void> run(@RequestBody Map<String, Integer> flightDistribution) {
+    public ResponseEntity<RunStatisticDTO> run(@RequestBody Map<String, Integer> flightDistribution, @PathVariable Integer delayInMinutes) {
         Logger.log("SimulationController - REST: start iteration ...");
-        ResponseEntity<Void> response;
+        ResponseEntity<RunStatisticDTO> response;
         try {
-            simulationService.runIteration(flightDistribution);
+            RunStatisticDTO runStatisticDTO = simulationService.runIteration(flightDistribution, delayInMinutes);
             Logger.log("SimulationController - Iteration done ...");
-            response = new ResponseEntity<>(HttpStatus.OK);
+            response = new ResponseEntity<>(runStatisticDTO, HttpStatus.OK);
         } catch (Exception e) {
             Logger.log("SimulationController - Iteration Error with flightDistribution " + flightDistribution.toString() + " ...");
-            response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return response;
-    }
-
-    @ApiOperation(value = "Get all FlightLists", response = StatisticDTO.class, produces = "application/json")
-    @GetMapping(path = "/statistic/{runId}", produces = "application/json")
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "Bad Request")})
-    public ResponseEntity<StatisticDTO> getRunStatistic(@PathVariable int runId) {
-        Logger.log("SimulationController - REST: start getting statistic for run " + runId + " ...");
-        ResponseEntity<StatisticDTO> response;
-        try {
-            StatisticDTO statisticDTO = simulationService.getStatistic(runId);
-            Logger.log("SimulationController - Statistic created ...");
-            response = new ResponseEntity<>(statisticDTO, HttpStatus.OK);
-        } catch (Exception e) {
-            Logger.log("SimulationController - Error when creating a statistic for run " + runId + " ...");
             response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return response;

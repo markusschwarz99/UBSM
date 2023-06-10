@@ -20,6 +20,8 @@ public abstract class Optimizer {
         Logger.log("Optimizer - checking feasibility ...");
         if (isFullyImproved(toCheck)) {
             Logger.log("Optimizer - flightList is fully improved ...");
+            toCheck.forEach((slot, flight) -> flight.setInOptimizationRun(true));
+            notFeasibleFlights.forEach((slot, flight) -> flight.setInOptimizationRun(false));
             return List.of(toCheck, notFeasibleFlights);
         }
         Logger.log("Optimizer - flightList is not fully improved, starting a new iteration ...");
@@ -47,8 +49,6 @@ public abstract class Optimizer {
     }
 
     protected boolean isInvalidWeightMap(Map<Slot, Double> weightMap) {
-        return weightMap.values().stream().anyMatch(value -> Double.isNaN(value))
-                || weightMap.values().stream().allMatch(value -> value == -Double.MAX_VALUE)
-                || weightMap.values().stream().filter(value -> value != -Double.MAX_VALUE).count() <= 1;
+        return weightMap.values().stream().filter(value -> value > 1).count() <= 1;
     }
 }

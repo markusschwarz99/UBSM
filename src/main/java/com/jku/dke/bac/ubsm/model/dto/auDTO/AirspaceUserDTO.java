@@ -1,7 +1,8 @@
-package com.jku.dke.bac.ubsm.model.dto;
+package com.jku.dke.bac.ubsm.model.dto.auDTO;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.jku.dke.bac.ubsm.model.au.Margin;
 import org.springframework.lang.Nullable;
 
 import java.util.Arrays;
@@ -14,6 +15,7 @@ import java.util.Arrays;
 public abstract class AirspaceUserDTO {
     private String name;
 
+    @Nullable
     private double credits;
 
     @Nullable
@@ -29,10 +31,10 @@ public abstract class AirspaceUserDTO {
     private int[] priorityFlightMinutesToAdd;
 
     @Nullable
-    private MarginDTO[] flexibleFlightPercentages;
+    private Margin[] flexibleFlightPercentages;
 
     @Nullable
-    private MarginDTO[] flexibleFlightWithPriorityPercentages;
+    private Margin[] flexibleFlightWithPriorityPercentages;
 
     @Nullable
     private String weightMapFunction;
@@ -93,20 +95,20 @@ public abstract class AirspaceUserDTO {
     }
 
     @Nullable
-    public MarginDTO[] getFlexibleFlightWithPriorityPercentages() {
+    public Margin[] getFlexibleFlightWithPriorityPercentages() {
         return flexibleFlightWithPriorityPercentages;
     }
 
-    public void setFlexibleFlightWithPriorityPercentages(@Nullable MarginDTO[] flexibleFlightWithPriorityPercentages) {
+    public void setFlexibleFlightWithPriorityPercentages(@Nullable Margin[] flexibleFlightWithPriorityPercentages) {
         this.flexibleFlightWithPriorityPercentages = flexibleFlightWithPriorityPercentages;
     }
 
     @Nullable
-    public MarginDTO[] getFlexibleFlightPercentages() {
+    public Margin[] getFlexibleFlightPercentages() {
         return flexibleFlightPercentages;
     }
 
-    public void setFlexibleFlightPercentages(@Nullable MarginDTO[] flexibleFlightPercentages) {
+    public void setFlexibleFlightPercentages(@Nullable Margin[] flexibleFlightPercentages) {
         this.flexibleFlightPercentages = flexibleFlightPercentages;
     }
 

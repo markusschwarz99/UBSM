@@ -6,10 +6,7 @@ import com.jku.dke.bac.ubsm.model.flightlist.Flight;
 import com.jku.dke.bac.ubsm.model.flightlist.Slot;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 

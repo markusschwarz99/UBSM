@@ -4,14 +4,17 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+import com.jku.dke.bac.ubsm.model.au.weightMapFunction.DefaultWeightMapFunction;
 import com.jku.dke.bac.ubsm.model.flightlist.Flight;
 import com.jku.dke.bac.ubsm.model.flightlist.FlightType;
 import com.jku.dke.bac.ubsm.model.flightlist.Slot;
-import com.jku.dke.bac.ubsm.model.weightMapFunction.DefaultWeightMapFunction;
 
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.function.Function;
 
 @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "type")
@@ -23,6 +26,7 @@ public abstract class AirspaceUser {
     private final Random random = new Random();
     private String name;
     private double credits;
+    private double initialCredits;
     private int[] priorityDistribution;
     private int[] priorityFlightMinutesToAdd;
     private Margin[] flexibleFlightPercentages;
@@ -44,6 +48,7 @@ public abstract class AirspaceUser {
 
     public void setCredits(double credits) {
         this.credits = credits;
+        this.initialCredits = credits;
     }
 
     public int[] getPriorityDistribution() {
@@ -86,6 +91,14 @@ public abstract class AirspaceUser {
         this.weightMapFunction = weightMapFunction;
     }
 
+    public double getInitialCredits() {
+        return initialCredits;
+    }
+
+    public void setInitialCredits(double initialCredits) {
+        this.initialCredits = initialCredits;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -101,22 +114,8 @@ public abstract class AirspaceUser {
         return getName().hashCode();
     }
 
-    @Override
-    public String toString() {
-        return "AirspaceUser{" +
-                "random=" + random +
-                ", name='" + name + '\'' +
-                ", credits=" + credits +
-                ", priorityDistribution=" + Arrays.toString(priorityDistribution) +
-                ", priorityFlightMinutesToAdd=" + Arrays.toString(priorityFlightMinutesToAdd) +
-                ", flexibleFlightPercentages=" + Arrays.toString(flexibleFlightPercentages) +
-                ", flexibleFlightWithPriorityPercentages=" + Arrays.toString(flexibleFlightWithPriorityPercentages) +
-                ", weightMapFunction=" + weightMapFunction +
-                '}';
-    }
-
     public void updateCredits(double d) {
-        this.credits += d;
+        this.credits -= d;
     }
 
     private void generateWeightMap(Flight flight, List<Slot> possibleSlots) {
@@ -126,12 +125,12 @@ public abstract class AirspaceUser {
                     0,
                     flight.getWishedTime().toSecondOfDay(),
                     1,
-                    flight.getWishedTime().toSecondOfDay(),
-                    1,
                     flight.getNotAfter().toSecondOfDay(),
                     0,
-                    flight.getWishedTime().toSecondOfDay(),
-                    flight.getPriority());
+                    flight.getPriority(),
+                    flight.getInitialTime().toSecondOfDay(),
+                    flight.getAirspaceUser().getCredits(),
+                    this.initialCredits);
         }
 
         Map<Slot, Double> weightMap = new LinkedHashMap<>();
@@ -172,6 +171,12 @@ public abstract class AirspaceUser {
         } else if (flight.getFlightType() == FlightType.PRIORITY) {
             localTimes = generatePriorityTimes(flight, possibleSlots);
         }
+        if (localTimes[0].equals(localTimes[1])) {
+            localTimes[1] = localTimes[1].plusMinutes(1);
+        }
+        if (localTimes[2].equals(localTimes[1])) {
+            localTimes[2] = localTimes[2].plusMinutes(1);
+        }
         flight.setNotBefore(localTimes[0]);
         flight.setWishedTime(localTimes[1]);
         flight.setNotAfter(localTimes[2]);
@@ -196,6 +201,7 @@ public abstract class AirspaceUser {
             localTimes[1] = flight.getScheduledTime();
         }
         localTimes[2] = localTimes[1].plusMinutes(random.nextInt(priorityFlightMinutesToAdd[1] - priorityFlightMinutesToAdd[0]) + priorityFlightMinutesToAdd[0]);
+
         return localTimes;
     }
 
@@ -203,12 +209,16 @@ public abstract class AirspaceUser {
         LocalTime[] localTimes = new LocalTime[3];
         long generatedTimeInSeconds;
         long durationInSeconds = Duration.between(flight.getScheduledTime(), possibleSlots.get(possibleSlots.size() - 1).getDepartureTime()).toSeconds();
-        generatedTimeInSeconds = (long) ((durationInSeconds * random.nextDouble(margins[0].getUpperBound() - margins[0].getLowerBound()) + margins[0].getLowerBound()) + flight.getScheduledTime().toSecondOfDay());
+        generatedTimeInSeconds = (long) ((durationInSeconds *
+                random.nextDouble(margins[0].getUpperBound() - margins[0].getLowerBound()) + margins[0].getLowerBound()) + flight.getScheduledTime().toSecondOfDay());
         localTimes[0] = LocalTime.ofSecondOfDay(generatedTimeInSeconds - (generatedTimeInSeconds % 60));
-        generatedTimeInSeconds = (long) ((durationInSeconds * random.nextDouble(margins[1].getUpperBound() - margins[1].getLowerBound()) + margins[1].getLowerBound()) + localTimes[0].toSecondOfDay());
+        generatedTimeInSeconds = (long) ((durationInSeconds *
+                random.nextDouble(margins[1].getUpperBound() - margins[1].getLowerBound()) + margins[1].getLowerBound()) + localTimes[0].toSecondOfDay());
         localTimes[1] = LocalTime.ofSecondOfDay(generatedTimeInSeconds - (generatedTimeInSeconds % 60));
-        generatedTimeInSeconds = (long) ((durationInSeconds * random.nextDouble(margins[2].getUpperBound() - margins[2].getLowerBound()) + margins[2].getLowerBound()) + localTimes[0].toSecondOfDay());
+        generatedTimeInSeconds = (long) ((durationInSeconds *
+                random.nextDouble(margins[2].getUpperBound() - margins[2].getLowerBound()) + margins[2].getLowerBound()) + localTimes[1].toSecondOfDay());
         localTimes[2] = LocalTime.ofSecondOfDay(generatedTimeInSeconds - (generatedTimeInSeconds % 60));
+
         return localTimes;
     }
 }

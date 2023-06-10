@@ -1,8 +1,14 @@
 package com.jku.dke.bac.ubsm.simulator;
 
+import com.jku.dke.bac.ubsm.model.flightlist.Flight;
+import com.jku.dke.bac.ubsm.model.flightlist.Slot;
+
+import java.util.Map;
+
 public class InflationSimulator extends Simulator {
+
     @Override
-    void clearing() {
+    public void clearing(Map<Slot, Flight> optimizedFlightList, double utilityIncrease) {
 
     }
 }
