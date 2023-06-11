@@ -83,6 +83,7 @@ public class SimulationService {
         } else if (sim.equals(InflationSimulator.class.getSimpleName())) {
             simulator = new InflationSimulator(inflation, airspaceUserService.getInitialCredits());
         } else {
+            Logger.log("SimulationService - invalid simulator (" + sim + ") ...");
             throw new IllegalArgumentException("Simulation " + sim + "not recognised");
         }
         Logger.log("SimulationService - start simulation with " + simulator.getClass().getSimpleName() + " ...");
@@ -197,9 +198,7 @@ public class SimulationService {
 
     private void rollbackBalances(Map<String, Double> balanceBefore) {
         Logger.log("SimulationService - starting rollback ...");
-        Arrays.stream(airspaceUserService.getAirspaceUsers()).forEach(airspaceUser -> {
-            airspaceUser.setCredits(balanceBefore.get(airspaceUser.getName()));
-        });
+        Arrays.stream(airspaceUserService.getAirspaceUsers()).forEach(airspaceUser -> airspaceUser.setCredits(balanceBefore.get(airspaceUser.getName())));
         Logger.log("SimulationService - rollback done ...");
     }
 

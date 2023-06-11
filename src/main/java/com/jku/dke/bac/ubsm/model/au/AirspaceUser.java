@@ -165,9 +165,9 @@ public abstract class AirspaceUser {
     private void generateTimes(Flight flight, List<Slot> possibleSlots) {
         LocalTime[] localTimes = new LocalTime[3];
         if (flight.getFlightType() == FlightType.FLEXIBLE) {
-            localTimes = generateFlexPercentTimes(flight, possibleSlots, this.flexibleFlightPercentages);
+            localTimes = generateFlexPercentTimes(flight, possibleSlots, flexibleFlightPercentages);
         } else if (flight.getFlightType() == FlightType.FLEXIBLEWITHPRIORITY) {
-            localTimes = generateFlexPercentTimes(flight, possibleSlots, this.flexibleFlightWithPriorityPercentages);
+            localTimes = generateFlexPercentTimes(flight, possibleSlots, flexibleFlightWithPriorityPercentages);
         } else if (flight.getFlightType() == FlightType.PRIORITY) {
             localTimes = generatePriorityTimes(flight, possibleSlots);
         }
