@@ -30,11 +30,14 @@ public abstract class Optimizer {
                 .filter(entry -> isInvalidWeightMap(entry.getValue().getWeightMap()) || !entry.getValue().isInOptimizationRun())
                 .map(Map.Entry::getKey)
                 .toList();
-        slotsToRemove.forEach(slot -> notFeasibleFlights.put(slot, toCheck.remove(slot)));
+
+        List<Slot> slotsToRemoveUnique = slotsToRemove.stream().distinct().toList();
+
+        slotsToRemoveUnique.forEach(slot -> notFeasibleFlights.put(slot, toCheck.remove(slot)));
 
         toCheck.values().forEach(flight -> {
             Map<Slot, Double> currWeightMap = flight.getWeightMap();
-            slotsToRemove.forEach(currWeightMap.keySet()::remove);
+            slotsToRemoveUnique.forEach(currWeightMap.keySet()::remove);
         });
 
         return getFeasibleFlightList(toCheck, notFeasibleFlights);

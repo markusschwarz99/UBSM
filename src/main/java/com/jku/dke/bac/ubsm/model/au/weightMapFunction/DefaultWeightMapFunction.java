@@ -52,6 +52,14 @@ public class DefaultWeightMapFunction extends WeightMap {
         }
     }
 
+    public double getInitialCredits() {
+        return initialCredits;
+    }
+
+    public void setInitialCredits(double initialCredits) {
+        this.initialCredits = initialCredits;
+    }
+
     public double getMaxWeight() {
         return maxWeight;
     }
@@ -138,18 +146,5 @@ public class DefaultWeightMapFunction extends WeightMap {
 
     public void setBalance(double balance) {
         this.balance = balance;
-    }
-
-    public double getInitialCredits() {
-        return initialCredits;
-    }
-
-    public void setInitialCredits(double initialCredits) {
-        this.initialCredits = initialCredits;
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() + " - default";
     }
 }

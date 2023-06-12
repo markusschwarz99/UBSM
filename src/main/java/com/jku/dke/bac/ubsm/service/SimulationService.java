@@ -102,7 +102,7 @@ public class SimulationService {
             Logger.log("SimulationService - Error: There is at least one value null or < 0 in flightDistribution");
             throw new IllegalArgumentException("There is at least one value null or < 0 in flightDistribution.");
         }
-        if (delayInMinutes <= 0){
+        if (delayInMinutes <= 0) {
             Logger.log("SimulationService - Error: delayInMinutes has to be greater than 0");
             throw new IllegalArgumentException("delayInMinutes has to be greater than 0");
         }
@@ -117,32 +117,41 @@ public class SimulationService {
                         AirspaceUser::getName,
                         AirspaceUser::getCredits
                 ));
-        optimizedFlightLists.add(optimizer.optimize(initialFlightLists.get(currRun)));
-        initiateClearing(optimizedFlightLists.get(currRun));
 
-        Map<String, Double> balanceAfter = Arrays.stream(airspaceUserService.getAirspaceUsers())
-                .collect(Collectors.toMap(
-                        AirspaceUser::getName,
-                        AirspaceUser::getCredits
-                ));
-
-        while (isInvalidClearing(balanceAfter)) {
-            Logger.log("SimulationService - clearing is invalid, at least one AU has negative credits ...");
-            rollbackBalances(balanceBefore);
-            optimizedFlightLists.remove(currRun);
-            optimizedFlightLists.add(optimizer.optimize(initialFlightLists.get(currRun)));
+        Map<Slot, Flight> optimizedFlightList = optimizer.optimize(initialFlightLists.get(currRun));
+        if (optimizedFlightList != null) {
+            optimizedFlightLists.add(optimizedFlightList);
             initiateClearing(optimizedFlightLists.get(currRun));
-            balanceAfter = Arrays.stream(airspaceUserService.getAirspaceUsers())
+            Map<String, Double> balanceAfter = Arrays.stream(airspaceUserService.getAirspaceUsers())
                     .collect(Collectors.toMap(
                             AirspaceUser::getName,
                             AirspaceUser::getCredits
                     ));
-        }
 
-        statistics.get(currRun).setOptimizedFlightList(optimizedFlightLists.get(currRun));
-        statistics.get(currRun).setParticipationInPercent((double) optimizedFlightLists.get(currRun).values().stream().filter(Flight::isInOptimizationRun).count() / optimizedFlightLists.get(currRun).size());
-        statistics.get(currRun).setAuBalances(new AuBalanceDTO(balanceBefore, balanceAfter));
-        Logger.log("SimulationService - run done ...");
+            while (isInvalidClearing(balanceAfter)) {
+                Logger.log("SimulationService - clearing is invalid, at least one AU has negative credits ...");
+                rollbackBalances(balanceBefore);
+                optimizedFlightLists.remove(currRun);
+                optimizedFlightList = optimizer.optimize(initialFlightLists.get(currRun));
+                if (optimizedFlightList != null) {
+                    optimizedFlightLists.add(optimizedFlightList);
+                    initiateClearing(optimizedFlightLists.get(currRun));
+                    balanceAfter = Arrays.stream(airspaceUserService.getAirspaceUsers())
+                            .collect(Collectors.toMap(
+                                    AirspaceUser::getName,
+                                    AirspaceUser::getCredits
+                            ));
+                } else {
+                    optimizedFlightLists.add(new HashMap<>());
+                    return statistics.get(currRun++);
+                }
+            }
+
+            statistics.get(currRun).setOptimizedFlightList(optimizedFlightLists.get(currRun));
+            statistics.get(currRun).setParticipationInPercent((double) optimizedFlightLists.get(currRun).values().stream().filter(Flight::isInOptimizationRun).count() / optimizedFlightLists.get(currRun).size());
+            statistics.get(currRun).setAuBalances(new AuBalanceDTO(balanceBefore, balanceAfter));
+            Logger.log("SimulationService - run done ...");
+        }
         return statistics.get(currRun++);
     }
 
@@ -186,12 +195,20 @@ public class SimulationService {
         balanceAfter.forEach((auName, credits) -> {
             if (credits < 0) {
                 returner.set(true);
+
                 initialFlightLists.get(currRun).values().forEach(flight -> {
                     if (flight.getAirspaceUser().getName().equals(auName)) {
-                        flight.setInOptimizationRun(false);
+                        if (optimizer.getClass().getSimpleName().equals(OnlyOfferSimulator.class.getSimpleName())) {
+                            if (flight.getCost() < 0) {
+                                flight.setInOptimizationRun(false);
+                            }
+                        } else {
+                            flight.setInOptimizationRun(false);
+                        }
                     }
                 });
             }
+
         });
         return returner.get();
     }

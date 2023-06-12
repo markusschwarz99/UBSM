@@ -6,7 +6,10 @@ import com.jku.dke.bac.ubsm.model.flightlist.Flight;
 import com.jku.dke.bac.ubsm.model.flightlist.Slot;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -23,6 +26,10 @@ public class HungarianOptimizer extends Optimizer {
 
         Logger.log("HungarianOptimizer - feasibleFlights: " + feasibleFlightLists.get(0).size() + " ...");
         Logger.log("HungarianOptimizer - not feasibleFlights: " + feasibleFlightLists.get(1).size() + " ...");
+
+        if (feasibleFlightLists.get(0).size() == 0){
+            return null;
+        }
 
         int length = feasibleFlightLists.get(0).size();
         double[][] input = new double[length][length];

@@ -1,10 +1,6 @@
 package com.jku.dke.bac.ubsm.model.flightlist;
 
 import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.IntStream;
 
 public class Slot {
 

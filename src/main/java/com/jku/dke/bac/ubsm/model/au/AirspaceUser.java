@@ -11,10 +11,7 @@ import com.jku.dke.bac.ubsm.model.flightlist.Slot;
 
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Function;
 
 @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "type")
@@ -220,5 +217,19 @@ public abstract class AirspaceUser {
         localTimes[2] = LocalTime.ofSecondOfDay(generatedTimeInSeconds - (generatedTimeInSeconds % 60));
 
         return localTimes;
+    }
+
+    @Override
+    public String toString() {
+        return "AirspaceUser{" +
+                ", name='" + name + '\'' +
+                ", credits=" + credits +
+                ", initialCredits=" + initialCredits +
+                ", priorityDistribution=" + Arrays.toString(priorityDistribution) +
+                ", priorityFlightMinutesToAdd=" + Arrays.toString(priorityFlightMinutesToAdd) +
+                ", flexibleFlightPercentages=" + Arrays.toString(flexibleFlightPercentages) +
+                ", flexibleFlightWithPriorityPercentages=" + Arrays.toString(flexibleFlightWithPriorityPercentages) +
+                ", weightMapFunction=" + weightMapFunction +
+                '}';
     }
 }

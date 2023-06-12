@@ -18,7 +18,7 @@ public class Flight {
     private FlightType flightType;
     private Map<Slot, Double> weightMap;
     private double initialUtility;
-    private Double optimizedUtility;
+    private double optimizedUtility;
     private boolean isInOptimizationRun;
     private double cost;
 
@@ -108,11 +108,11 @@ public class Flight {
         this.initialUtility = initialUtility;
     }
 
-    public Double getOptimizedUtility() {
+    public double getOptimizedUtility() {
         return optimizedUtility;
     }
 
-    public void setOptimizedUtility(Double optimizedUtility) {
+    public void setOptimizedUtility(double optimizedUtility) {
         this.optimizedUtility = optimizedUtility;
     }
 

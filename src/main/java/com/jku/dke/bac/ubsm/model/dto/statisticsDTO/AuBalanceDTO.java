@@ -12,10 +12,6 @@ public class AuBalanceDTO {
     public AuBalanceDTO(Map<String, Double> balanceBefore, Map<String, Double> balanceAfter) {
         this.balanceBefore = balanceBefore;
         this.balanceAfter = balanceAfter;
-        System.out.println("------------------------------");
-        System.out.println("sum before: " + balanceBefore.values().stream().mapToDouble(Double::doubleValue).sum());
-        System.out.println("sum after: " + balanceAfter.values().stream().mapToDouble(Double::doubleValue).sum());
-
     }
 
     public Map<String, Double> getBalanceBefore() {
