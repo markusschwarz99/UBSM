@@ -221,7 +221,7 @@ public class AirspaceUserService {
         return new int[]{flexibleFlight, 100 - priorityFlight};
     }
 
-    public double getInitialCredits() {
+    protected double getInitialCredits() {
         return initialCredits;
     }
 }

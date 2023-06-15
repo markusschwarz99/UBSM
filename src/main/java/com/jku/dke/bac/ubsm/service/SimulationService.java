@@ -151,6 +151,8 @@ public class SimulationService {
             statistics.get(currRun).setParticipationInPercent((double) optimizedFlightLists.get(currRun).values().stream().filter(Flight::isInOptimizationRun).count() / optimizedFlightLists.get(currRun).size());
             statistics.get(currRun).setAuBalances(new AuBalanceDTO(balanceBefore, balanceAfter));
             Logger.log("SimulationService - run done ...");
+        } else {
+            optimizedFlightLists.add(new HashMap<>());
         }
         return statistics.get(currRun++);
     }
