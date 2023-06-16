@@ -1,6 +1,9 @@
 package com.jku.dke.bac.ubsm.model.dto.statisticsDTO;
 
+import com.jku.dke.bac.ubsm.model.flightlist.Slot;
+
 import java.time.LocalTime;
+import java.util.Map;
 
 public class OptimizedFlightDTO {
     private LocalTime departureTime;
@@ -10,8 +13,9 @@ public class OptimizedFlightDTO {
     private Double optimizedUtility;
     private double cost;
     private boolean isOptimized;
+    private Map<Slot, Double> weightMap;
 
-    public OptimizedFlightDTO(LocalTime departureTime, String au, int flightId, double initialUtility, Double optimizedUtility,double cost ,boolean isOptimized) {
+    public OptimizedFlightDTO(LocalTime departureTime, String au, int flightId, double initialUtility, Double optimizedUtility,double cost ,boolean isOptimized, Map<Slot, Double> weightMap) {
         this.departureTime = departureTime;
         this.au = au;
         this.flightId = flightId;
@@ -19,6 +23,7 @@ public class OptimizedFlightDTO {
         this.optimizedUtility = optimizedUtility;
         this.cost = cost;
         this.isOptimized = isOptimized;
+        this.weightMap = weightMap;
     }
 
     public LocalTime getDepartureTime() {
@@ -76,4 +81,13 @@ public class OptimizedFlightDTO {
     public void setOptimized(boolean optimized) {
         isOptimized = optimized;
     }
+
+    public Map<Slot, Double> getWeightMap() {
+        return weightMap;
+    }
+
+    public void setWeightMap(Map<Slot, Double> weightMap) {
+        this.weightMap = weightMap;
+    }
 }
+

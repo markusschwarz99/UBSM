@@ -1,0 +1,1583 @@
+{
+  "runId": 151,
+  "totalInitialUtility": 13961.388501525727,
+  "totalOptimizedUtility": 29984.45313687515,
+  "utilityIncrease": 1.1476698491413222,
+  "participationInPercent": 0.27358490566037735,
+  "auBalances": {
+    "balanceBefore": {
+      "NeuAU1": 1671.627857390646,
+      "PasAU2": 349.48429784590076,
+      "PasAU1": 5059.705202654073,
+      "AggAU1": 31168.378406948857,
+      "AggAU2": 21470.946366192245,
+      "NeuAU2": 279.85786896826835
+    },
+    "balanceAfter": {
+      "NeuAU1": 1671.627857390646,
+      "PasAU2": 349.48429784590076,
+      "PasAU1": 2366.307828856752,
+      "AggAU1": 33020.36259044471,
+      "AggAU2": 22312.359556493713,
+      "NeuAU2": 279.85786896826835
+    }
+  },
+  "initialFlightList": [
+    {
+      "departureTime": "07:30:00",
+      "au": "AggAU1",
+      "flightId": 3
+    },
+    {
+      "departureTime": "07:31:00",
+      "au": "AggAU1",
+      "flightId": 11
+    },
+    {
+      "departureTime": "07:32:00",
+      "au": "PasAU1",
+      "flightId": 36
+    },
+    {
+      "departureTime": "07:45:00",
+      "au": "PasAU2",
+      "flightId": 90
+    },
+    {
+      "departureTime": "07:47:00",
+      "au": "PasAU2",
+      "flightId": 84
+    },
+    {
+      "departureTime": "07:51:00",
+      "au": "PasAU2",
+      "flightId": 86
+    },
+    {
+      "departureTime": "07:54:00",
+      "au": "NeuAU2",
+      "flightId": 111
+    },
+    {
+      "departureTime": "07:57:00",
+      "au": "NeuAU1",
+      "flightId": 40
+    },
+    {
+      "departureTime": "08:16:00",
+      "au": "NeuAU1",
+      "flightId": 51
+    },
+    {
+      "departureTime": "08:17:00",
+      "au": "PasAU1",
+      "flightId": 23
+    },
+    {
+      "departureTime": "08:35:00",
+      "au": "NeuAU2",
+      "flightId": 112
+    },
+    {
+      "departureTime": "08:43:00",
+      "au": "NeuAU1",
+      "flightId": 55
+    },
+    {
+      "departureTime": "08:51:00",
+      "au": "NeuAU1",
+      "flightId": 48
+    },
+    {
+      "departureTime": "08:53:00",
+      "au": "NeuAU2",
+      "flightId": 105
+    },
+    {
+      "departureTime": "08:55:00",
+      "au": "PasAU1",
+      "flightId": 34
+    },
+    {
+      "departureTime": "09:04:00",
+      "au": "AggAU1",
+      "flightId": 12
+    },
+    {
+      "departureTime": "09:05:00",
+      "au": "AggAU2",
+      "flightId": 79
+    },
+    {
+      "departureTime": "09:15:00",
+      "au": "AggAU2",
+      "flightId": 68
+    },
+    {
+      "departureTime": "09:23:00",
+      "au": "NeuAU1",
+      "flightId": 53
+    },
+    {
+      "departureTime": "09:25:00",
+      "au": "NeuAU1",
+      "flightId": 44
+    },
+    {
+      "departureTime": "09:32:00",
+      "au": "NeuAU2",
+      "flightId": 107
+    },
+    {
+      "departureTime": "09:36:00",
+      "au": "PasAU1",
+      "flightId": 37
+    },
+    {
+      "departureTime": "09:38:00",
+      "au": "PasAU1",
+      "flightId": 29
+    },
+    {
+      "departureTime": "09:45:00",
+      "au": "NeuAU1",
+      "flightId": 42
+    },
+    {
+      "departureTime": "09:54:00",
+      "au": "NeuAU2",
+      "flightId": 110
+    },
+    {
+      "departureTime": "09:58:00",
+      "au": "AggAU1",
+      "flightId": 2
+    },
+    {
+      "departureTime": "10:01:00",
+      "au": "AggAU2",
+      "flightId": 75
+    },
+    {
+      "departureTime": "10:05:00",
+      "au": "PasAU1",
+      "flightId": 32
+    },
+    {
+      "departureTime": "10:20:00",
+      "au": "AggAU2",
+      "flightId": 66
+    },
+    {
+      "departureTime": "10:25:00",
+      "au": "PasAU2",
+      "flightId": 82
+    },
+    {
+      "departureTime": "10:27:00",
+      "au": "PasAU1",
+      "flightId": 20
+    },
+    {
+      "departureTime": "10:32:00",
+      "au": "AggAU2",
+      "flightId": 63
+    },
+    {
+      "departureTime": "10:34:00",
+      "au": "AggAU1",
+      "flightId": 14
+    },
+    {
+      "departureTime": "10:36:00",
+      "au": "PasAU2",
+      "flightId": 88
+    },
+    {
+      "departureTime": "10:37:00",
+      "au": "PasAU1",
+      "flightId": 33
+    },
+    {
+      "departureTime": "10:38:00",
+      "au": "NeuAU2",
+      "flightId": 106
+    },
+    {
+      "departureTime": "10:39:00",
+      "au": "AggAU1",
+      "flightId": 4
+    },
+    {
+      "departureTime": "10:40:00",
+      "au": "NeuAU2",
+      "flightId": 104
+    },
+    {
+      "departureTime": "10:50:00",
+      "au": "AggAU2",
+      "flightId": 71
+    },
+    {
+      "departureTime": "10:53:00",
+      "au": "AggAU1",
+      "flightId": 8
+    },
+    {
+      "departureTime": "10:56:00",
+      "au": "AggAU1",
+      "flightId": 15
+    },
+    {
+      "departureTime": "11:02:00",
+      "au": "PasAU2",
+      "flightId": 97
+    },
+    {
+      "departureTime": "11:05:00",
+      "au": "AggAU1",
+      "flightId": 5
+    },
+    {
+      "departureTime": "11:16:00",
+      "au": "PasAU1",
+      "flightId": 24
+    },
+    {
+      "departureTime": "11:24:00",
+      "au": "NeuAU1",
+      "flightId": 43
+    },
+    {
+      "departureTime": "11:32:00",
+      "au": "NeuAU2",
+      "flightId": 119
+    },
+    {
+      "departureTime": "11:36:00",
+      "au": "NeuAU1",
+      "flightId": 45
+    },
+    {
+      "departureTime": "11:39:00",
+      "au": "AggAU1",
+      "flightId": 17
+    },
+    {
+      "departureTime": "11:44:00",
+      "au": "AggAU1",
+      "flightId": 18
+    },
+    {
+      "departureTime": "11:45:00",
+      "au": "NeuAU1",
+      "flightId": 52
+    },
+    {
+      "departureTime": "11:52:00",
+      "au": "AggAU2",
+      "flightId": 76
+    },
+    {
+      "departureTime": "12:03:00",
+      "au": "NeuAU2",
+      "flightId": 113
+    },
+    {
+      "departureTime": "12:04:00",
+      "au": "AggAU2",
+      "flightId": 74
+    },
+    {
+      "departureTime": "12:15:00",
+      "au": "NeuAU1",
+      "flightId": 41
+    },
+    {
+      "departureTime": "12:25:00",
+      "au": "AggAU2",
+      "flightId": 73
+    },
+    {
+      "departureTime": "12:26:00",
+      "au": "NeuAU2",
+      "flightId": 108
+    },
+    {
+      "departureTime": "12:38:00",
+      "au": "PasAU1",
+      "flightId": 25
+    },
+    {
+      "departureTime": "12:39:00",
+      "au": "NeuAU1",
+      "flightId": 49
+    },
+    {
+      "departureTime": "12:44:00",
+      "au": "AggAU2",
+      "flightId": 70
+    },
+    {
+      "departureTime": "12:48:00",
+      "au": "NeuAU1",
+      "flightId": 47
+    },
+    {
+      "departureTime": "12:54:00",
+      "au": "NeuAU2",
+      "flightId": 103
+    },
+    {
+      "departureTime": "12:55:00",
+      "au": "NeuAU1",
+      "flightId": 46
+    },
+    {
+      "departureTime": "13:00:00",
+      "au": "PasAU2",
+      "flightId": 85
+    },
+    {
+      "departureTime": "13:02:00",
+      "au": "PasAU2",
+      "flightId": 91
+    },
+    {
+      "departureTime": "13:03:00",
+      "au": "PasAU1",
+      "flightId": 21
+    },
+    {
+      "departureTime": "13:07:00",
+      "au": "AggAU2",
+      "flightId": 61
+    },
+    {
+      "departureTime": "13:16:00",
+      "au": "NeuAU2",
+      "flightId": 116
+    },
+    {
+      "departureTime": "13:18:00",
+      "au": "PasAU2",
+      "flightId": 96
+    },
+    {
+      "departureTime": "13:24:00",
+      "au": "NeuAU2",
+      "flightId": 100
+    },
+    {
+      "departureTime": "13:26:00",
+      "au": "PasAU1",
+      "flightId": 39
+    },
+    {
+      "departureTime": "13:32:00",
+      "au": "PasAU2",
+      "flightId": 93
+    },
+    {
+      "departureTime": "13:35:00",
+      "au": "AggAU1",
+      "flightId": 19
+    },
+    {
+      "departureTime": "13:37:00",
+      "au": "PasAU1",
+      "flightId": 26
+    },
+    {
+      "departureTime": "13:39:00",
+      "au": "AggAU2",
+      "flightId": 64
+    },
+    {
+      "departureTime": "14:05:00",
+      "au": "NeuAU2",
+      "flightId": 101
+    },
+    {
+      "departureTime": "14:06:00",
+      "au": "PasAU2",
+      "flightId": 81
+    },
+    {
+      "departureTime": "14:07:00",
+      "au": "PasAU1",
+      "flightId": 30
+    },
+    {
+      "departureTime": "14:15:00",
+      "au": "PasAU2",
+      "flightId": 95
+    },
+    {
+      "departureTime": "14:18:00",
+      "au": "NeuAU2",
+      "flightId": 115
+    },
+    {
+      "departureTime": "14:52:00",
+      "au": "NeuAU1",
+      "flightId": 50
+    },
+    {
+      "departureTime": "15:00:00",
+      "au": "AggAU2",
+      "flightId": 62
+    },
+    {
+      "departureTime": "15:13:00",
+      "au": "AggAU1",
+      "flightId": 7
+    },
+    {
+      "departureTime": "15:43:00",
+      "au": "PasAU2",
+      "flightId": 89
+    },
+    {
+      "departureTime": "15:53:00",
+      "au": "NeuAU1",
+      "flightId": 56
+    },
+    {
+      "departureTime": "15:57:00",
+      "au": "AggAU2",
+      "flightId": 77
+    },
+    {
+      "departureTime": "16:06:00",
+      "au": "PasAU1",
+      "flightId": 35
+    },
+    {
+      "departureTime": "16:13:00",
+      "au": "NeuAU1",
+      "flightId": 58
+    },
+    {
+      "departureTime": "16:21:00",
+      "au": "AggAU2",
+      "flightId": 78
+    },
+    {
+      "departureTime": "16:27:00",
+      "au": "AggAU1",
+      "flightId": 9
+    },
+    {
+      "departureTime": "16:30:00",
+      "au": "NeuAU2",
+      "flightId": 102
+    },
+    {
+      "departureTime": "16:32:00",
+      "au": "NeuAU2",
+      "flightId": 109
+    },
+    {
+      "departureTime": "16:33:00",
+      "au": "PasAU2",
+      "flightId": 99
+    },
+    {
+      "departureTime": "16:39:00",
+      "au": "AggAU1",
+      "flightId": 10
+    },
+    {
+      "departureTime": "16:41:00",
+      "au": "PasAU1",
+      "flightId": 31
+    },
+    {
+      "departureTime": "16:46:00",
+      "au": "PasAU2",
+      "flightId": 87
+    },
+    {
+      "departureTime": "16:49:00",
+      "au": "PasAU1",
+      "flightId": 27
+    },
+    {
+      "departureTime": "16:56:00",
+      "au": "PasAU1",
+      "flightId": 38
+    },
+    {
+      "departureTime": "17:02:00",
+      "au": "PasAU2",
+      "flightId": 98
+    },
+    {
+      "departureTime": "17:11:00",
+      "au": "AggAU1",
+      "flightId": 0
+    },
+    {
+      "departureTime": "17:14:00",
+      "au": "AggAU2",
+      "flightId": 67
+    },
+    {
+      "departureTime": "17:22:00",
+      "au": "AggAU2",
+      "flightId": 69
+    },
+    {
+      "departureTime": "17:24:00",
+      "au": "NeuAU2",
+      "flightId": 114
+    },
+    {
+      "departureTime": "17:51:00",
+      "au": "NeuAU1",
+      "flightId": 59
+    },
+    {
+      "departureTime": "18:09:00",
+      "au": "NeuAU2",
+      "flightId": 117
+    },
+    {
+      "departureTime": "18:14:00",
+      "au": "AggAU1",
+      "flightId": 6
+    },
+    {
+      "departureTime": "18:18:00",
+      "au": "AggAU1",
+      "flightId": 16
+    },
+    {
+      "departureTime": "18:30:00",
+      "au": "AggAU2",
+      "flightId": 65
+    },
+    {
+      "departureTime": "18:33:00",
+      "au": "PasAU1",
+      "flightId": 28
+    },
+    {
+      "departureTime": "18:43:00",
+      "au": "PasAU2",
+      "flightId": 94
+    },
+    {
+      "departureTime": "18:46:00",
+      "au": "PasAU2",
+      "flightId": 80
+    },
+    {
+      "departureTime": "18:48:00",
+      "au": "PasAU2",
+      "flightId": 83
+    },
+    {
+      "departureTime": "18:52:00",
+      "au": "NeuAU2",
+      "flightId": 118
+    },
+    {
+      "departureTime": "19:06:00",
+      "au": "PasAU2",
+      "flightId": 92
+    },
+    {
+      "departureTime": "19:08:00",
+      "au": "AggAU1",
+      "flightId": 13
+    },
+    {
+      "departureTime": "19:10:00",
+      "au": "NeuAU1",
+      "flightId": 54
+    },
+    {
+      "departureTime": "19:33:00",
+      "au": "AggAU2",
+      "flightId": 60
+    },
+    {
+      "departureTime": "19:48:00",
+      "au": "AggAU2",
+      "flightId": 72
+    },
+    {
+      "departureTime": "20:11:00",
+      "au": "NeuAU1",
+      "flightId": 57
+    },
+    {
+      "departureTime": "20:14:00",
+      "au": "PasAU1",
+      "flightId": 22
+    },
+    {
+      "departureTime": "20:30:00",
+      "au": "AggAU1",
+      "flightId": 1
+    }
+  ],
+  "optimizedFlightList": [
+    {
+      "departureTime": "07:30:00",
+      "au": "PasAU1",
+      "flightId": 36,
+      "initialUtility": 4681.261281920429,
+      "optimizedUtility": 4791.40860620091,
+      "cost": -5262.3951049322495,
+      "optimized": true
+    },
+    {
+      "departureTime": "07:31:00",
+      "au": "AggAU1",
+      "flightId": 3,
+      "initialUtility": 150.40546860676795,
+      "optimizedUtility": 144.62064289112277,
+      "cost": -178.40064718160443,
+      "optimized": true
+    },
+    {
+      "departureTime": "07:32:00",
+      "au": "AggAU1",
+      "flightId": 11,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -1.1476698491413222,
+      "optimized": true
+    },
+    {
+      "departureTime": "07:45:00",
+      "au": "PasAU2",
+      "flightId": 90,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "07:47:00",
+      "au": "PasAU2",
+      "flightId": 84,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "07:51:00",
+      "au": "PasAU2",
+      "flightId": 86,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "07:54:00",
+      "au": "NeuAU2",
+      "flightId": 111,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "07:57:00",
+      "au": "NeuAU1",
+      "flightId": 40,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "08:16:00",
+      "au": "NeuAU1",
+      "flightId": 51,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "08:17:00",
+      "au": "PasAU1",
+      "flightId": 23,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -1.1476698491413222,
+      "optimized": true
+    },
+    {
+      "departureTime": "08:35:00",
+      "au": "NeuAU2",
+      "flightId": 112,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "08:43:00",
+      "au": "NeuAU1",
+      "flightId": 55,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "08:51:00",
+      "au": "NeuAU1",
+      "flightId": 48,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "08:53:00",
+      "au": "NeuAU2",
+      "flightId": 105,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1058.8235294117662,
+      "cost": 1053.3336748360116,
+      "optimized": false
+    },
+    {
+      "departureTime": "08:55:00",
+      "au": "AggAU1",
+      "flightId": 12,
+      "initialUtility": 14.100512681884496,
+      "optimizedUtility": 56.40205072753798,
+      "cost": 26.118804783219808,
+      "optimized": true
+    },
+    {
+      "departureTime": "09:04:00",
+      "au": "AggAU2",
+      "flightId": 79,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -1.1476698491413222,
+      "optimized": true
+    },
+    {
+      "departureTime": "09:05:00",
+      "au": "PasAU1",
+      "flightId": 34,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -1.1476698491413222,
+      "optimized": true
+    },
+    {
+      "departureTime": "09:15:00",
+      "au": "AggAU2",
+      "flightId": 68,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "09:23:00",
+      "au": "NeuAU1",
+      "flightId": 53,
+      "initialUtility": 354.7489949475725,
+      "optimizedUtility": 623.2076938268168,
+      "cost": -1324.3126993305054,
+      "optimized": false
+    },
+    {
+      "departureTime": "09:25:00",
+      "au": "NeuAU1",
+      "flightId": 44,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "09:32:00",
+      "au": "NeuAU2",
+      "flightId": 107,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "09:36:00",
+      "au": "PasAU1",
+      "flightId": 29,
+      "initialUtility": 2560.4089739386127,
+      "optimizedUtility": 2650.247885304881,
+      "cost": -2848.665269493946,
+      "optimized": true
+    },
+    {
+      "departureTime": "09:38:00",
+      "au": "PasAU1",
+      "flightId": 37,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -1.1476698491413222,
+      "optimized": true
+    },
+    {
+      "departureTime": "09:45:00",
+      "au": "NeuAU1",
+      "flightId": 42,
+      "initialUtility": 432.7831207130674,
+      "optimizedUtility": 605.8963689982942,
+      "cost": -1770.0200265577496,
+      "optimized": false
+    },
+    {
+      "departureTime": "09:54:00",
+      "au": "NeuAU2",
+      "flightId": 110,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "09:58:00",
+      "au": "AggAU2",
+      "flightId": 66,
+      "initialUtility": 89.02843867811647,
+      "optimizedUtility": 252.24724292133152,
+      "cost": 61.04354945621367,
+      "optimized": true
+    },
+    {
+      "departureTime": "10:01:00",
+      "au": "PasAU1",
+      "flightId": 32,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -1.1476698491413222,
+      "optimized": true
+    },
+    {
+      "departureTime": "10:05:00",
+      "au": "AggAU2",
+      "flightId": 63,
+      "initialUtility": 458.1255073644758,
+      "optimizedUtility": 1409.6169457368492,
+      "cost": 425.7146064475937,
+      "optimized": true
+    },
+    {
+      "departureTime": "10:20:00",
+      "au": "AggAU1",
+      "flightId": 4,
+      "initialUtility": 1.0,
+      "optimizedUtility": 902.4328116406075,
+      "cost": 900.2851417914662,
+      "optimized": true
+    },
+    {
+      "departureTime": "10:25:00",
+      "au": "PasAU2",
+      "flightId": 82,
+      "initialUtility": 527.4725274725275,
+      "optimizedUtility": 750.0,
+      "cost": -2145.747468529967,
+      "optimized": false
+    },
+    {
+      "departureTime": "10:27:00",
+      "au": "AggAU2",
+      "flightId": 75,
+      "initialUtility": 1.0,
+      "optimizedUtility": 412.04187644615723,
+      "cost": 409.8942065970159,
+      "optimized": true
+    },
+    {
+      "departureTime": "10:32:00",
+      "au": "AggAU1",
+      "flightId": 14,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -1.1476698491413222,
+      "optimized": true
+    },
+    {
+      "departureTime": "10:34:00",
+      "au": "PasAU1",
+      "flightId": 33,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -1.1476698491413222,
+      "optimized": true
+    },
+    {
+      "departureTime": "10:36:00",
+      "au": "PasAU2",
+      "flightId": 88,
+      "initialUtility": 0.0,
+      "optimizedUtility": 955.6179775280895,
+      "cost": 955.6179775280895,
+      "optimized": false
+    },
+    {
+      "departureTime": "10:37:00",
+      "au": "AggAU1",
+      "flightId": 2,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1282.404521805072,
+      "cost": 1280.2568519559306,
+      "optimized": true
+    },
+    {
+      "departureTime": "10:38:00",
+      "au": "NeuAU2",
+      "flightId": 106,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "10:39:00",
+      "au": "AggAU1",
+      "flightId": 15,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -1.1476698491413222,
+      "optimized": true
+    },
+    {
+      "departureTime": "10:40:00",
+      "au": "NeuAU2",
+      "flightId": 104,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "10:50:00",
+      "au": "AggAU1",
+      "flightId": 5,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -1.1476698491413222,
+      "optimized": true
+    },
+    {
+      "departureTime": "10:53:00",
+      "au": "AggAU2",
+      "flightId": 71,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -1.1476698491413222,
+      "optimized": true
+    },
+    {
+      "departureTime": "10:56:00",
+      "au": "AggAU1",
+      "flightId": 8,
+      "initialUtility": 1.0,
+      "optimizedUtility": 37.601367151695186,
+      "cost": 35.45369730255386,
+      "optimized": true
+    },
+    {
+      "departureTime": "11:02:00",
+      "au": "PasAU2",
+      "flightId": 97,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "11:05:00",
+      "au": "PasAU1",
+      "flightId": 20,
+      "initialUtility": 1.0,
+      "optimizedUtility": 988.7033631843155,
+      "cost": 986.5556933351743,
+      "optimized": true
+    },
+    {
+      "departureTime": "11:24:00",
+      "au": "NeuAU1",
+      "flightId": 43,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "11:32:00",
+      "au": "NeuAU2",
+      "flightId": 119,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "11:36:00",
+      "au": "NeuAU1",
+      "flightId": 45,
+      "initialUtility": 1.0,
+      "optimizedUtility": 218.52737316005317,
+      "cost": 213.03751858429845,
+      "optimized": false
+    },
+    {
+      "departureTime": "11:39:00",
+      "au": "AggAU1",
+      "flightId": 17,
+      "initialUtility": 1.0,
+      "optimizedUtility": 71.62165171750937,
+      "cost": 66.13179714175463,
+      "optimized": false
+    },
+    {
+      "departureTime": "11:44:00",
+      "au": "AggAU1",
+      "flightId": 18,
+      "initialUtility": 180.48656232812195,
+      "optimizedUtility": 180.48656232812195,
+      "cost": -207.13898575915155,
+      "optimized": true
+    },
+    {
+      "departureTime": "11:45:00",
+      "au": "NeuAU1",
+      "flightId": 52,
+      "initialUtility": 1.0,
+      "optimizedUtility": 74.19139212224033,
+      "cost": 68.7015375464856,
+      "optimized": false
+    },
+    {
+      "departureTime": "11:52:00",
+      "au": "AggAU2",
+      "flightId": 74,
+      "initialUtility": 49.751186320124006,
+      "optimizedUtility": 149.25355896037203,
+      "cost": 42.4044361416295,
+      "optimized": true
+    },
+    {
+      "departureTime": "12:03:00",
+      "au": "NeuAU2",
+      "flightId": 113,
+      "initialUtility": 371.7391304347822,
+      "optimizedUtility": 899.9999999999999,
+      "cost": -1140.7937662044733,
+      "optimized": false
+    },
+    {
+      "departureTime": "12:04:00",
+      "au": "AggAU2",
+      "flightId": 76,
+      "initialUtility": 46.98723152456156,
+      "optimizedUtility": 6.712461646365937,
+      "cost": -94.20059879355756,
+      "optimized": true
+    },
+    {
+      "departureTime": "12:15:00",
+      "au": "NeuAU1",
+      "flightId": 41,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "12:25:00",
+      "au": "AggAU2",
+      "flightId": 73,
+      "initialUtility": 1.0,
+      "optimizedUtility": 23.493615762281532,
+      "cost": 18.003761186526802,
+      "optimized": false
+    },
+    {
+      "departureTime": "12:26:00",
+      "au": "NeuAU2",
+      "flightId": 108,
+      "initialUtility": 0.0,
+      "optimizedUtility": 988.8888888888883,
+      "cost": 988.8888888888883,
+      "optimized": false
+    },
+    {
+      "departureTime": "12:38:00",
+      "au": "PasAU1",
+      "flightId": 25,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1952.0553580818525,
+      "cost": 1946.565503506098,
+      "optimized": false
+    },
+    {
+      "departureTime": "12:39:00",
+      "au": "NeuAU1",
+      "flightId": 49,
+      "initialUtility": 1.0,
+      "optimizedUtility": 163.52388467758934,
+      "cost": 158.03403010183462,
+      "optimized": false
+    },
+    {
+      "departureTime": "12:44:00",
+      "au": "AggAU2",
+      "flightId": 70,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1127.6935565894814,
+      "cost": 1122.2037020137268,
+      "optimized": false
+    },
+    {
+      "departureTime": "12:48:00",
+      "au": "NeuAU1",
+      "flightId": 47,
+      "initialUtility": 251.97076569817446,
+      "optimizedUtility": 436.7493272101685,
+      "cost": -946.5335338143773,
+      "optimized": false
+    },
+    {
+      "departureTime": "12:54:00",
+      "au": "NeuAU2",
+      "flightId": 103,
+      "initialUtility": 774.2647058823514,
+      "optimizedUtility": 1350.0,
+      "cost": -2900.600638433616,
+      "optimized": false
+    },
+    {
+      "departureTime": "12:55:00",
+      "au": "NeuAU1",
+      "flightId": 46,
+      "initialUtility": 255.30567289123832,
+      "optimizedUtility": 360.0464617696946,
+      "cost": -1041.54455476841,
+      "optimized": false
+    },
+    {
+      "departureTime": "13:00:00",
+      "au": "PasAU2",
+      "flightId": 85,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "13:02:00",
+      "au": "PasAU2",
+      "flightId": 91,
+      "initialUtility": 1.0,
+      "optimizedUtility": 449.99999999999994,
+      "cost": 444.5101454242452,
+      "optimized": false
+    },
+    {
+      "departureTime": "13:03:00",
+      "au": "PasAU1",
+      "flightId": 21,
+      "initialUtility": 1.0,
+      "optimizedUtility": 2913.694422689742,
+      "cost": 2908.2045681139875,
+      "optimized": false
+    },
+    {
+      "departureTime": "13:07:00",
+      "au": "AggAU2",
+      "flightId": 61,
+      "initialUtility": 436.3100070137884,
+      "optimizedUtility": 1409.6169457368517,
+      "cost": -985.6615427153722,
+      "optimized": false
+    },
+    {
+      "departureTime": "13:16:00",
+      "au": "NeuAU2",
+      "flightId": 116,
+      "initialUtility": 763.1578947368425,
+      "optimizedUtility": 1500.0,
+      "cost": -2689.625860444401,
+      "optimized": false
+    },
+    {
+      "departureTime": "13:18:00",
+      "au": "PasAU2",
+      "flightId": 96,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "13:24:00",
+      "au": "NeuAU2",
+      "flightId": 100,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "13:26:00",
+      "au": "PasAU1",
+      "flightId": 39,
+      "initialUtility": 1.0,
+      "optimizedUtility": 2874.845163720519,
+      "cost": 2869.3553091447643,
+      "optimized": false
+    },
+    {
+      "departureTime": "13:32:00",
+      "au": "PasAU2",
+      "flightId": 93,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "13:35:00",
+      "au": "AggAU1",
+      "flightId": 19,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "13:37:00",
+      "au": "PasAU1",
+      "flightId": 26,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -1.1476698491413222,
+      "optimized": true
+    },
+    {
+      "departureTime": "13:39:00",
+      "au": "AggAU2",
+      "flightId": 64,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "14:05:00",
+      "au": "NeuAU2",
+      "flightId": 101,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "14:06:00",
+      "au": "PasAU2",
+      "flightId": 81,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "14:07:00",
+      "au": "PasAU1",
+      "flightId": 30,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "14:15:00",
+      "au": "PasAU2",
+      "flightId": 95,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "14:18:00",
+      "au": "NeuAU2",
+      "flightId": 115,
+      "initialUtility": 123.6486486486487,
+      "optimizedUtility": 150.00000000000003,
+      "cost": -528.8130995696729,
+      "optimized": false
+    },
+    {
+      "departureTime": "14:52:00",
+      "au": "NeuAU1",
+      "flightId": 50,
+      "initialUtility": 1.0,
+      "optimizedUtility": 187.95152670967425,
+      "cost": 182.46167213391954,
+      "optimized": false
+    },
+    {
+      "departureTime": "15:00:00",
+      "au": "AggAU2",
+      "flightId": 62,
+      "initialUtility": 714.529969045919,
+      "optimizedUtility": 986.7318620157961,
+      "cost": -2935.9337580648266,
+      "optimized": false
+    },
+    {
+      "departureTime": "15:13:00",
+      "au": "AggAU1",
+      "flightId": 7,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "15:43:00",
+      "au": "PasAU2",
+      "flightId": 89,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1167.1232876712318,
+      "cost": 1161.6334330954771,
+      "optimized": false
+    },
+    {
+      "departureTime": "15:53:00",
+      "au": "NeuAU1",
+      "flightId": 56,
+      "initialUtility": 295.75958351103134,
+      "optimizedUtility": 356.1186821867519,
+      "cost": -1267.5584206745962,
+      "optimized": false
+    },
+    {
+      "departureTime": "15:57:00",
+      "au": "AggAU2",
+      "flightId": 77,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "16:06:00",
+      "au": "PasAU1",
+      "flightId": 35,
+      "initialUtility": 1.0,
+      "optimizedUtility": 11626.212059163954,
+      "cost": 11620.722204588199,
+      "optimized": false
+    },
+    {
+      "departureTime": "16:13:00",
+      "au": "NeuAU1",
+      "flightId": 58,
+      "initialUtility": 1.0,
+      "optimizedUtility": 769.8447982566564,
+      "cost": 764.3549436809017,
+      "optimized": false
+    },
+    {
+      "departureTime": "16:21:00",
+      "au": "AggAU2",
+      "flightId": 78,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "16:27:00",
+      "au": "AggAU1",
+      "flightId": 9,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1052.8382802473755,
+      "cost": 1047.3484256716208,
+      "optimized": false
+    },
+    {
+      "departureTime": "16:30:00",
+      "au": "NeuAU2",
+      "flightId": 102,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "16:32:00",
+      "au": "NeuAU2",
+      "flightId": 109,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "16:33:00",
+      "au": "PasAU2",
+      "flightId": 99,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "16:39:00",
+      "au": "AggAU1",
+      "flightId": 10,
+      "initialUtility": 1.0,
+      "optimizedUtility": 150.40546860676795,
+      "cost": 144.91561403101323,
+      "optimized": false
+    },
+    {
+      "departureTime": "16:41:00",
+      "au": "PasAU1",
+      "flightId": 31,
+      "initialUtility": 1.0,
+      "optimizedUtility": 8130.875210522765,
+      "cost": 8125.38535594701,
+      "optimized": false
+    },
+    {
+      "departureTime": "16:49:00",
+      "au": "PasAU1",
+      "flightId": 38,
+      "initialUtility": 5712.8333381626335,
+      "optimizedUtility": 6357.8306505358305,
+      "cost": -5911.449263005428,
+      "optimized": true
+    },
+    {
+      "departureTime": "16:56:00",
+      "au": "PasAU1",
+      "flightId": 27,
+      "initialUtility": 0.0,
+      "optimizedUtility": 10349.442589393977,
+      "cost": 10349.442589393977,
+      "optimized": true
+    },
+    {
+      "departureTime": "17:02:00",
+      "au": "PasAU2",
+      "flightId": 98,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -4.489854575754729,
+      "optimized": false
+    },
+    {
+      "departureTime": "17:14:00",
+      "au": "AggAU2",
+      "flightId": 67,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -1.1476698491413222,
+      "optimized": true
+    },
+    {
+      "departureTime": "18:09:00",
+      "au": "NeuAU2",
+      "flightId": 117,
+      "initialUtility": 284.6938775510196,
+      "optimizedUtility": 202.0408163265294,
+      "cost": -1360.887170036292,
+      "optimized": false
+    },
+    {
+      "departureTime": "18:14:00",
+      "au": "AggAU1",
+      "flightId": 6,
+      "initialUtility": 1.0,
+      "optimizedUtility": 283.62174080133286,
+      "cost": 278.1318862255781,
+      "optimized": false
+    },
+    {
+      "departureTime": "18:18:00",
+      "au": "AggAU1",
+      "flightId": 16,
+      "initialUtility": 335.78895316859877,
+      "optimizedUtility": 524.670239325934,
+      "cost": -1318.762281714588,
+      "optimized": false
+    },
+    {
+      "departureTime": "18:30:00",
+      "au": "AggAU2",
+      "flightId": 65,
+      "initialUtility": 0.0,
+      "optimizedUtility": 1.0,
+      "cost": 1.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "18:33:00",
+      "au": "PasAU1",
+      "flightId": 28,
+      "initialUtility": 1.0,
+      "optimizedUtility": 5782.734524725275,
+      "cost": 5777.24467014952,
+      "optimized": false
+    },
+    {
+      "departureTime": "18:43:00",
+      "au": "PasAU2",
+      "flightId": 94,
+      "initialUtility": 565.3846153846149,
+      "optimizedUtility": 899.9999999999999,
+      "cost": -2203.8793178305555,
+      "optimized": false
+    },
+    {
+      "departureTime": "18:46:00",
+      "au": "PasAU2",
+      "flightId": 80,
+      "initialUtility": 1.0,
+      "optimizedUtility": 136.363636363636,
+      "cost": 130.87378178788128,
+      "optimized": false
+    },
+    {
+      "departureTime": "18:52:00",
+      "au": "NeuAU2",
+      "flightId": 118,
+      "initialUtility": 419.1780821917796,
+      "optimizedUtility": 599.999999999999,
+      "cost": -1701.2267125766339,
+      "optimized": false
+    },
+    {
+      "departureTime": "19:08:00",
+      "au": "AggAU1",
+      "flightId": 13,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1353.6492174609114,
+      "cost": 1348.1593628851567,
+      "optimized": false
+    }
+  ]
+}

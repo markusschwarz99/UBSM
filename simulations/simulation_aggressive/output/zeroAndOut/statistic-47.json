@@ -1,0 +1,581 @@
+{
+  "runId": 47,
+  "totalInitialUtility": 3223.1492874769374,
+  "totalOptimizedUtility": 5104.8696142581575,
+  "utilityIncrease": 0.5838142012510441,
+  "participationInPercent": 0.375,
+  "auBalances": {
+    "balanceBefore": {
+      "AggAU1": 17453.983375578962,
+      "AggAU2": 2546.0166244210495
+    },
+    "balanceAfter": {
+      "AggAU1": 17408.722234325833,
+      "AggAU2": 2591.27776567418
+    }
+  },
+  "initialFlightList": [
+    {
+      "departureTime": "07:30:00",
+      "au": "AggAU1",
+      "flightId": 5
+    },
+    {
+      "departureTime": "08:02:00",
+      "au": "AggAU2",
+      "flightId": 36
+    },
+    {
+      "departureTime": "08:09:00",
+      "au": "AggAU2",
+      "flightId": 22
+    },
+    {
+      "departureTime": "08:11:00",
+      "au": "AggAU1",
+      "flightId": 16
+    },
+    {
+      "departureTime": "08:44:00",
+      "au": "AggAU2",
+      "flightId": 39
+    },
+    {
+      "departureTime": "08:50:00",
+      "au": "AggAU2",
+      "flightId": 34
+    },
+    {
+      "departureTime": "09:22:00",
+      "au": "AggAU2",
+      "flightId": 24
+    },
+    {
+      "departureTime": "09:54:00",
+      "au": "AggAU2",
+      "flightId": 31
+    },
+    {
+      "departureTime": "10:04:00",
+      "au": "AggAU1",
+      "flightId": 0
+    },
+    {
+      "departureTime": "10:16:00",
+      "au": "AggAU1",
+      "flightId": 14
+    },
+    {
+      "departureTime": "10:34:00",
+      "au": "AggAU1",
+      "flightId": 6
+    },
+    {
+      "departureTime": "11:49:00",
+      "au": "AggAU1",
+      "flightId": 10
+    },
+    {
+      "departureTime": "11:59:00",
+      "au": "AggAU1",
+      "flightId": 13
+    },
+    {
+      "departureTime": "12:06:00",
+      "au": "AggAU2",
+      "flightId": 35
+    },
+    {
+      "departureTime": "12:35:00",
+      "au": "AggAU1",
+      "flightId": 9
+    },
+    {
+      "departureTime": "12:50:00",
+      "au": "AggAU1",
+      "flightId": 1
+    },
+    {
+      "departureTime": "12:52:00",
+      "au": "AggAU1",
+      "flightId": 17
+    },
+    {
+      "departureTime": "13:16:00",
+      "au": "AggAU2",
+      "flightId": 26
+    },
+    {
+      "departureTime": "13:26:00",
+      "au": "AggAU2",
+      "flightId": 37
+    },
+    {
+      "departureTime": "13:44:00",
+      "au": "AggAU2",
+      "flightId": 23
+    },
+    {
+      "departureTime": "13:47:00",
+      "au": "AggAU1",
+      "flightId": 7
+    },
+    {
+      "departureTime": "14:06:00",
+      "au": "AggAU1",
+      "flightId": 18
+    },
+    {
+      "departureTime": "14:07:00",
+      "au": "AggAU2",
+      "flightId": 20
+    },
+    {
+      "departureTime": "14:28:00",
+      "au": "AggAU2",
+      "flightId": 32
+    },
+    {
+      "departureTime": "15:33:00",
+      "au": "AggAU2",
+      "flightId": 28
+    },
+    {
+      "departureTime": "15:35:00",
+      "au": "AggAU1",
+      "flightId": 11
+    },
+    {
+      "departureTime": "15:44:00",
+      "au": "AggAU2",
+      "flightId": 38
+    },
+    {
+      "departureTime": "15:55:00",
+      "au": "AggAU2",
+      "flightId": 30
+    },
+    {
+      "departureTime": "16:46:00",
+      "au": "AggAU2",
+      "flightId": 33
+    },
+    {
+      "departureTime": "17:01:00",
+      "au": "AggAU1",
+      "flightId": 15
+    },
+    {
+      "departureTime": "17:06:00",
+      "au": "AggAU1",
+      "flightId": 12
+    },
+    {
+      "departureTime": "17:10:00",
+      "au": "AggAU1",
+      "flightId": 8
+    },
+    {
+      "departureTime": "17:22:00",
+      "au": "AggAU2",
+      "flightId": 29
+    },
+    {
+      "departureTime": "18:33:00",
+      "au": "AggAU1",
+      "flightId": 3
+    },
+    {
+      "departureTime": "19:03:00",
+      "au": "AggAU2",
+      "flightId": 21
+    },
+    {
+      "departureTime": "19:04:00",
+      "au": "AggAU2",
+      "flightId": 27
+    },
+    {
+      "departureTime": "19:21:00",
+      "au": "AggAU1",
+      "flightId": 19
+    },
+    {
+      "departureTime": "19:59:00",
+      "au": "AggAU1",
+      "flightId": 2
+    },
+    {
+      "departureTime": "20:14:00",
+      "au": "AggAU2",
+      "flightId": 25
+    },
+    {
+      "departureTime": "20:30:00",
+      "au": "AggAU1",
+      "flightId": 4
+    }
+  ],
+  "optimizedFlightList": [
+    {
+      "departureTime": "07:30:00",
+      "au": "AggAU1",
+      "flightId": 5,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -0.5838142012510441,
+      "optimized": true
+    },
+    {
+      "departureTime": "08:02:00",
+      "au": "AggAU2",
+      "flightId": 22,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -0.5838142012510441,
+      "optimized": true
+    },
+    {
+      "departureTime": "08:09:00",
+      "au": "AggAU1",
+      "flightId": 16,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -0.5838142012510441,
+      "optimized": true
+    },
+    {
+      "departureTime": "08:11:00",
+      "au": "AggAU2",
+      "flightId": 36,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -0.5838142012510441,
+      "optimized": true
+    },
+    {
+      "departureTime": "08:44:00",
+      "au": "AggAU2",
+      "flightId": 34,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -0.5838142012510441,
+      "optimized": true
+    },
+    {
+      "departureTime": "08:50:00",
+      "au": "AggAU2",
+      "flightId": 39,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -0.5838142012510441,
+      "optimized": true
+    },
+    {
+      "departureTime": "09:22:00",
+      "au": "AggAU2",
+      "flightId": 24,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "09:54:00",
+      "au": "AggAU1",
+      "flightId": 14,
+      "initialUtility": 116.07836078681984,
+      "optimizedUtility": 754.5093451143316,
+      "cost": 570.662788842224,
+      "optimized": true
+    },
+    {
+      "departureTime": "10:04:00",
+      "au": "AggAU1",
+      "flightId": 0,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -0.5838142012510441,
+      "optimized": true
+    },
+    {
+      "departureTime": "10:16:00",
+      "au": "AggAU1",
+      "flightId": 6,
+      "initialUtility": 507.91360793062285,
+      "optimizedUtility": 905.4112141371979,
+      "cost": 100.97042888802252,
+      "optimized": true
+    },
+    {
+      "departureTime": "10:34:00",
+      "au": "AggAU2",
+      "flightId": 31,
+      "initialUtility": 1.0,
+      "optimizedUtility": 763.5512980433763,
+      "cost": 761.9674838421253,
+      "optimized": true
+    },
+    {
+      "departureTime": "11:49:00",
+      "au": "AggAU1",
+      "flightId": 10,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "11:59:00",
+      "au": "AggAU1",
+      "flightId": 13,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "12:06:00",
+      "au": "AggAU2",
+      "flightId": 35,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "12:35:00",
+      "au": "AggAU1",
+      "flightId": 9,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "12:50:00",
+      "au": "AggAU1",
+      "flightId": 1,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "12:52:00",
+      "au": "AggAU1",
+      "flightId": 17,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "13:16:00",
+      "au": "AggAU2",
+      "flightId": 26,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "13:26:00",
+      "au": "AggAU2",
+      "flightId": 37,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "13:44:00",
+      "au": "AggAU2",
+      "flightId": 23,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "13:47:00",
+      "au": "AggAU1",
+      "flightId": 7,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "14:06:00",
+      "au": "AggAU1",
+      "flightId": 18,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "14:07:00",
+      "au": "AggAU2",
+      "flightId": 20,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "14:28:00",
+      "au": "AggAU2",
+      "flightId": 32,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "15:33:00",
+      "au": "AggAU2",
+      "flightId": 28,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "15:35:00",
+      "au": "AggAU1",
+      "flightId": 11,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "15:44:00",
+      "au": "AggAU2",
+      "flightId": 38,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "15:55:00",
+      "au": "AggAU2",
+      "flightId": 30,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "16:46:00",
+      "au": "AggAU2",
+      "flightId": 33,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "17:01:00",
+      "au": "AggAU1",
+      "flightId": 15,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "17:06:00",
+      "au": "AggAU1",
+      "flightId": 12,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "17:10:00",
+      "au": "AggAU1",
+      "flightId": 8,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "17:22:00",
+      "au": "AggAU2",
+      "flightId": 29,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "18:33:00",
+      "au": "AggAU1",
+      "flightId": 3,
+      "initialUtility": 1.0,
+      "optimizedUtility": 1.0,
+      "cost": -0.5838142012510441,
+      "optimized": true
+    },
+    {
+      "departureTime": "19:03:00",
+      "au": "AggAU2",
+      "flightId": 21,
+      "initialUtility": 865.3581377824935,
+      "optimizedUtility": 865.3581377824935,
+      "cost": -505.2083700055773,
+      "optimized": true
+    },
+    {
+      "departureTime": "19:04:00",
+      "au": "AggAU2",
+      "flightId": 27,
+      "initialUtility": 557.0121346645931,
+      "optimizedUtility": 557.0121346645931,
+      "cost": -325.19159448634844,
+      "optimized": true
+    },
+    {
+      "departureTime": "19:21:00",
+      "au": "AggAU1",
+      "flightId": 19,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    },
+    {
+      "departureTime": "19:59:00",
+      "au": "AggAU2",
+      "flightId": 25,
+      "initialUtility": 564.1795702209428,
+      "optimizedUtility": 1009.5844940795757,
+      "cost": 116.02887870793597,
+      "optimized": true
+    },
+    {
+      "departureTime": "20:14:00",
+      "au": "AggAU1",
+      "flightId": 2,
+      "initialUtility": 603.6074760914654,
+      "optimizedUtility": 241.44299043658958,
+      "cost": -714.5591021783735,
+      "optimized": true
+    },
+    {
+      "departureTime": "20:30:00",
+      "au": "AggAU1",
+      "flightId": 4,
+      "initialUtility": 0.0,
+      "optimizedUtility": 0.0,
+      "cost": 0.0,
+      "optimized": false
+    }
+  ]
+}

@@ -27,7 +27,7 @@ public class HungarianOptimizer extends Optimizer {
         Logger.log("HungarianOptimizer - feasibleFlights: " + feasibleFlightLists.get(0).size() + " ...");
         Logger.log("HungarianOptimizer - not feasibleFlights: " + feasibleFlightLists.get(1).size() + " ...");
 
-        if (feasibleFlightLists.get(0).size() == 0){
+        if (feasibleFlightLists.get(0).size() == 0) {
             return null;
         }
 
@@ -52,6 +52,7 @@ public class HungarianOptimizer extends Optimizer {
             optimizedFlightList.put(grantedSlot, flight);
         });
 
+        initialFlightList.putAll(feasibleFlightLists.get(1));
         Logger.log("HungarianOptimizer - optimization finished ...");
         return optimizedFlightList.entrySet().stream()
                 .sorted(Comparator.comparingInt(e -> e.getKey().getDepartureTime().toSecondOfDay()))

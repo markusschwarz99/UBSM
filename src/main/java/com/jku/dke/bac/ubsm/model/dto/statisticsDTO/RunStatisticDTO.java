@@ -6,6 +6,7 @@ import com.jku.dke.bac.ubsm.model.flightlist.Slot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RunStatisticDTO {
     private int runId;
@@ -13,6 +14,7 @@ public class RunStatisticDTO {
     private double totalOptimizedUtility;
     private double utilityIncrease;
     private double participationInPercent;
+    private Map<String, Map<Boolean, Long>> participationAu;
     private AuBalanceDTO auBalances;
     private List<InitialFlightDTO> initialFlightList;
     private List<OptimizedFlightDTO> optimizedFlightList;
@@ -45,7 +47,7 @@ public class RunStatisticDTO {
 
     public void setOptimizedFlightList(Map<Slot, Flight> optimizedFlightList) {
         optimizedFlightList.forEach((slot, flight) -> {
-            this.optimizedFlightList.add(new OptimizedFlightDTO(slot.getDepartureTime(), flight.getAirspaceUser().getName(), flight.getId(), flight.getInitialUtility(), flight.getOptimizedUtility(), flight.getCost() ,flight.isInOptimizationRun()));
+            this.optimizedFlightList.add(new OptimizedFlightDTO(slot.getDepartureTime(), flight.getAirspaceUser().getName(), flight.getId(), flight.getInitialUtility(), flight.getOptimizedUtility(), flight.getCost(), flight.isInOptimizationRun(), flight.getWeightMap()));
         });
     }
 
@@ -87,5 +89,20 @@ public class RunStatisticDTO {
 
     public void setParticipationInPercent(double participationInPercent) {
         this.participationInPercent = participationInPercent;
+    }
+
+    public Map<String, Map<Boolean, Long>> getParticipationAu() {
+        return participationAu;
+    }
+
+    public void setParticipationAu(Map<Slot, Flight> optimizedFlightList) {
+        this.participationAu = optimizedFlightList.values().stream()
+                .collect(Collectors.groupingBy(
+                        flight -> flight.getAirspaceUser().getName(),
+                        Collectors.groupingBy(
+                                Flight::isInOptimizationRun,
+                                Collectors.counting()
+                        )
+                ));
     }
 }

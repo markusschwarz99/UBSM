@@ -2,6 +2,9 @@
 # Inflation based - 1%
 # Hungerian Optimizer
 # 30 min delay for each cycle
+#
+# Aggressive:
+# "priorityFlightMinutesToAdd": [30, 50] defualt: [15, 45]
 
 POST http://localhost:8080/airspaceUsers
 Content-Type: application/json

@@ -3,10 +3,11 @@ package com.jku.dke.bac.ubsm.model.flightlist;
 
 import com.jku.dke.bac.ubsm.model.au.AirspaceUser;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Map;
 
-public class Flight {
+public class Flight implements Serializable {
     private int id;
     private AirspaceUser airspaceUser;
     private LocalTime initialTime;

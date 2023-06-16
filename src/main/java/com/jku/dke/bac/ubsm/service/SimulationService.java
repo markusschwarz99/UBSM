@@ -14,6 +14,7 @@ import com.jku.dke.bac.ubsm.simulator.InflationSimulator;
 import com.jku.dke.bac.ubsm.simulator.OnlyOfferSimulator;
 import com.jku.dke.bac.ubsm.simulator.Simulator;
 import com.jku.dke.bac.ubsm.simulator.ZeroAndOutSimulator;
+import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -118,6 +119,7 @@ public class SimulationService {
                         AirspaceUser::getCredits
                 ));
 
+
         Map<Slot, Flight> optimizedFlightList = optimizer.optimize(initialFlightLists.get(currRun));
         if (optimizedFlightList != null) {
             optimizedFlightLists.add(optimizedFlightList);
@@ -148,12 +150,13 @@ public class SimulationService {
             }
 
             statistics.get(currRun).setOptimizedFlightList(optimizedFlightLists.get(currRun));
+            statistics.get(currRun).setParticipationAu(optimizedFlightLists.get(currRun));
             statistics.get(currRun).setParticipationInPercent((double) optimizedFlightLists.get(currRun).values().stream().filter(Flight::isInOptimizationRun).count() / optimizedFlightLists.get(currRun).size());
             statistics.get(currRun).setAuBalances(new AuBalanceDTO(balanceBefore, balanceAfter));
-            Logger.log("SimulationService - run done ...");
         } else {
             optimizedFlightLists.add(new HashMap<>());
         }
+        Logger.log("SimulationService - run done ...");
         return statistics.get(currRun++);
     }
 
@@ -246,7 +249,6 @@ public class SimulationService {
 
         List<Slot> possibleSlots = sortedFlightList.keySet().stream().toList();
         sortedFlightList.forEach((key, flight) -> flight.getAirspaceUser().generateFlightAttributes(flight, possibleSlots));
-
         Logger.log("SimulationService - initial flightList created ...");
         return sortedFlightList;
     }
