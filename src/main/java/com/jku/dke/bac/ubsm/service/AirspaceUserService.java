@@ -114,22 +114,24 @@ public class AirspaceUserService {
 
             au.setName(airspaceUserDTO.getName());
 
-            if (airspaceUserDTO.getCredits() == 0.0) {
+            if (airspaceUserDTO.getCredits() == 0.0 || airspaceUserDTO.getCredits() < 0) {
                 au.setCredits(initialCredits);
             } else {
                 au.setCredits(airspaceUserDTO.getCredits());
             }
 
             // priority Distribution
-            if (isValidPriorityDistribution(airspaceUserDTO)) {
-                au.setPriorityDistribution(calculatePriorityDistribution(airspaceUserDTO));
-            } else {
+            if (airspaceUserDTO.getProbabilityPriorityFlight() == null && airspaceUserDTO.getProbabilityFlexibleFlight() == null && airspaceUserDTO.getProbabilityFlexibleWithPriorityFlight() == null) {
                 switch (airspaceUserDTO.getClass().getSimpleName()) {
                     case "AggressiveAirspaceUserDTO" ->
                             au.setPriorityDistribution(standardPriorityDistributionAggressive);
                     case "NeutralAirspaceUserDTO" -> au.setPriorityDistribution(standardPriorityDistributionNeutral);
                     case "PassiveAirspaceUserDTO" -> au.setPriorityDistribution(standardPriorityDistributionPassive);
                 }
+            } else if (isValidPriorityDistribution(airspaceUserDTO)) {
+                au.setPriorityDistribution(calculatePriorityDistribution(airspaceUserDTO));
+            } else {
+                throw new IllegalArgumentException("Invalid priority distribution");
             }
 
             // priority minutes to add
@@ -139,6 +141,8 @@ public class AirspaceUserService {
                     case "NeutralAirspaceUserDTO" -> au.setPriorityFlightMinutesToAdd(priorityTimeToAddNeutral);
                     case "PassiveAirspaceUserDTO" -> au.setPriorityFlightMinutesToAdd(priorityTimeToAddPassive);
                 }
+            } else if (Arrays.stream(airspaceUserDTO.getPriorityFlightMinutesToAdd()).anyMatch(value -> value < 0)) {
+                throw new IllegalArgumentException("All values in PriorityFlightMinutesToAdd must be > 0");
             } else {
                 au.setPriorityFlightMinutesToAdd(airspaceUserDTO.getPriorityFlightMinutesToAdd());
             }
@@ -153,6 +157,8 @@ public class AirspaceUserService {
                     case "PassiveAirspaceUserDTO" ->
                             au.setFlexibleFlightPercentages(new Margin[]{new Margin(flexibleNotBeforePassive[0], flexibleNotBeforePassive[1]), new Margin(flexibleWishedTimePassive[0], flexibleWishedTimePassive[1]), new Margin(flexibleNotAfterPassive[0], flexibleNotAfterPassive[1])});
                 }
+            } else if (Arrays.stream(airspaceUserDTO.getFlexibleFlightPercentages()).anyMatch(margin -> margin.getLowerBound() < 0 || margin.getUpperBound() < 0 || margin.getLowerBound() > 1 || margin.getUpperBound() > 1)) {
+                throw new IllegalArgumentException("lowerBound in FlexibleFlightPercentages must be < 0 and upperBound must be > 1 ");
             } else {
                 au.setFlexibleFlightPercentages(airspaceUserDTO.getFlexibleFlightPercentages());
             }
@@ -167,6 +173,8 @@ public class AirspaceUserService {
                     case "PassiveAirspaceUserDTO" ->
                             au.setFlexibleFlightWithPriorityPercentages(new Margin[]{new Margin(flexibleWithPriorityNotBeforePassive[0], flexibleWithPriorityNotBeforePassive[1]), new Margin(flexibleWithPriorityWishedTimePassive[0], flexibleWithPriorityWishedTimePassive[1]), new Margin(flexibleWithPriorityNotAfterPassive[0], flexibleWithPriorityNotAfterPassive[1])});
                 }
+            } else if (Arrays.stream(airspaceUserDTO.getFlexibleFlightWithPriorityPercentages()).anyMatch(margin -> margin.getLowerBound() < 0 || margin.getUpperBound() < 0 || margin.getLowerBound() > 1 || margin.getUpperBound() > 1)) {
+                throw new IllegalArgumentException("lowerBound in FlexibleFlightWithPriorityPercentages must be < 0 and upperBound must be > 1 ");
             } else {
                 au.setFlexibleFlightWithPriorityPercentages(airspaceUserDTO.getFlexibleFlightPercentages());
             }
@@ -176,12 +184,12 @@ public class AirspaceUserService {
                 airspaceUserDTO.setWeightMapFunction(weightMapFunction);
             }
 
-            switch (airspaceUserDTO.getWeightMapFunction()) {
-                case ("DefaultWeightMapFunction"):
-                    au.setWeightMapFunction(new DefaultWeightMapFunction());
-                default:
-                    au.setWeightMapFunction(new DefaultWeightMapFunction());
+            if (airspaceUserDTO.getWeightMapFunction().equals("DefaultWeightMapFunction")) {
+                au.setWeightMapFunction(new DefaultWeightMapFunction());
+            } else {
+                throw new IllegalArgumentException("Weight map function is not implemented");
             }
+
             this.airspaceUsers.add(au);
         });
         return Mapper.mapAirspaceUserToAirspaceUserDTO(this.airspaceUsers.subList(this.airspaceUsers.size() - airspaceUsersDTO.length, this.airspaceUsers.size()).toArray(new AirspaceUser[airspaceUsersDTO.length]));

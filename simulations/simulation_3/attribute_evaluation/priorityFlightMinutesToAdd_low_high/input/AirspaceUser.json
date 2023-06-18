@@ -1,0 +1,84 @@
+[
+  {
+    "type": "neutral",
+    "name": "NeuAU1",
+    "credits": 10000.0,
+    "probabilityFlexibleFlight": 25,
+    "probabilityPriorityFlight": 25,
+    "probabilityFlexibleWithPriorityFlight": 50,
+    "priorityFlightMinutesToAdd": [
+      30,
+      45
+    ],
+    "flexibleFlightPercentages": [
+      {
+        "lowerBound": 0.1,
+        "upperBound": 0.25
+      },
+      {
+        "lowerBound": 0.3,
+        "upperBound": 0.4
+      },
+      {
+        "lowerBound": 0.5,
+        "upperBound": 0.9
+      }
+    ],
+    "flexibleFlightWithPriorityPercentages": [
+      {
+        "lowerBound": 0.0,
+        "upperBound": 0.1
+      },
+      {
+        "lowerBound": 0.15,
+        "upperBound": 0.3
+      },
+      {
+        "lowerBound": 0.4,
+        "upperBound": 0.6
+      }
+    ],
+    "weightMapFunction": "DefaultWeightMapFunction"
+  },
+  {
+    "type": "neutral",
+    "name": "NeuAU2",
+    "credits": 10000.0,
+    "probabilityFlexibleFlight": 25,
+    "probabilityPriorityFlight": 25,
+    "probabilityFlexibleWithPriorityFlight": 50,
+    "priorityFlightMinutesToAdd": [
+      45,
+      50
+    ],
+    "flexibleFlightPercentages": [
+      {
+        "lowerBound": 0.1,
+        "upperBound": 0.25
+      },
+      {
+        "lowerBound": 0.3,
+        "upperBound": 0.4
+      },
+      {
+        "lowerBound": 0.5,
+        "upperBound": 0.9
+      }
+    ],
+    "flexibleFlightWithPriorityPercentages": [
+      {
+        "lowerBound": 0.0,
+        "upperBound": 0.1
+      },
+      {
+        "lowerBound": 0.15,
+        "upperBound": 0.3
+      },
+      {
+        "lowerBound": 0.4,
+        "upperBound": 0.6
+      }
+    ],
+    "weightMapFunction": "DefaultWeightMapFunction"
+  }
+]
