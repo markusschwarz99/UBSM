@@ -16,7 +16,7 @@ public abstract class AirspaceUserDTO {
     private String name;
 
     @Nullable
-    private double credits;
+    private Double credits;
 
     @Nullable
     private Integer probabilityFlexibleFlight;
@@ -50,11 +50,11 @@ public abstract class AirspaceUserDTO {
         this.name = name;
     }
 
-    public double getCredits() {
+    public Double getCredits() {
         return credits;
     }
 
-    public void setCredits(double credits) {
+    public void setCredits(Double credits) {
         this.credits = credits;
     }
 

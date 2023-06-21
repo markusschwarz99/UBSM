@@ -1,5 +1,6 @@
 package com.jku.dke.bac.ubsm.service;
 
+import com.jku.dke.bac.ubsm.Logger;
 import com.jku.dke.bac.ubsm.model.au.AirspaceUser;
 import com.jku.dke.bac.ubsm.model.au.Margin;
 import com.jku.dke.bac.ubsm.model.au.weightMapFunction.DefaultWeightMapFunction;
@@ -96,29 +97,41 @@ public class AirspaceUserService {
     }
 
     public AirspaceUserDTO[] createNewAirspaceUsers(AirspaceUserDTO[] airspaceUsersDTO) throws IllegalArgumentException {
+        Logger.log("AirspaceUserService - creating AUs of " + airspaceUsersDTO.length + " AU DTOs");
         Arrays.stream(airspaceUsersDTO).forEach(airspaceUserDTO -> {
             // check that name of AU is always unique
             this.airspaceUsers.forEach(airspaceUser -> {
-                if (airspaceUser.getName().equals(airspaceUserDTO.getName()))
+                if (airspaceUser.getName().equals(airspaceUserDTO.getName())) {
+                    Logger.log("AirspaceUserService - The AirspaceUser with the name " + airspaceUserDTO.getName() + "already exists");
                     throw new IllegalArgumentException("The AirspaceUser with the name " + airspaceUserDTO.getName() + "already exists");
+                }
             });
             AirspaceUser au = null;
             if (airspaceUserDTO.getClass().equals(AggressiveAirspaceUserDTO.class)) {
                 au = aggressiveAirspaceUserFactory.generate();
+                Logger.log("AirspaceUserService - New aggressive AU created");
             } else if (airspaceUserDTO.getClass().equals(NeutralAirspaceUserDTO.class)) {
                 au = neutralAirspaceUserFactory.generate();
+                Logger.log("AirspaceUserService - New neutral AU created");
             } else if (airspaceUserDTO.getClass().equals(PassiveAirspaceUserDTO.class)) {
                 au = passiveAirspaceUserFactory.generate();
+                Logger.log("AirspaceUserService - New passive AU created");
             }
-            if (au == null) throw new IllegalArgumentException("AirspaceUser is null");
+            if (au == null) {
+                Logger.log("AirspaceUserService - Invalid presetting");
+                throw new IllegalArgumentException("AirspaceUser is null");
+            }
 
             au.setName(airspaceUserDTO.getName());
+            Logger.log("AirspaceUserService - Name set to " + au.getName());
 
-            if (airspaceUserDTO.getCredits() == 0.0 || airspaceUserDTO.getCredits() < 0) {
+            if (airspaceUserDTO.getCredits() == null || airspaceUserDTO.getCredits() < 0) {
                 au.setCredits(initialCredits);
             } else {
                 au.setCredits(airspaceUserDTO.getCredits());
             }
+
+            Logger.log("AirspaceUserService - Credits set to " + au.getCredits());
 
             // priority Distribution
             if (airspaceUserDTO.getProbabilityPriorityFlight() == null && airspaceUserDTO.getProbabilityFlexibleFlight() == null && airspaceUserDTO.getProbabilityFlexibleWithPriorityFlight() == null) {
@@ -128,9 +141,12 @@ public class AirspaceUserService {
                     case "NeutralAirspaceUserDTO" -> au.setPriorityDistribution(standardPriorityDistributionNeutral);
                     case "PassiveAirspaceUserDTO" -> au.setPriorityDistribution(standardPriorityDistributionPassive);
                 }
+                Logger.log("AirspaceUserService - Using the default priority distribution");
             } else if (isValidPriorityDistribution(airspaceUserDTO)) {
                 au.setPriorityDistribution(calculatePriorityDistribution(airspaceUserDTO));
+                Logger.log("AirspaceUserService - Used custom priority distribution");
             } else {
+                Logger.log("AirspaceUserService - Invalid priority distribution");
                 throw new IllegalArgumentException("Invalid priority distribution");
             }
 
@@ -141,10 +157,13 @@ public class AirspaceUserService {
                     case "NeutralAirspaceUserDTO" -> au.setPriorityFlightMinutesToAdd(priorityTimeToAddNeutral);
                     case "PassiveAirspaceUserDTO" -> au.setPriorityFlightMinutesToAdd(priorityTimeToAddPassive);
                 }
+                Logger.log("AirspaceUserService - Using default priorityFlightMinutesToAdd");
             } else if (Arrays.stream(airspaceUserDTO.getPriorityFlightMinutesToAdd()).anyMatch(value -> value < 0)) {
-                throw new IllegalArgumentException("All values in PriorityFlightMinutesToAdd must be > 0");
+                Logger.log("AirspaceUserService - Invalid priorityFlightMinutesToAdd");
+                throw new IllegalArgumentException("All values in priorityFlightMinutesToAdd must be > 0");
             } else {
                 au.setPriorityFlightMinutesToAdd(airspaceUserDTO.getPriorityFlightMinutesToAdd());
+                Logger.log("AirspaceUserService - Using custom priorityFlightMinutesToAdd");
             }
 
             // flexible
@@ -157,10 +176,13 @@ public class AirspaceUserService {
                     case "PassiveAirspaceUserDTO" ->
                             au.setFlexibleFlightPercentages(new Margin[]{new Margin(flexibleNotBeforePassive[0], flexibleNotBeforePassive[1]), new Margin(flexibleWishedTimePassive[0], flexibleWishedTimePassive[1]), new Margin(flexibleNotAfterPassive[0], flexibleNotAfterPassive[1])});
                 }
+                Logger.log("AirspaceUserService - Using default flexibleFlightPercentages");
             } else if (Arrays.stream(airspaceUserDTO.getFlexibleFlightPercentages()).anyMatch(margin -> margin.getLowerBound() < 0 || margin.getUpperBound() < 0 || margin.getLowerBound() > 1 || margin.getUpperBound() > 1)) {
+                Logger.log("AirspaceUserService - Invalid flexibleFlightPercentages");
                 throw new IllegalArgumentException("lowerBound in FlexibleFlightPercentages must be < 0 and upperBound must be > 1 ");
             } else {
                 au.setFlexibleFlightPercentages(airspaceUserDTO.getFlexibleFlightPercentages());
+                Logger.log("AirspaceUserService - Using custom flexibleFlightPercentages");
             }
 
             // flexible with priority
@@ -173,20 +195,25 @@ public class AirspaceUserService {
                     case "PassiveAirspaceUserDTO" ->
                             au.setFlexibleFlightWithPriorityPercentages(new Margin[]{new Margin(flexibleWithPriorityNotBeforePassive[0], flexibleWithPriorityNotBeforePassive[1]), new Margin(flexibleWithPriorityWishedTimePassive[0], flexibleWithPriorityWishedTimePassive[1]), new Margin(flexibleWithPriorityNotAfterPassive[0], flexibleWithPriorityNotAfterPassive[1])});
                 }
+                Logger.log("AirspaceUserService - Using default flexibleFlightWithPriorityPercentages");
             } else if (Arrays.stream(airspaceUserDTO.getFlexibleFlightWithPriorityPercentages()).anyMatch(margin -> margin.getLowerBound() < 0 || margin.getUpperBound() < 0 || margin.getLowerBound() > 1 || margin.getUpperBound() > 1)) {
+                Logger.log("AirspaceUserService - Invalid flexibleFlightWithPriorityPercentages");
                 throw new IllegalArgumentException("lowerBound in FlexibleFlightWithPriorityPercentages must be < 0 and upperBound must be > 1 ");
             } else {
                 au.setFlexibleFlightWithPriorityPercentages(airspaceUserDTO.getFlexibleFlightPercentages());
+                Logger.log("AirspaceUserService - Using custom flexibleFlightWithPriorityPercentages");
             }
 
             // weightMap function
             if (airspaceUserDTO.getWeightMapFunction() == null) {
                 airspaceUserDTO.setWeightMapFunction(weightMapFunction);
-            }
-
-            if (airspaceUserDTO.getWeightMapFunction().equals("DefaultWeightMapFunction")) {
                 au.setWeightMapFunction(new DefaultWeightMapFunction());
+                Logger.log("AirspaceUserService - Using default weightMapFunction");
+            } else if (airspaceUserDTO.getWeightMapFunction().equals("DefaultWeightMapFunction")) {
+                au.setWeightMapFunction(new DefaultWeightMapFunction());
+                Logger.log("AirspaceUserService - Using custom " + au.getWeightMapFunction().getClass().getSimpleName());
             } else {
+                Logger.log("AirspaceUserService - Invalid wightMapFunction");
                 throw new IllegalArgumentException("Weight map function is not implemented");
             }
 
